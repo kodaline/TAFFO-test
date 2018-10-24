@@ -6,8 +6,8 @@
 #include "benchmark.hpp"
 
 static int* indices;
-static float* __attribute((annotate(ANNOTATION_COMPLEX))) x;
-static float* __attribute((annotate(ANNOTATION_COMPLEX))) f;
+static float* __attribute((annotate("range -167776 167776 0"))) x;
+static float* __attribute((annotate("range -167776 167776 0"))) f;
 
 int main(int argc, char* argv[])
 {

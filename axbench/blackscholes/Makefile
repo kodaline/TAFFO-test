@@ -55,7 +55,10 @@ obj/%.ll: src/%.c
 obj/%.init.ll: obj/%.ll
 	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=flttofix$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
-obj/%.fixp.ll: obj/%.init.ll
+obj/%.tuner.ll : obj/%.init.ll
+	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffotuner $(if $(ISDEBUG), -debug-only=taffotuner$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+
+obj/%.fixp.ll: obj/%.tuner.ll
 	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg $(if $(ISDEBUG), -debug-only=flttofix) -stats $< -o $@ 2> stats/flttofix.log
 
 obj/%.err.ll: obj/%.fixp.ll
