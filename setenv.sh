@@ -34,8 +34,7 @@ else
   export INITLIB=$(taffo_setenv_find $1 'lib' 'TaffoInitializer')
   export PASSLIB=$(taffo_setenv_find $1 'lib' 'LLVMFloatToFixed')
   export ERRORLIB=$(taffo_setenv_find $1 'lib' 'LLVMErrorPropagator')
-  export INSTCNT=$(taffo_setenv_find $1 'bin' 'istr_type')
-  export INSTMIX="$INSTCNT"
+  export INSTMIX=$(taffo_setenv_find $1 'bin' 'istr_type')
 fi
 
 unset -f taffo_setenv_find
