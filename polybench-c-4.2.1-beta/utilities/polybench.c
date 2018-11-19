@@ -23,6 +23,10 @@
 # include <omp.h>
 #endif
 
+#ifdef _MIOSIX
+#include <sys/times.h>
+#endif
+
 #if defined(POLYBENCH_PAPI)
 # undef POLYBENCH_PAPI
 # include "polybench.h"
@@ -83,12 +87,18 @@ static
 double rtclock()
 {
 #if defined(POLYBENCH_TIME) || defined(POLYBENCH_GFLOPS)
-    struct timeval Tp;
-    int stat;
-    stat = gettimeofday (&Tp, NULL);
-    if (stat != 0)
-      printf ("Error return from gettimeofday: %d", stat);
-    return (Tp.tv_sec + Tp.tv_usec * 1.0e-6);
+    #ifdef _MIOSIX
+        struct tms time;
+        times(&time); //get in ms
+        return time.tms_utime;
+    #else
+        struct timeval Tp;
+        int stat;
+        stat = gettimeofday (&Tp, NULL);
+        if (stat != 0)
+            printf ("Error return from gettimeofday: %d", stat);
+        return (Tp.tv_sec + Tp.tv_usec * 1.0e-6);
+    #endif
 #else
     return 0;
 #endif
@@ -363,6 +373,7 @@ void polybench_prepare_instruments()
 
 void polybench_timer_start()
 {
+  printf("Start time\n");
   polybench_prepare_instruments ();
 #ifndef POLYBENCH_CYCLE_ACCURATE_TIMER
   polybench_t_start = rtclock ();
@@ -399,7 +410,11 @@ void polybench_timer_print()
 		 (double)(polybench_t_end - polybench_t_start)) / 1000000000);
 #else
 # ifndef POLYBENCH_CYCLE_ACCURATE_TIMER
-      printf ("%0.6f\n", polybench_t_end - polybench_t_start);
+      #ifdef _MIOSIX
+        printf ("%0.6f\n", (polybench_t_end - polybench_t_start)/1000);
+      #else
+        printf ("%0.6f\n", polybench_t_end - polybench_t_start);
+      #endif
 # else
       printf ("%Ld\n", polybench_c_end - polybench_c_start);
 # endif
