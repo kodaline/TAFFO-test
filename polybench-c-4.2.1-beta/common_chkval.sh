@@ -20,6 +20,7 @@ ulimit -s $STACKSIZE
 NOERROR=0
 NORUN=0
 FORCEDATADIR=''
+CROSSRUN=0
 
 if [ "x$CHKVAL_ONLY" = 'x' ]; then
   CHKVAL_ONLY='(.*)';
@@ -48,8 +49,15 @@ check() {
   NOPT_OUT="$DATADIR/$1_out_not_opt.output.csv"
   
   if [ $NORUN -eq 0 ]; then
-    FIXT=$($TASKSET $OPT 2> $OPT_OUT)
-    FLOT=$($TASKSET $NOPT 2> $NOPT_OUT);
+    if [ $CROSSRUN -eq 1 ]; then
+      ./run_miosix.sh $1_out.o
+      FLOT=$(tail -n 1 serial.log)
+      ./run_miosix.sh $1_out.fix.o
+      FIXT=$(tail -n 1 serial.log);
+    else
+      FIXT=$($TASKSET $OPT 2> $OPT_OUT)
+      FLOT=$($TASKSET $NOPT 2> $NOPT_OUT);
+    fi
   else
     FIXT='0'
     FLOT='0';
@@ -88,6 +96,9 @@ for arg; do
       ;;
     --norun)
       NORUN=1
+      ;;
+    --externalrun)
+      CROSSRUN=1
       ;;
     --64bit)
       FORCEDATADIR='./output-data-64'
