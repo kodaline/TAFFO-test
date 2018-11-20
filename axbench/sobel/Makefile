@@ -2,6 +2,8 @@ CC			:= clang++
 LD			:= clang++
 LLVM_DIR			?= $(shell llvm-config --obj-root)
 
+include ../Makefile.inc
+
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
 $(info debug mode on)
@@ -14,9 +16,6 @@ CFLAGS		+= -Wall -Wnarrowing -std=c++11
 LFLAGS		+= #-lboost_regex
 HEADERS		:= src
 INCLUDE		+= -I${HEADERS} -I../common/src
-
-MIOSIX_EABI     := /opt/arm-miosix-eabi/arm-miosix-eabi
-MIOSIX_CFLAGS   := -target arm-none-linux-eabi --sysroot=$(MIOSIX_EABI) -I$(MIOSIX_EABI)/include/ -I$(MIOSIX_EABI)/include/c++/4.7.3/ -I$(MIOSIX_EABI)/include/c++/4.7.3/arm-miosix-eabi/ -D_MIOSIX -D_MIOSIX_GCC_PATCH_VERSION=1 -mcpu=cortex-m3 -mthumb -ffunction-sections -Wall
 
 MODULE		:= sobel.out
 
@@ -80,12 +79,12 @@ miosix_o: miosix_cflags DIR $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.f
 miosix_float: miosix_o
 	make clean -C $(MIOSIX_ROOT)
 	make BENCH=$(basename $(MODULE)).o -j 8 -C $(MIOSIX_ROOT)
-	#make program -C $(MIOSIX_ROOT)
+	make program -C $(MIOSIX_ROOT)
 
 miosix_fix: miosix_o
 	make clean -C $(MIOSIX_ROOT)
 	make BENCH=$(basename $(MODULE)).fixp.o -j 8 -C $(MIOSIX_ROOT)
-	#make program -C $(MIOSIX_ROOT)
+	make program -C $(MIOSIX_ROOT)
 
 clean:
 	rm -rf *.o

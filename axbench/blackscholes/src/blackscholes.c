@@ -291,9 +291,13 @@ int main (int argc, char **argv)
 
 	fflush(NULL);
 
-
-    char *inputFile = argv[1];
-    char *outputFile = argv[2];
+    #ifdef _MIOSIX
+	  char *inputFile  = INPUT;
+      char *outputFile = OUTPUT;
+	#else
+	  char *inputFile  = argv[1];
+      char *outputFile = argv[2];
+	#endif
 
     //Read input data from file
     file = fopen(inputFile, "r");

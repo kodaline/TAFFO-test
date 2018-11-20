@@ -1,6 +1,9 @@
 #include <cstdint>
 #include <cinttypes>
-#ifdef __APPLE__
+#ifdef _MIOSIX
+#include <time.h>
+#include <sys/times.h>
+#elif __APPLE__
 #include <mach/mach_time.h>
 #elif _WIN32
 #include <windows.h>
@@ -12,7 +15,9 @@
 
 
 class AxBenchTimer {
-  #ifdef __APPLE__
+  #ifdef _MIOSIX
+    struct tms stime;
+  #elif __APPLE__
     uint64_t stime;
   #elif _WIN32
     LONGLONG stime;
@@ -29,7 +34,10 @@ public:
   
   void reset()
   {
-    #ifdef __APPLE__
+    #ifdef _MIOSIX
+      printf("Start\n");
+      times(&stime); //get in ms
+    #elif __APPLE__
       stime = mach_absolute_time();
     #elif _WIN32
       QueryPerformanceCounter((LARGE_INTEGER*)&stime);
@@ -43,7 +51,14 @@ public:
   {
     uint64_t diff;
   
-    #ifdef __APPLE__
+    #ifdef _MIOSIX
+      struct tms etime;
+      
+      times(&etime); //get in ms
+      diff = etime.tms_utime - stime.tms_utime;
+      printf("Start Time : %lu \nEnd Time : %lu\n",stime.tms_utime,etime.tms_utime);
+      diff *= 1000000; //from ms to ns
+    #elif __APPLE__
       uint64_t etime;
       mach_timebase_info_data_t info;
   

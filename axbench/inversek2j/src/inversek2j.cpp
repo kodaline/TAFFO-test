@@ -19,14 +19,24 @@
 
 #define PI 3.141592653589
 
+#ifdef _MIOSIX
+#include <stdlib.h>
+#else
 #include <boost/math/special_functions/fpclassify.hpp>
+#endif
 
 int main(int argc, const char* argv[])
 {
 
 	int n;
-	std::string inputFilename	= argv[1];
-	std::string outputFilename 	= argv[2];
+	
+	#ifdef _MIOSIX
+	  std::string inputFilename	    = INPUT;
+	  std::string outputFilename 	= OUTPUT;
+	#else
+	  std::string inputFilename	    = argv[1];
+	  std::string outputFilename 	= argv[2];
+	#endif
 
 	// prepare the output file for writting the theta values
 	std::ofstream outputFileHandler;

@@ -22,8 +22,13 @@ int main (int argc, const char* argv[]) {
 
 	initRgbImage(&srcImage);
 
-	std::string inImageName  = argv[1];
-	std::string outImageName = argv[2];
+    #ifdef _MIOSIX
+	  std::string inImageName  = INPUT;
+	  std::string outImageName = OUTPUT;
+	#else
+	  std::string inImageName  = argv[1];
+	  std::string outImageName = argv[2];
+	#endif
 
 	loadRgbImage(inImageName.c_str(), &srcImage, 256);
 

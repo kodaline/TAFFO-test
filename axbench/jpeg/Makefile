@@ -2,6 +2,8 @@ CC			:= clang++
 LD			:= clang++
 LLVM_DIR			?= $(shell llvm-config --obj-root)
 
+include ../Makefile.inc
+
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
 $(info debug mode on)
@@ -80,12 +82,12 @@ miosix_o: miosix_cflags DIR $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.f
 miosix_float: miosix_o
 	make clean -C $(MIOSIX_ROOT)
 	make BENCH=$(basename $(MODULE)).o -j 8 -C $(MIOSIX_ROOT)
-	#make program -C $(MIOSIX_ROOT)
+	make program -C $(MIOSIX_ROOT)
 
 miosix_fix: miosix_o
 	make clean -C $(MIOSIX_ROOT)
 	make BENCH=$(basename $(MODULE)).fixp.o -j 8 -C $(MIOSIX_ROOT)
-	#make program -C $(MIOSIX_ROOT)
+	make program -C $(MIOSIX_ROOT)
 
 clean:
 	@rm -rf *.o

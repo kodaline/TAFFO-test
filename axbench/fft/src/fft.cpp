@@ -5,6 +5,11 @@
 #include <time.h>
 #include "benchmark.hpp"
 
+#ifdef _MIOSIX
+#include <stdlib.h>
+#endif
+
+
 static int* indices;
 static float* __attribute((annotate(ANNOTATION_COMPLEX))) x;
 static float* __attribute((annotate(ANNOTATION_COMPLEX))) f;
@@ -13,8 +18,14 @@ int main(int argc, char* argv[])
 {
 	int i ;
 
-	int n 						= atoi(argv[1]);
-	std::string outputFilename 	= argv[2];
+	#ifdef _MIOSIX
+	  int n 						= INPUT;
+	  std::string outputFilename 	= OUTPUT;
+	#else
+	  int n 						= atoi(argv[1]);
+	  std::string outputFilename 	= argv[2];
+	#endif
+	
 
 	// prepare the output file for writting the theta values
 	std::ofstream outputFileHandler;

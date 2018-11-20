@@ -32,8 +32,13 @@ int main ( int argc, const char* argv[])
 	};
 
 
-	srcImagePtr->loadRgbImage( argv[1] ); // source image
-	dstImagePtr->loadRgbImage( argv[1] ); // destination image
+	#ifdef _MIOSIX
+	  srcImagePtr->loadRgbImage( INPUT ); // source image
+	  dstImagePtr->loadRgbImage( INPUT ); // destination image
+	#else
+	  srcImagePtr->loadRgbImage( argv[1] ); // source image
+	  dstImagePtr->loadRgbImage( argv[1] ); // destination image
+	#endif
 
 	srcImagePtr->makeGrayscale( ); // convert the source file to grayscale
 
@@ -104,7 +109,7 @@ int main ( int argc, const char* argv[])
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
-	dstImagePtr->saveRgbImage(argv[2], std::sqrt(256 * 256 + 256 * 256)) ;
+	dstImagePtr->saveRgbImage(OUTPUT, std::sqrt(256 * 256 + 256 * 256)) ;
 
 	return 0 ;
 }

@@ -13,7 +13,9 @@
 
 #include <time.h>       /* time */
 
+#ifndef _MIOSIX
 #include <boost/algorithm/string/regex.hpp>
+#endif
 
 #include "benchmark.hpp"
 
@@ -26,8 +28,13 @@ int main(int argc, char* argv[])
 
 	std::cout.precision(8);
 
-	std::string inputFilename = argv[1];
-	std::string outputFilename = argv[2];
+    #ifdef _MIOSIX
+	  std::string inputFilename  = INPUT;
+	  std::string outputFilename = OUTPUT;
+	#else
+	  std::string inputFilename  = argv[1];
+	  std::string outputFilename = argv[2];
+	#endif
 
 
 	// prepare the output file for writting the theta values
@@ -122,16 +129,25 @@ int main(int argc, char* argv[])
 		else
 			x = 1;
 			
+		#ifndef _MIOSIX
 		kernel_time += timer.nanosecondsSinceInit();
+		#endif
 
 		outputFileHandler << x << " " << res[0] << " " << res[1] << std::endl;
 		
+		#ifndef _MIOSIX
 		timer.reset();
+		#endif
 	}
 	
+	#ifdef _MIOSIX
+	kernel_time = timer.nanosecondsSinceInit();
+	#else
 	kernel_time += timer.nanosecondsSinceInit();
+	#endif
 	
-  std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
+	
+    std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
 	outputFileHandler.close();
 	inputFileHandler.close();
