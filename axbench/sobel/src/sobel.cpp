@@ -109,7 +109,11 @@ int main ( int argc, const char* argv[])
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
+	#ifdef _MIOSIX
 	dstImagePtr->saveRgbImage(OUTPUT, std::sqrt(256 * 256 + 256 * 256)) ;
+	#else
+	dstImagePtr->saveRgbImage(argv[2], std::sqrt(256 * 256 + 256 * 256)) ;
+	#endif
 
 	return 0 ;
 }

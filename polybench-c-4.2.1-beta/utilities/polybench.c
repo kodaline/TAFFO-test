@@ -373,7 +373,9 @@ void polybench_prepare_instruments()
 
 void polybench_timer_start()
 {
+#ifdef _MIOSIX
   printf("Start time\n");
+#endif
   polybench_prepare_instruments ();
 #ifndef POLYBENCH_CYCLE_ACCURATE_TIMER
   polybench_t_start = rtclock ();
