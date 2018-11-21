@@ -81,8 +81,8 @@ public:
       uint64_t t0, t1;
 
       clock_gettime(CLOCK_MONOTONIC_RAW, &etime);
-      t0 = stime.tv_nsec + stime.tv_sec * 1000000000;
-      t1 = etime.tv_nsec + etime.tv_sec * 1000000000;
+      t0 = (uint64_t)stime.tv_nsec + (uint64_t)stime.tv_sec * (uint64_t)1000000000;
+      t1 = (uint64_t)etime.tv_nsec + (uint64_t)etime.tv_sec * (uint64_t)1000000000;
       diff = t1 - t0;
     #else
       #error unsupported platform
