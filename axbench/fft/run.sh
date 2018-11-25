@@ -4,7 +4,7 @@ rm -rf data/output
 mkdir -p data/output
 benchmark=fft
 
-input=( 2048 8192 65536 4194304)
+input=( 2048 8192 65536 524288 4194304)
 
 for f in "${input[@]}"
 do
