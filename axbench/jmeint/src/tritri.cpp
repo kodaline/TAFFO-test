@@ -206,17 +206,17 @@ int tri_tri_intersect(float V0[3] __attribute__((annotate("range 0.1 1 0"))),flo
                       float U0[3] __attribute__((annotate("range 0.1 1 0"))),float U1[3] __attribute__((annotate("range 0.1 1 0"))),float U2[3] __attribute__((annotate("range 0.1 1 0"))),
 		      float *res)
 {
-  #pragma clang attribute push( __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) , apply_to = variable)
-  float E1[3],E2[3];
-  float N1[3],N2[3],d1,d2;
-  float du0,du1,du2,dv0,dv1,dv2;
-  float D[3];
-  float isect1[2], isect2[2];
-  float du0du1,du0du2,dv0dv1,dv0dv2;
-  float vp0,vp1,vp2;
-  float up0,up1,up2;
-  float b,c,max;
-  #pragma clang attribute pop
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) E1[3], __attribute__((annotate("target:all no_float 8 24 signed 0.1 1")))E2[3];
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) N1[3],__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) N2[3];
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) d1,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) d2;
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) du0,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) du1;
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) du2,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) dv0,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) dv1,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) dv2;
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) D[3];
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) isect1[2], __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) isect2[2];
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) du0du1,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) du0du2,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) dv0dv1,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) dv0dv2;
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) vp0,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) vp1,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) vp2;
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) up0,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) up1,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) up2;
+  float __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) b,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) c,__attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) max;
   short index;
   //int r;
 

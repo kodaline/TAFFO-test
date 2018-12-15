@@ -42,7 +42,7 @@ DIR:
 	mkdir -p stats
 
 
-$(MODULE): $(OBJ_FILES) $(OBJ_FILES_FIX) $(LL_FILES_ERR) $(FLT_IMIX_STAT) $(FIX_IMIX_STAT) $(LLVM_STAT)
+$(MODULE): $(OBJ_FILES) $(OBJ_FILES_FIX) $(FLT_IMIX_STAT) $(FIX_IMIX_STAT) $(LLVM_STAT)
 	$(LD) $(OBJ_FILES) $(LIB) $(LFLAGS) -o bin/$@
 	$(LD) $(OBJ_FILES_FIX) $(LIB) $(LFLAGS) -o bin/$@.fixp
 

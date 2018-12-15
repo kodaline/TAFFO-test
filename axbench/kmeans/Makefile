@@ -36,7 +36,7 @@ DIR:
 	mkdir -p obj
 	mkdir -p stats
 
-$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt
+$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt
 	$(LD) $(OBJ_FLOAT) $(LFLAGS) -o bin/$@
 	$(LD) $(OBJ_FIX) $(LFLAGS) -o bin/$@.fixp
 
