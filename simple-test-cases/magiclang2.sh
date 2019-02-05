@@ -54,7 +54,7 @@ for opt in $raw_opts; do
         -*)
           opts="$opts $opt";
           ;;
-        *.c | *.cpp | *.cc)
+        *.c | *.cpp | *.cc | *.ll)
           input_files="$input_files $opt";
           ;;
         *)
