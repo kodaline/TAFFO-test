@@ -16,7 +16,7 @@ entry:
   %retval = alloca i32, align 4
   %argc.addr = alloca i32, align 4
   %argv.addr = alloca i8**, align 8
-  %z = alloca %struct.test, align 4, !taffo.info !5
+  %z = alloca %struct.test, align 4, !taffo.structinfo !5
   %a = alloca float, align 4
   %b = alloca float, align 4
   %c = alloca float, align 4
@@ -66,10 +66,11 @@ attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !2 = !{!"clang version 6.0.1 (tags/RELEASE_601/final)"}
 !3 = !{!4, !4}
 !4 = !{i1 false, i1 false, i1 false}
-!5 = !{!11, !6, i1 false}
+!5 = !{!12, i1 false, !12}
 !6 = !{double -3.000000e+03, double 3.000000e+03}
 !7 = !{!11, !8, i1 false}
 !8 = !{double 0x7FF8000000000000, double 0x7FF8000000000000}
 !9 = !{!4, !4, !4, !4}
 !10 = !{!4}
 !11 = !{!"fixp", i32 -32, i32 19}
+!12 = !{!11, !6, i1 false}
