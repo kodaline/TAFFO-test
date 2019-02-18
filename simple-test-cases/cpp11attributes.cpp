@@ -1,7 +1,7 @@
 
 float oven(int stuff, int baked, float cherry)
 {
-  float [[annotate("no_float"]] cake = baked + stuff;
+  float cake [[clang::annotate("range -3000 3000")]] = baked + stuff;
   return cake + cherry;
 }
 

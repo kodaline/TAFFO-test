@@ -7,7 +7,7 @@
 
 int main()
 {
-  __attribute__((annotate("no_float"))) float v[N];
+  __attribute__((annotate("range -3000 3000"))) float v[N];
    
   for (int i=0;i<N;i++)
     v[i]= (i%(N/30)) ? 0 : 1;

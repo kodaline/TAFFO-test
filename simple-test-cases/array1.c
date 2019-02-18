@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-  float numbers[MAX_N] __attribute((annotate("no_float")));
+  float numbers[MAX_N] __attribute((annotate("range -3000 3000")));
   int n = 0;
   float tmp;
   
@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
     numbers[n++] = tmp;
   }
   
-  float add __attribute((annotate("no_float"))) = 0.0;
-  float sub __attribute((annotate("no_float"))) = 0.0;
-  float div __attribute((annotate("no_float"))) = 1.0;
-  float mul __attribute((annotate("no_float"))) = 1.0;
+  float add __attribute((annotate("range -3000 3000"))) = 0.0;
+  float sub __attribute((annotate("range -3000 3000"))) = 0.0;
+  float div __attribute((annotate("range -3000 3000"))) = 1.0;
+  float mul __attribute((annotate("range -3000 3000"))) = 1.0;
   
   for (int i=0; i<n; i++) {
     add += numbers[i];

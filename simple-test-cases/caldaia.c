@@ -10,11 +10,11 @@
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-  float p1 __attribute((annotate("no_float")));
-  float p2 __attribute((annotate("no_float")));
+  float p1 __attribute((annotate("range -3000 3000")));
+  float p2 __attribute((annotate("range -3000 3000")));
   float p3;  /* FIXME: don't convert this because it's a param to the scanf */
-  float sPeak __attribute((annotate("no_float")));
-  float sAll __attribute((annotate("no_float")));
+  float sPeak __attribute((annotate("range -3000 3000")));
+  float sAll __attribute((annotate("range -3000 3000")));
   int cPeak, cAll;
   
   p3 = p2 = p1 = -1;

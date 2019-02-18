@@ -1,17 +1,17 @@
 #include <stdio.h>
 
 
-static float __attribute((annotate("no_float 8 24"))) k[5] =
+static float __attribute((annotate("range -255 255"))) k[5] =
   {1, 2, 3, 4, 5};
 
-static float __attribute((annotate("no_float 8 24"))) kx[][3] =
+static float __attribute((annotate("range -255 255"))) kx[][3] =
     {
       { -1, -2, -1 },
       {  0,  0,  0 },
       {  1,  2,  1 }
     } ;
 
-static float __attribute((annotate("no_float 8 24"))) ky[][3] =
+static float __attribute((annotate("range -255 255"))) ky[][3] =
     {
       { -1, 0, 1 },
       { -2, 0, 2 },
