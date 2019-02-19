@@ -1,4 +1,4 @@
-float __attribute((annotate("no_float 39 9"))) global = 3.333;
+float __attribute((annotate("range -540000000000 540000000000"))) global = 3.333;
 
 float** fun(float **x, float *y){
     float local;
@@ -9,16 +9,16 @@ float** fun(float **x, float *y){
 }
 
 int main() {
-    float __attribute((annotate("no_float 34 8"))) *a;
+    float __attribute((annotate("range -13500000000 13500000000"))) *a;
     
-    float __attribute((annotate("no_float 34 8"))) b = 10.10;
+    float __attribute((annotate("range -13500000000 13500000000"))) b = 10.10;
     float c = 2.2;
     
     a=&b; //TODO  bug if i42* != i42* 
     
-    float** __attribute((annotate("no_float 34 8"))) k;
+    float** __attribute((annotate("range -13500000000 13500000000"))) k;
     
-    float* __attribute((annotate("no_float 25 8"))) mall =  (float*)malloc(5 * (sizeof(float)+1));
+    float* __attribute((annotate("range -20000000 20000000"))) mall =  (float*)malloc(5 * (sizeof(float)+1));
     
     mall[0] = 0.1;
     *(mall+1) = 1.1;

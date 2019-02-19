@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-float  __attribute((annotate("no_float 39 9"))) global = 33.333;
+float  __attribute((annotate("range -20000 20000"))) global = 33.333;
 
 float fun(float x, float y){
     float local;
@@ -19,7 +19,7 @@ int funInt(float x, float y){
 
 int main() {
     float a=10.2049;
-    float __attribute((annotate("no_float 34 28"))) b=10.1024;
+    float __attribute((annotate("range -40000 40000"))) b=10.1024;
     int c = 2;
     
     
