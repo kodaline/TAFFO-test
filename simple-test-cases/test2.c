@@ -5,7 +5,7 @@ float global;
 float test(float param, int notafloat)
 {
   int notafloat2;
-  float local __attribute((annotate("no_float")));
+  float local __attribute((annotate("range -1000000000 1000000000")));
   
   local = 134217728.0;
   local *= param;

@@ -7,7 +7,7 @@ target triple = "x86_64-apple-macosx10.13.0"
 %struct.__sFILEX = type opaque
 %struct.__sbuf = type { i8*, i32 }
 
-@.str = private unnamed_addr constant [9 x i8] c"no_float\00", section "llvm.metadata"
+@.str = private unnamed_addr constant [19 x i8] c"range -32768 32768\00", section "llvm.metadata"
 @.str.1 = private unnamed_addr constant [35 x i8] c"linear-algebra/kernels/atax/atax.c\00", section "llvm.metadata"
 @__stderrp = external global %struct.__sFILE*, align 8
 @.str.2 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
@@ -49,13 +49,13 @@ entry:
   store i32 390, i32* %m, align 4
   store i32 410, i32* %n, align 4
   %A1 = bitcast [390 x [410 x double]]* %A to i8*
-  call void @llvm.var.annotation(i8* %A1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 96)
+  call void @llvm.var.annotation(i8* %A1, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 96)
   %x2 = bitcast [410 x double]* %x to i8*
-  call void @llvm.var.annotation(i8* %x2, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 97)
+  call void @llvm.var.annotation(i8* %x2, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 97)
   %y3 = bitcast [410 x double]* %y to i8*
-  call void @llvm.var.annotation(i8* %y3, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 98)
+  call void @llvm.var.annotation(i8* %y3, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 98)
   %tmp4 = bitcast [390 x double]* %tmp to i8*
-  call void @llvm.var.annotation(i8* %tmp4, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 99)
+  call void @llvm.var.annotation(i8* %tmp4, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 99)
   %0 = load i32, i32* %m, align 4
   %1 = load i32, i32* %n, align 4
   %arraydecay = getelementptr inbounds [390 x [410 x double]], [390 x [410 x double]]* %A, i32 0, i32 0
@@ -64,12 +64,12 @@ entry:
   store i32 %1, i32* %n.addr.i, align 4
   store [410 x double]* %arraydecay, [410 x double]** %A.addr.i, align 8
   %A.addr1.i = bitcast [410 x double]** %A.addr.i to i8*
-  call void @llvm.var.annotation(i8* %A.addr1.i, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 27) #1
+  call void @llvm.var.annotation(i8* %A.addr1.i, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 27) #1
   store double* %arraydecay5, double** %x.addr.i, align 8
   %x.addr2.i = bitcast double** %x.addr.i to i8*
-  call void @llvm.var.annotation(i8* %x.addr2.i, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 28) #1
+  call void @llvm.var.annotation(i8* %x.addr2.i, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 28) #1
   %fn3.i = bitcast double* %fn.i to i8*
-  call void @llvm.var.annotation(i8* %fn3.i, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 31) #1
+  call void @llvm.var.annotation(i8* %fn3.i, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 31) #1
   %2 = load i32, i32* %n.addr.i, align 4
   %conv.i = sitofp i32 %2 to double
   store double %conv.i, double* %fn.i, align 8
@@ -160,16 +160,16 @@ init_array.exit:                                  ; preds = %for.cond6.i
   store i32 %24, i32* %n.addr.i22, align 4
   store [410 x double]* %arraydecay6, [410 x double]** %A.addr.i23, align 8
   %A.addr1.i28 = bitcast [410 x double]** %A.addr.i23 to i8*
-  call void @llvm.var.annotation(i8* %A.addr1.i28, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 66) #1
+  call void @llvm.var.annotation(i8* %A.addr1.i28, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 66) #1
   store double* %arraydecay7, double** %x.addr.i24, align 8
   %x.addr2.i29 = bitcast double** %x.addr.i24 to i8*
-  call void @llvm.var.annotation(i8* %x.addr2.i29, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 67) #1
+  call void @llvm.var.annotation(i8* %x.addr2.i29, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 67) #1
   store double* %arraydecay8, double** %y.addr.i25, align 8
   %y.addr3.i = bitcast double** %y.addr.i25 to i8*
-  call void @llvm.var.annotation(i8* %y.addr3.i, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 68) #1
+  call void @llvm.var.annotation(i8* %y.addr3.i, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 68) #1
   store double* %arraydecay9, double** %tmp.addr.i, align 8
   %tmp.addr4.i = bitcast double** %tmp.addr.i to i8*
-  call void @llvm.var.annotation(i8* %tmp.addr4.i, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 69) #1
+  call void @llvm.var.annotation(i8* %tmp.addr4.i, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 69) #1
   store i32 0, i32* %i.i26, align 4
   br label %for.cond.i31
 
@@ -301,7 +301,7 @@ kernel_atax.exit:                                 ; preds = %for.cond7.i
   store i32 %65, i32* %n.addr.i11, align 4
   store double* %arraydecay10, double** %y.addr.i, align 8
   %y.addr1.i = bitcast double** %y.addr.i to i8*
-  call void @llvm.var.annotation(i8* %y.addr1.i, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 46) #1
+  call void @llvm.var.annotation(i8* %y.addr1.i, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str, i32 0, i32 0), i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i32 46) #1
   store i32 0, i32* %i.i12, align 4
   br label %for.cond.i14
 

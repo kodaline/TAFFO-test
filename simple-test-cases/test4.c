@@ -13,9 +13,9 @@ float random(void)
 
 float test(int p1, int p2, int p3)
 {
-  float f1 __attribute((annotate("no_float"))) = random(); 
-  float f2 __attribute((annotate("no_float"))) = random();
-  float phi __attribute((annotate("no_float")));
+  float f1 __attribute((annotate("range -32767 32767"))) = random(); 
+  float f2 __attribute((annotate("range -32767 32767"))) = random();
+  float phi __attribute((annotate("range -32767 32767")));
   
   if (p1)
     phi = 1.0;

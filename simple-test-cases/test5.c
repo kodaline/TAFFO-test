@@ -1,8 +1,8 @@
 
 
-float fpextfptrunc(__attribute((annotate("no_float"))) float a, __attribute((annotate("no_float"))) double b)
+float fpextfptrunc(__attribute((annotate("range -32767 32767"))) float a, __attribute((annotate("range -32767 32767"))) double b)
 {
-  __attribute((annotate("no_float"))) double c = 123.0;
+  __attribute((annotate("range -32767 32767"))) double c = 123.0;
   c += a;
   return (float)c + b;
 }

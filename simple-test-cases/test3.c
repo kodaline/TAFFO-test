@@ -13,7 +13,7 @@ float random(void)
 
 float test(int p1, int p2, int p3, float num1, float num2, float num3)
 {
-  float phi __attribute((annotate("no_float")));
+  float phi __attribute((annotate("range -32767 32767")));
   
   if (p1)
     phi = num3;
@@ -31,7 +31,7 @@ float test(int p1, int p2, int p3, float num1, float num2, float num3)
 
 float test2(int p1)
 {
-  float phi __attribute((annotate("no_float"))) = 0.0;
+  float phi __attribute((annotate("range -32767 32767"))) = 0.0;
   
   if (p1)
     phi += random();
