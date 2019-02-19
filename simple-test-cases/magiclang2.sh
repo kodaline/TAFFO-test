@@ -51,6 +51,16 @@ for opt in $raw_opts; do
         -c)
           dontlink="$opt";
           ;;
+        -debug)
+          init_flags="$init_flags -debug";
+          dta_flags="$dta_flags -debug";
+          conversion_flags="$conversion_flags -debug";
+          ;;
+        -debug-taffo)
+          init_flags="$init_flags --debug-only=taffo-init";
+          dta_flags="$dta_flags --debug-only=taffo-tuner";
+          conversion_flags="$conversion_flags --debug-only=taffo-conversion";
+          ;;
         -*)
           opts="$opts $opt";
           ;;
