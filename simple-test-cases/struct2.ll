@@ -39,7 +39,7 @@ entry:
   
   %3 = extractvalue %struct.test %regstruct3, 0, !taffo.info !7
   %conv6 = fpext float %3 to double, !taffo.info !7
-  %4 = extractvalue %struct.test %regstruct3, 1
+  %4 = extractvalue %struct.test %regstruct3, 1, !taffo.info !13
   %5 = extractvalue %struct.test %regstruct3, 2, !taffo.info !7
   %conv9 = fpext float %5 to double, !taffo.info !7
   
@@ -75,3 +75,4 @@ attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !10 = !{i32 0, i1 0}
 !11 = !{!"fixp", i32 -32, i32 19}
 !12 = !{!11, !6, i1 false}
+!13 = !{i1 false, !8, i1 false}
