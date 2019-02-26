@@ -6,7 +6,7 @@ recompile_one() {
   args=
   input=$1
   ext=${1##*.}
-  if [[ ( $ext = 'll' ) || ( $(basename $input) = *test* ) ]]; then
+  if [[ ( $ext = 'll' ) || ( $(basename $input) = test* ) ]]; then
     args="$args -c"
   fi
   out=${1%.*}.out
