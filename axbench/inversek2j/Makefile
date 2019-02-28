@@ -1,6 +1,6 @@
-CC			:= clang++
-LD			:= clang++
-LLVM_DIR			?= $(shell llvm-config --obj-root)
+LLVM_DIR		?= $(shell llvm-config --obj-root)
+CC			:= $(LLVM_DIR)/bin/clang++
+LD			:= $(LLVM_DIR)/bin/clang++
 
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
@@ -30,7 +30,7 @@ OBJ_FIX   := obj/main.fixp.o
 
 all: DIR $(MODULE)
 
-.PRECIOUS: obj/%.ll obj/%.o obj/%.s
+.PRECIOUS: obj/%.ll obj/%.o obj/%.s obj/%.init.ll obj/%.vra.ll obj/%.fixp.ll
 
 DIR:
 	@echo ${CPP_FILES}
@@ -53,9 +53,12 @@ $(OBJ_FLOAT) : obj/main.ll
 	$(CC) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=flttofix$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
-obj/main.tuner.ll : obj/main.init.ll
+obj/%.vra.ll: obj/%.init.ll
+	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
+
+obj/main.tuner.ll : obj/main.vra.ll
 	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffotuner $(if $(ISDEBUG), -debug-only=taffotuner$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll

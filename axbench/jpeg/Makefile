@@ -1,6 +1,6 @@
-CC			:= clang++
-LD			:= clang++
-LLVM_DIR			?= $(shell llvm-config --obj-root)
+LLVM_DIR		?= $(shell llvm-config --obj-root)
+CC			:= $(LLVM_DIR)/bin/clang++
+LD			:= $(LLVM_DIR)/bin/clang++
 
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
@@ -12,7 +12,7 @@ OX          :=# -O3
 
 CFLAGS		:= -Wall -Wnarrowing -std=c++11
 LFLAGS		:= -lboost_regex
-HEADERS     := src
+HEADERS    	:= src
 INCLUDE 	:= -I${HEADERS} 
 
 MIOSIX_EABI     := /opt/arm-miosix-eabi/arm-miosix-eabi
@@ -29,7 +29,7 @@ OBJ_FIX   := obj/main.fixp.o
 
 all: DIR $(MODULE)
 
-.PRECIOUS: obj/%.ll obj/%.o obj/%.s
+.PRECIOUS: obj/%.ll obj/%.o obj/%.s obj/%.init.ll obj/%.vra.ll obj/%.fixp.ll
 
 DIR:
 	@echo ${CPP_FILES}
@@ -45,20 +45,26 @@ obj/%.ll : src/%.c
 	$(CC) -S -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
 
 obj/main.ll : $(LL_FILES)
-	llvm-link -S $^ -o $@
+	$(LLVM_DIR)/bin/llvm-link -S $^ -o $@
 
 $(OBJ_FLOAT) : obj/main.ll
 	$(CC) -S $(MIOSIX_FLAGS) $^ -o obj/main.s $(OX)
 	$(CC) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=flttofix$(comma)annotation) -stats $< -o $@
+	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
-obj/main.fixp.ll : obj/main.init.ll
-	opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg $(if $(ISDEBUG), -debug-only=flttofix) -stats $(OX) $< -o $@
+obj/main.vra.ll : obj/main.init.ll
+	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
+
+obj/main.tuner.ll : obj/main.vra.ll
+	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffotuner $(if $(ISDEBUG), -debug-only=taffotuner$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+
+obj/main.fixp.ll : obj/main.tuner.ll
+	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg $(if $(ISDEBUG), -debug-only=flttofix) -stats $(OX) $< -o $@ 2> stats/flttofix.log
 
 obj/main.err.ll : obj/main.fixp.ll
-	opt -load=$(ERRORLIB) -S -errorprop -nounroll -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@
+	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -errorprop -nounroll -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
 
 $(OBJ_FIX) : obj/main.fixp.ll
 	$(CC) -S $(MIOSIX_FLAGS) $^ -o obj/main.fixp.s $(OX)
