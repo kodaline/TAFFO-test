@@ -20,8 +20,14 @@ recompile_one() {
   return 0
 }
 
+if [[ "$1" == "clean" ]]; then
+  rm "$SCRIPTPATH"/*.magiclangtmp.*
+  rm "$SCRIPTPATH"/*.out
+  rm "$SCRIPTPATH"/*.log
+  exit 0
+fi
 
-for fn in "$SCRIPTPATH"/*.c "$SCRIPTPATH"/*.ll; do
+for fn in "$SCRIPTPATH"/*.c "$SCRIPTPATH"/*.cpp "$SCRIPTPATH"/*.ll; do
   if [[ ( "$fn" != *.magiclangtmp.ll ) && ( "$fn" != *NOT-WORKING-YET* ) ]]; then
     recompile_one "$fn" || exit $?
   fi
