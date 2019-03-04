@@ -10,7 +10,7 @@ typedef struct {
 
 int main(int argc, char *argv[])
 {
-  test __attribute__((annotate("range -3000 +3000"))) z;
+  test __attribute__((annotate("struct(scalar(range(-3000, +3000)) void() scalar(range(-3, +3)))"))) z;
   float a, b, c;
   scanf("%f%f%f", &a, &b, &c);
   z.a = a;
