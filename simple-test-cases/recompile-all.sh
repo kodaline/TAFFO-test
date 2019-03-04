@@ -10,7 +10,7 @@ recompile_one() {
     args="$args -c"
   fi
   out=${1%.*}.out
-  "$SCRIPTPATH"/magiclang2.sh "$args" -o "$out" "$input" 2> recompile-all.log
+  "$SCRIPTPATH"/magiclang2.sh "$args" -o "$out" "$input" -debug 2> "$input".log
   if [[ $? -ne 0 ]]; then
     printf '[FAIL] %s\n' "$input"
     return 1
