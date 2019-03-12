@@ -58,7 +58,7 @@ obj/main.vra.ll: obj/main.init.ll
 	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
 
 obj/main.tuner.ll : obj/main.vra.ll
-	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffotuner $(if $(ISDEBUG), -debug-only=taffotuner$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll
 	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg -stats $(if $(ISDEBUG), -debug-only=flttofix) $< -o $@ 2> stats/flttofix.log

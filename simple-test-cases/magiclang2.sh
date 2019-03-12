@@ -58,7 +58,7 @@ for opt in $raw_opts; do
           ;;
         -debug-taffo)
           init_flags="$init_flags --debug-only=taffo-init";
-          dta_flags="$dta_flags --debug-only=taffo-tuner";
+          dta_flags="$dta_flags --debug-only=taffo-dta";
           conversion_flags="$conversion_flags --debug-only=taffo-conversion";
           ;;
         -*)
@@ -105,7 +105,7 @@ ${OPT} \
   -S -o "${output_file}.2.magiclangtmp.ll" "${output_file}.1.magiclangtmp.ll" || exit $?
 ${OPT} \
   -load "$TUNERLIB" \
-  -taffotuner \
+  -taffodta \
   ${dta_flags} \
   -S -o "${output_file}.3.magiclangtmp.ll" "${output_file}.2.magiclangtmp.ll" || exit $?
 ${OPT} \
