@@ -32,6 +32,7 @@ if [[ $# < 1 ]]; then
   echo 'Install taffo by running make install. The default prefix is /usr/local.'
 else
   export INITLIB=$(taffo_setenv_find $1 'lib' 'TaffoInitializer')
+  export VRALIB=$(taffo_setenv_find $1 'lib' 'TaffoVRA')
   export TUNERLIB=$(taffo_setenv_find $1 'lib' 'TaffoDTA')
   export PASSLIB=$(taffo_setenv_find $1 'lib' 'LLVMFloatToFixed')
   export ERRORLIB=$(taffo_setenv_find $1 'lib' 'LLVMErrorPropagator')
