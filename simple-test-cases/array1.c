@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
   float numbers[MAX_N] __attribute((annotate("range -3000 3000")));
   int n = 0;
-  float tmp;
+  float tmp __attribute((annotate("scalar(disabled range(-3000, 3000))")));
   
   for (int i=0; i<MAX_N; i++) {
     if (scanf("%f", &tmp) < 1)
