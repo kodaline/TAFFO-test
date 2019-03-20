@@ -66,19 +66,19 @@ int numError = 0;
 // See Hull, Section 11.8, P.243-244
 #define inv_sqrt_2xPI 0.39894228040143270286
 
-fptype CNDF ( fptype InputX )
+fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
 {
     int sign;
 
-    fptype OutputX;
-    fptype xInput;
-    fptype xNPrimeofX;
-    fptype expValues;
-    fptype xK2;
-    fptype xK2_2, xK2_3;
-    fptype xK2_4, xK2_5;
-    fptype xLocal, xLocal_1;
-    fptype xLocal_2, xLocal_3;
+    fptype __attribute((annotate("scalar()"))) OutputX;
+    fptype __attribute((annotate("scalar()"))) xInput;
+    fptype __attribute((annotate("scalar()"))) xNPrimeofX;
+    fptype __attribute((annotate("scalar()"))) expValues;
+    fptype __attribute((annotate("scalar()"))) xK2;
+    fptype __attribute((annotate("scalar()"))) xK2_2, xK2_3;
+    fptype __attribute((annotate("scalar()"))) xK2_4, xK2_5;
+    fptype __attribute((annotate("scalar()"))) xLocal, xLocal_1;
+    fptype __attribute((annotate("scalar()"))) xLocal_2, xLocal_3;
 
     // Check for negative value of InputX
     if (InputX < 0.0) {
@@ -135,38 +135,38 @@ fptype CNDF ( fptype InputX )
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
-fptype BlkSchlsEqEuroNoDiv( fptype sptprice,
-                            fptype strike,
-			    fptype rate,
-                            fptype volatility,
-			    fptype time,
+fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
+                            fptype __attribute((annotate("scalar()"))) strike,
+			    fptype __attribute((annotate("scalar()"))) rate,
+                            fptype __attribute((annotate("scalar()"))) volatility,
+			    fptype __attribute((annotate("scalar()"))) time,
                             int otype, float timet,
-                            fptype*  N1, fptype* N2 )
+                            fptype* N1, fptype* N2 )
 {
     //printf("BlkSchlsEqEuroNoDiv %f %f %f %f %f %f\n", sptprice, strike, rate, volatility, time, timet);
-    fptype  OptionPrice;
+    fptype __attribute((annotate("scalar()"))) OptionPrice;
 
     // local private working variables for the calculation
     //fptype xStockPrice;
     //fptype xStrikePrice;
-    fptype xRiskFreeRate;
-    fptype xVolatility;
-    fptype xTime;
-    fptype xSqrtTime;
+    fptype __attribute((annotate("scalar()"))) xRiskFreeRate;
+    fptype __attribute((annotate("scalar()"))) xVolatility;
+    fptype __attribute((annotate("scalar()"))) xTime;
+    fptype __attribute((annotate("scalar()"))) xSqrtTime;
 
-    fptype logValues;
-    fptype xLogTerm;
-    fptype xD1;
-    fptype xD2;
-    fptype xPowerTerm;
-    fptype xDen;
-    fptype d1;
-    fptype d2;
-    fptype FutureValueX;
-    fptype NofXd1;
-    fptype NofXd2;
-    fptype NegNofXd1;
-    fptype NegNofXd2;
+    fptype __attribute((annotate("scalar()"))) logValues;
+    fptype __attribute((annotate("scalar()"))) xLogTerm;
+    fptype __attribute((annotate("scalar()"))) xD1;
+    fptype __attribute((annotate("scalar()"))) xD2;
+    fptype __attribute((annotate("scalar()"))) xPowerTerm;
+    fptype __attribute((annotate("scalar()"))) xDen;
+    fptype __attribute((annotate("scalar()"))) d1;
+    fptype __attribute((annotate("scalar()"))) d2;
+    fptype __attribute((annotate("scalar()"))) FutureValueX;
+    fptype __attribute((annotate("scalar()"))) NofXd1;
+    fptype __attribute((annotate("scalar()"))) NofXd2;
+    fptype __attribute((annotate("scalar()"))) NegNofXd1;
+    fptype __attribute((annotate("scalar()"))) NegNofXd2;
 
     //xStockPrice = sptprice;
     //xStrikePrice = strike;
