@@ -62,14 +62,17 @@ for opt in $raw_opts; do
           init_flags="$init_flags -debug";
           dta_flags="$dta_flags -debug";
           conversion_flags="$conversion_flags -debug";
+          vra_flags="$vra_flags -debug";
           ;;
         -debug-taffo)
           init_flags="$init_flags --debug-only=taffo-init";
           dta_flags="$dta_flags --debug-only=taffo-dta";
           conversion_flags="$conversion_flags --debug-only=taffo-conversion";
+          vra_flags="$vra_flags --debug-only=taffo-vra";
           ;;
         -disable-vra)
           disable_vra=1
+          init_flags="$init_flags -vracompat";
           ;;
         -*)
           opts="$opts $opt";
@@ -102,7 +105,7 @@ for opt in $raw_opts; do
       conversion_flags="$conversion_flags $opt";
       parse_state=0;
       ;;
-    4)
+    5)
       vra_flags="$vra_flags $opt";
       parse_state=0;
       ;;
