@@ -1,6 +1,8 @@
 LLVM_DIR		?= $(shell llvm-config --obj-root)
-CC			:= $(LLVM_DIR)/bin/clang++
-LD			:= $(LLVM_DIR)/bin/clang++
+CLANG		?= $(LLVM_DIR)/bin/clang
+CLANGXX		?= $(CLANG)++
+CC			:= $(CLANGXX)
+LD			:= $(CLANGXX)
 
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1

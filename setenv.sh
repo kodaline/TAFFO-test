@@ -37,6 +37,21 @@ else
   export PASSLIB=$(taffo_setenv_find $1 'lib' 'LLVMFloatToFixed')
   export ERRORLIB=$(taffo_setenv_find $1 'lib' 'LLVMErrorPropagator')
   export INSTMIX=$(taffo_setenv_find $1 'bin' 'istr_type')
+  
+  if [[ -z "$LLVM_DIR" ]]; then
+    LLVM_DIR=$(llvm-config --obj-root 2> /dev/null)
+    if [[ $? -ne 0 ]]; then
+      printf "*** WARNING ***\nCannot set LLVM_DIR using llvm-config\n"
+    fi
+  fi
+  if [[ ! ( -z "$LLVM_DIR" ) ]]; then
+    if [ $(uname -s) = "Darwin" ]; then
+      # xcrun patches the command line parameters to clang to add the standard
+      # include paths depending on where the currently active platform SDK is
+      export CLANG="xcrun $LLVM_DIR/bin/clang"
+      export CLANGXX="xcrun $LLVM_DIR/bin/clang++"
+    fi
+  fi
 fi
 
 unset -f taffo_setenv_find
