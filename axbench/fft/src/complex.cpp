@@ -2,9 +2,9 @@
 
 #include <cmath>
 
-void fftSinCos(float __attribute((annotate("no_float 20 12 signed range 0 167776 0"))) x,
-	       float* __attribute((annotate("range -1 1 0"))) s,
-	       float* __attribute((annotate("range -1 1 0"))) c) {
+void fftSinCos(float __attribute((annotate("scalar()"))) x,
+	       float* __attribute((annotate("scalar()"))) s,
+	       float* __attribute((annotate("scalar()"))) c) {
     *s = sin(-2 * PI * x);
     *c = cos(-2 * PI * x);
 }

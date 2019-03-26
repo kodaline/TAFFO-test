@@ -6,8 +6,8 @@
 #include "benchmark.hpp"
 
 static int* indices;
-static float* __attribute((annotate("range -167776 167776 0"))) x;
-static float* __attribute((annotate("range -167776 167776 0"))) f;
+static Complex* x;
+static Complex* f;
 
 int main(int argc, char* argv[])
 {
@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
 	outputFileHandler.precision(5);
 
 	// create the arrays
-	x 		= (float*)malloc(n * 2 * sizeof (float));
-	f 		= (float*)malloc(n * 2 * sizeof (float));
+	x 		= (Complex*)malloc(n * sizeof (Complex));
+	f 		= (Complex*)malloc(n * sizeof (Complex));
 	indices = (int*)malloc(n * sizeof (int));
 
 	if(x == NULL || f == NULL || indices == NULL)
@@ -33,23 +33,23 @@ int main(int argc, char* argv[])
 	}
 
 	int K = n;
-	
+
 	for(i = 0;i < K ; i++)
 	{
-		COMPLEX_REAL(x,i) = i < (K / 100) ? 1.0 : 0.0;
-		COMPLEX_IMAG(x,i) = 0 ;
+		x[i].real = i < (K / 100) ? 1.0 : 0.0;
+		x[i].imag = 0 ;
 	}
-	
+
 	AxBenchTimer timer;
-	
+
 	radix2DitCooleyTykeyFft(K, indices, x, f) ;
-	
+
 	uint64_t time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)time) / 1000000000.0 << " s\n";
-	
+
 	for(i = 0;i < K ; i++)
 	{
-	  outputFileHandler << COMPLEX_REAL(f,i) << " " << COMPLEX_IMAG(f,i) << " " << indices[i] << std::endl;
+	  outputFileHandler << f[i].real << " " << f[i].imag << " " << indices[i] << std::endl;
 	}
 
 

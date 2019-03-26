@@ -3,12 +3,7 @@
 
 #define PI 3.1415926535897931
 
-
-#define ANNOTATION_COMPLEX "no_float 20 12 signed"
-#define COMPLEX_REAL(v,i) ((v)[(i)*2]) 
-#define COMPLEX_IMAG(v,i) ((v)[(i)*2+1])
-
-#if 0
+#if 1
 typedef struct {
    float real;
    float imag;
