@@ -1,3 +1,4 @@
+///TAFFO_TEST_ARGS -disable-vra
 #include <stdio.h>
 
 #define MAX_N (30)

@@ -1,3 +1,4 @@
+;;;TAFFO_TEST_ARGS -disable-vra
 ; ModuleID = 'test.c'
 source_filename = "test.c"
 target datalayout = "e-m:o-p:32:32-f64:32:64-f80:128-n8:16:32-S128"

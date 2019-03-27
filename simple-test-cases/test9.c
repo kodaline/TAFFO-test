@@ -1,3 +1,4 @@
+///TAFFO_TEST_ARGS -disable-vra
 
 float oven(int stuff, int baked, float cherry)
 {

@@ -9,8 +9,21 @@ recompile_one() {
   if [[ ( $ext = 'll' ) || ( $(basename $input) = test* ) ]]; then
     args="$args -c"
   fi
+  extraargs=
+  extraargspatt=
+  if [[ ( $ext = 'c' ) || ( $ext = 'cpp' ) ]]; then
+    extraargspatt='///TAFFO_TEST_ARGS'
+  elif [[ $ext = 'll' ]]; then
+    extraargspatt=';;;TAFFO_TEST_ARGS'
+  fi
+  if [[ ! ( -z "$extraargspatt" ) ]]; then
+    argstmp=$(grep -E -m 1 "$extraargspatt" $input)
+    if [[ ! ( -z "$argstmp" ) ]]; then
+      extraargs=${argstmp/$extraargspatt/}
+    fi
+  fi
   out=${1%.*}.out
-  "$SCRIPTPATH"/magiclang2.sh "$args" -o "$out" "$input" -debug -disable-vra 2> "$input".log
+  "$SCRIPTPATH"/magiclang2.sh "$args" -o "$out" "$input" $extraargs -debug 2> "$input".log
   if [[ $? -ne 0 ]]; then
     printf '[FAIL] %s\n' "$input"
     return 0

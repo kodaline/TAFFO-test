@@ -1,3 +1,4 @@
+///TAFFO_TEST_ARGS -disable-vra
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

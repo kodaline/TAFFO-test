@@ -1,3 +1,4 @@
+;;;TAFFO_TEST_ARGS -disable-vra
 ; ModuleID = 'struct_integration_1.out.1.magiclangtmp.ll'
 source_filename = "struct_integration_1.c"
 target datalayout = "e-m:o-i64:64-f80:128-n8:16:32:64-S128"

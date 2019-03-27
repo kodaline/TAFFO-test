@@ -1,3 +1,4 @@
+;;;TAFFO_TEST_ARGS -disable-vra
 ; ModuleID = 'linear-algebra/kernels/atax/atax.c'
 source_filename = "linear-algebra/kernels/atax/atax.c"
 target datalayout = "e-m:o-i64:64-f80:128-n8:16:32:64-S128"

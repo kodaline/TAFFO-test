@@ -1,3 +1,4 @@
+///TAFFO_TEST_ARGS -disable-vra
 #include <stdio.h>
 
 double vec[10] __attribute((annotate("range -32767 32767")));
