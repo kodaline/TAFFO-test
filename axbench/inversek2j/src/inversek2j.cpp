@@ -39,8 +39,7 @@ int main(int argc, const char* argv[])
 	inputFileHandler >> n;
 
 
-
-	float* __attribute((annotate("range -1.57 1.57")))t1t2xy = (float*)malloc(n * 2 * 2 * sizeof(float));
+	float* __attribute((annotate("target('t1t2xy') scalar(range(-1.57,1.57))"))) t1t2xy = (float*)malloc(n * 2 * 2 * sizeof(float));
 
 	if(t1t2xy == NULL)
 	{
@@ -49,7 +48,7 @@ int main(int argc, const char* argv[])
 	}
 
 	srand (time(NULL));
-	
+
 	for (int i=0; i<n*2*2; i+=2*2) {
 		float theta1, theta2;
 		inputFileHandler >> theta1 >> theta2;
@@ -60,7 +59,7 @@ int main(int argc, const char* argv[])
 
 	AxBenchTimer timer;
 
-	int curr_index1 = 0;		
+	int curr_index1 = 0;
 	for(int i = 0 ; i < n * 2 * 2 ; i += 2 * 2)
 	{
 		forwardk2j(t1t2xy[i + 0], t1t2xy[i + 1], t1t2xy + (i + 2), t1t2xy + (i + 3));
@@ -70,7 +69,7 @@ int main(int argc, const char* argv[])
 	{
 		inversek2j(t1t2xy[i + 2], t1t2xy[i + 3], t1t2xy + (i + 0), t1t2xy + (i + 1));
 	}
-	
+
 	uint64_t time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)time) / 1000000000.0 << " s\n";
 
