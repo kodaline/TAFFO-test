@@ -17,15 +17,15 @@
 int main ( int argc, const char* argv[])
 {
 	int x, y;
-	float __attribute((annotate("target:s no_float 8 24 signed 0 0.7"))) s = 0;
+	float __attribute((annotate("target('s') scalar()"))) s = 0; // range(0,0.7)
 
-	// Source and destination image	
-	Image srcImage;
-	Image dstImage;
-	Image __attribute((annotate("range 0 1 0"))) *srcImagePtr = &srcImage;
-	Image __attribute((annotate("range 0 1 0"))) *dstImagePtr = &dstImage;
+	// Source and destination image
+	Image __attribute((annotate("struct[void,void,struct[scalar(),scalar(),scalar()],void]"))) srcImage;
+	Image __attribute((annotate("struct[void,void,struct[scalar(),scalar(),scalar()],void]"))) dstImage;
+	Image *srcImagePtr = &srcImage;
+	Image *dstImagePtr = &dstImage;
 
-	float __attribute((annotate("target:s no_float 8 24 signed 0 1 0"))) w[][3] = {
+	float __attribute((annotate("target('s') scalar()"))) w[][3] = { // range(0,1)
 		{0, 0, 0},
 		{0, 0, 0},
 		{0, 0, 0}
@@ -48,10 +48,9 @@ int main ( int argc, const char* argv[])
 
 			s = sobel(w);
 
-
-		dstImagePtr->putPixel_r(x, y, s) ;
-		dstImagePtr->putPixel_g(x, y, s) ;
-		dstImagePtr->putPixel_b(x, y, s) ;
+		dstImagePtr->pixels[y][x].r = s ;
+		dstImagePtr->pixels[y][x].g = s ;
+		dstImagePtr->pixels[y][x].b = s ;
 	}
 
 	for (y = 1 ; y < (srcImagePtr->height - 1) ; y++) {
@@ -60,20 +59,19 @@ int main ( int argc, const char* argv[])
 
 			s = sobel(w);
 
-	
-		dstImagePtr->putPixel_r(x, y, s) ;
-		dstImagePtr->putPixel_g(x, y, s) ;
-		dstImagePtr->putPixel_b(x, y, s) ;
+		dstImagePtr->pixels[y][x].r = s ;
+		dstImagePtr->pixels[y][x].g = s ;
+		dstImagePtr->pixels[y][x].b = s ;
 
 
 		for( x = 1 ; x < srcImagePtr->width - 1 ; x++ ) {
 			WINDOW(srcImagePtr, x, y, w) ;
-				
+
 				s = sobel(w);
 
-			dstImagePtr->putPixel_r(x, y, s) ;
-			dstImagePtr->putPixel_g(x, y, s) ;
-			dstImagePtr->putPixel_b(x, y, s) ;
+			dstImagePtr->pixels[y][x].r = s ;
+			dstImagePtr->pixels[y][x].g = s ;
+			dstImagePtr->pixels[y][x].b = s ;
 
 		}
 
@@ -83,9 +81,9 @@ int main ( int argc, const char* argv[])
 
 			s = sobel(w);
 
-		dstImagePtr->putPixel_r(x, y, s) ;
-		dstImagePtr->putPixel_g(x, y, s) ;
-		dstImagePtr->putPixel_b(x, y, s) ;
+		dstImagePtr->pixels[y][x].r = s ;
+		dstImagePtr->pixels[y][x].g = s ;
+		dstImagePtr->pixels[y][x].b = s ;
 	}
 
 	y = srcImagePtr->height - 1;
@@ -95,16 +93,16 @@ int main ( int argc, const char* argv[])
 		
 			s = sobel(w);
 
-		dstImagePtr->putPixel_r(x, y, s) ;
-		dstImagePtr->putPixel_g(x, y, s) ;
-		dstImagePtr->putPixel_b(x, y, s) ;
+		dstImagePtr->pixels[y][x].r = s ;
+		dstImagePtr->pixels[y][x].g = s ;
+		dstImagePtr->pixels[y][x].b = s ;
 
 	}
 	
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
-	dstImagePtr->saveRgbImage(argv[2], std::sqrt(256 * 256 + 256 * 256)) ;
+	dstImagePtr->saveRgbImage(argv[2], sqrtf(256 * 256 + 256 * 256)) ;
 
 	return 0 ;
 }

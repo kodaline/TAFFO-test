@@ -10,9 +10,9 @@
 
 void Image::printPixel(int x, int y)
 {
-	std::cout << "# Red: 	" << this->getPixel_r(x, y) << std::endl;
-	std::cout << "# Green: 	" << this->getPixel_g(x, y) << std::endl;
-	std::cout << "# Blue: 	" << this->getPixel_b(x, y) << std::endl; 
+	std::cout << "# Red: 	" << this->pixels[x][y].r << std::endl;
+	std::cout << "# Green: 	" << this->pixels[x][y].g << std::endl;
+	std::cout << "# Blue: 	" << this->pixels[x][y].b << std::endl; 
 }
 
 
@@ -71,7 +71,8 @@ int Image::loadRgbImage(std::string filename)
 		std::cout << "# Height: " << this->height  << std::endl ;
 	} 
 
-  this->_pixels = (void*)malloc(this->height * (this->width * 3) * sizeof(float));
+	//this->_pixels = (void*)malloc(this->height * (this->width * 3) * sizeof(float));
+	this->pixels = new Pixel*[this->height];
 
 	// We assume there is a newline after each row
 	for (int h = 0 ; h < this->height ; h++)
@@ -79,17 +80,18 @@ int Image::loadRgbImage(std::string filename)
 		std::getline(imageFile, line) ;
 		std::vector<int> currRowString;
 		tokenize(currRowString, line);
+		this->pixels[h] = new Pixel[this->width];
 
 		for(int w = 0 ; w < this->width ; w++)
 		{
 			int index = w * 3 ;
-			float r = currRowString[index++];
-			float g = currRowString[index++];
-			float b = currRowString[index++];
+			float __attribute((annotate("scalar(range(0,255))"))) r = currRowString[index++];
+			float __attribute((annotate("scalar(range(0,255))"))) g = currRowString[index++];
+			float __attribute((annotate("scalar(range(0,255))"))) b = currRowString[index++];
 			// Add pixel to the current row
-			putPixel_r(w, h, r);
-			putPixel_g(w, h, g);
-			putPixel_b(w, h, b);
+			this->pixels[h][w].r = r ;
+			this->pixels[h][w].g = g ;
+			this->pixels[h][w].b = b ;
 		}
 	}
 
@@ -98,7 +100,8 @@ int Image::loadRgbImage(std::string filename)
 	return 1 ;
 }
 
-int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("target:out force_no_float 12 20 signed 362 362 0"))) scale)
+int Image::saveRgbImage(std::string outFilename,
+			float __attribute((annotate("target('out') scalar()"))) scale) // range(362,362)
 {
 	if(DEBUG)
 	{
@@ -115,9 +118,9 @@ int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("ta
 		for(int w = 0 ; w < (this->width - 1); w++)
 		{
 			// Write Red
-			int red   = (int)(this->getPixel_r(w, h) * scale) ;
-			int green = (int)(this->getPixel_g(w, h) * scale) ;
-			int blue  = (int)(this->getPixel_b(w, h) * scale) ;
+			int red   = (int)(this->pixels[h][w].r * scale) ;
+			int green = (int)(this->pixels[h][w].g * scale) ;
+			int blue  = (int)(this->pixels[h][w].b * scale) ;
 
 			//if ( red > 255 )
 		//		red = 255 ;
@@ -130,12 +133,11 @@ int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("ta
 			outFile << green << "," ;
 			// Write Blue
 			outFile << blue << "," ;
-			
 		}
 
-		int red   = (int)(this->getPixel_r(this->width - 1, h) * scale) ;
-		int green = (int)(this->getPixel_g(this->width - 1, h) * scale);
-		int blue  = (int)(this->getPixel_b(this->width - 1, h) * scale) ;
+		int red   = (int)(this->pixels[h][this->width - 1].r * scale) ;
+		int green = (int)(this->pixels[h][this->width - 1].g * scale);
+		int blue  = (int)(this->pixels[h][this->width - 1].b * scale) ;
 
 
 		// Write Red
@@ -155,23 +157,23 @@ int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("ta
 void Image::makeGrayscale()
 {
 
-	float __attribute((annotate("no_float 12 20 signed 0 1"))) luminance ;
+	float __attribute((annotate("scalar()"))) luminance ;
 
-	float __attribute((annotate("no_float 9 23 signed 1.171875e-3 1.171875e-3"))) rC = 0.30 / 256.0 ;
-	float __attribute((annotate("no_float 9 23 signed 2.304688e-3 2.304688e-3"))) gC = 0.59 / 256.0 ;
-	float __attribute((annotate("no_float 9 23 signed 4.29687e-4 4.29687e-4"))) bC = 0.11 / 256.0 ;
+	float __attribute((annotate("scalar()"))) rC = 0.30 / 256.0 ;
+	float __attribute((annotate("scalar()"))) gC = 0.59 / 256.0 ;
+	float __attribute((annotate("scalar()"))) bC = 0.11 / 256.0 ;
 
 	for(int h = 0 ; h < this->height ; h++)
 	{
 		for(int w = 0 ; w < this->width ; w++)
 		{
-			luminance = ( rC * this->getPixel_b(w, h) ) + 
-						( gC * this->getPixel_g(w, h) ) + 
-						( bC * this->getPixel_b(w, h) ) ;
+			luminance = ( rC * this->pixels[h][w].r ) +
+			  ( gC * this->pixels[h][w].g ) +
+			  ( bC * this->pixels[h][w].b ) ;
 
-			this->putPixel_r(w, h, luminance) ;
-			this->putPixel_g(w, h, luminance) ; 
-			this->putPixel_b(w, h, luminance) ; 
+			this->pixels[h][w].r = luminance ;
+			this->pixels[h][w].g = luminance ;
+			this->pixels[h][w].b = luminance ;
 		}
 	}
 }

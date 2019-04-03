@@ -1,6 +1,6 @@
 /*
  * rgb_image.hpp
- * 
+ *
  * Created on: Sep 9, 2013
  * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
@@ -16,9 +16,9 @@
 
 #define DEBUG 0
 
-/*
 class Pixel {
 public:
+	Pixel () {}
 	Pixel (float r, float g, float b)
 	{
 		this->r = r ;
@@ -29,15 +29,13 @@ public:
 	float g ;
 	float b ;
 } ;
-*/
 
-#define ANNOTATION_PIXEL "no_float 8 24 unsigned 0 1 0"
 
 class Image {
 public:
 	int 			width ;
 	int 			height ;
-	void     *_pixels;
+	Pixel**			pixels ;
 	//std::vector 	<std::vector<boost::shared_ptr<Pixel> > > pixels ;
 	std::string 	meta ;
 
@@ -52,32 +50,7 @@ public:
 	int saveRgbImage (std::string outFilename, float scale) ;
 	void makeGrayscale() ;
 	void printPixel(int x, int y) ;
-	
-	float getPixel_r(int x, int y) __attribute((always_inline)) {
-	  float *pixels __attribute((annotate(ANNOTATION_PIXEL))) = ((float*)_pixels);
-	  return pixels[y * (width * 3) + x * 3 + 0];
-	}
-	inline float getPixel_g(int x, int y)  __attribute((always_inline)) {
-	  float *pixels __attribute((annotate(ANNOTATION_PIXEL))) = ((float*)_pixels);
-	  return pixels[y * (width * 3) + x * 3 + 1];
-	}
-	inline float getPixel_b(int x, int y)  __attribute((always_inline)) {
-	  float *pixels __attribute((annotate(ANNOTATION_PIXEL))) = ((float*)_pixels);
-	  return pixels[y * (width * 3) + x * 3 + 2];
-	}
-	
-	inline void putPixel_r(int x, int y, float __attribute((annotate(ANNOTATION_PIXEL))) v)  __attribute((always_inline)) {
-	  float *pixels __attribute((annotate(ANNOTATION_PIXEL))) = ((float*)_pixels);
-	  pixels[y * (width * 3) + x * 3 + 0] = v;
-	}
-	inline void putPixel_g(int x, int y, float __attribute((annotate(ANNOTATION_PIXEL))) v)  __attribute((always_inline)) {
-	  float *pixels __attribute((annotate(ANNOTATION_PIXEL))) = ((float*)_pixels);
-	  pixels[y * (width * 3) + x * 3 + 1] = v;
-	}
-	inline void putPixel_b(int x, int y, float __attribute((annotate(ANNOTATION_PIXEL))) v)  __attribute((always_inline)) {
-	  float *pixels __attribute((annotate(ANNOTATION_PIXEL))) = ((float*)_pixels);
-	  pixels[y * (width * 3) + x * 3 + 2] = v;
-	}
+
 } ;
 
 #endif
