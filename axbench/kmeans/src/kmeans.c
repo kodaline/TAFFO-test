@@ -17,8 +17,8 @@
 
 int main (int argc, const char* argv[]) {
 
-	RgbImage srcImage __attribute__((annotate("range " RANGE_RGBPIXEL)));
-	Clusters clusters __attribute__((annotate("range " RANGE_CENTROID)));
+	RgbImage __attribute((annotate(ANNOTATION_RGBIMAGE))) srcImage;
+	Clusters __attribute((annotate("target('clusters') " ANNOTATION_CLUSTER))) clusters;
 
 	initRgbImage(&srcImage);
 
@@ -28,13 +28,13 @@ int main (int argc, const char* argv[]) {
 	loadRgbImage(inImageName.c_str(), &srcImage, 256);
 
 	initClusters(&clusters, 6, 1);
-	
+
 	AxBenchTimer timer;
 	segmentImage(&srcImage, &clusters, 1);
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
-	
+
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
-		
+
 	saveRgbImage(&srcImage, outImageName.c_str(), 255);
 
 

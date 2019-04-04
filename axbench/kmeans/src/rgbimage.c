@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void initRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) image) {
+void initRgbImage(RgbImage* image) {
 	image->w = 0;
 	image->h = 0;
 	image->pixels = NULL;
@@ -19,7 +19,7 @@ void initRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) i
 }
 
 int readCell(FILE *fp, char* w) {
-	int c;
+	int __attribute((annotate("scalar(disabled range(0,255))"))) c;
 	int i;
 
 	w[0] = 0;
@@ -47,14 +47,15 @@ int readCell(FILE *fp, char* w) {
 	return c;
 }
 
-int loadRgbImage(const char* fileName, RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) image, float __attribute__((annotate("range 1.0 0.0")))scale) {
+int loadRgbImage(const char* fileName,
+		 RgbImage* __attribute((annotate(ANNOTATION_RGBIMAGE))) image,
+		 float __attribute((annotate("scalar()"))) scale) {
 	int c;
 	int i;
 	int j;
 	char w[256];
-	//RgbPixel** pixels;
-	float** __attribute__((annotate(ANNOTATION_RGBPIXEL))) pixels;
-	int** pixels2;
+	//RgbPixel** __attribute((annotate(ANNOTATION_RGBPIXEL))) pixels;
+	RgbPixel**& __attribute((annotate(ANNOTATION_RGBPIXEL))) pixels = image->pixels;
 	FILE *fp;
 
 	//printf("Loading %s ...\n", fileName);
@@ -72,8 +73,7 @@ int loadRgbImage(const char* fileName, RgbImage* __attribute__((annotate("range 
 
 	//printf("%d x %d\n", image->w, image->h);
 
-	pixels = (float**)malloc(image->h * SIZEOF_RGBPIXEL);
-	pixels2 = (int **)pixels;
+	pixels = (RgbPixel**)malloc(image->h * sizeof(RgbPixel*));
 
 	if (pixels == NULL) {
 		printf("Warning: Oops! Cannot allocate memory for the pixels!\n");
@@ -85,7 +85,7 @@ int loadRgbImage(const char* fileName, RgbImage* __attribute__((annotate("range 
 
 	c = 0;
 	for(i = 0; i < image->h; i++) {
-		pixels[i] = (float*)malloc(image->w * SIZEOF_RGBPIXEL);
+		pixels[i] = (RgbPixel*)malloc(image->w * sizeof(RgbPixel));
 		if (pixels[i] == NULL) {
 			c = 1;
 			break;
@@ -107,19 +107,22 @@ int loadRgbImage(const char* fileName, RgbImage* __attribute__((annotate("range 
 	for(i = 0; i < image->h; i++) {
 		for(j = 0; j < image->w; j++) {
 			c = readCell(fp, w);
-			RGBPIXEL_R(pixels[i], j) = atoi(w) / scale;
+			float __attribute((annotate("scalar(range(0,255))"))) r = atoi(w);
+			pixels[i][j].r = r / scale;
 
 			c = readCell(fp, w);
-			RGBPIXEL_G(pixels[i], j) = atoi(w) / scale;
+			float __attribute((annotate("scalar(range(0,255))"))) g = atoi(w);
+			pixels[i][j].g = g / scale;
 
 			c = readCell(fp, w);
-			RGBPIXEL_B(pixels[i], j) = atoi(w) / scale;
+			float __attribute((annotate("scalar(range(0,255))"))) b = atoi(w);
+			pixels[i][j].b = b / scale;
 
-			RGBPIXEL2_CLUSTER(pixels2[i], j) = 0;
-			RGBPIXEL_DISTANCE(pixels[i], j) = 0.;
+			pixels[i][j].cluster = 0;
+			pixels[i][j].distance = 0.;
 		}
 	}
-	image->pixels = pixels;
+	//image->pixels = pixels;
 
 	c = readCell(fp, w);
 	image->meta = (char*)malloc(strlen(w) * sizeof(char));
@@ -144,12 +147,12 @@ int loadRgbImage(const char* fileName, RgbImage* __attribute__((annotate("range 
 	return 1;
 }
 
-int saveRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) image, const char* fileName, float __attribute__((annotate("no_float 24 8"))) scale) {
+int saveRgbImage(RgbImage* __attribute((annotate(ANNOTATION_RGBIMAGE))) image,
+		 const char* fileName,
+		 float __attribute((annotate("scalar()"))) scale) {
 	int i;
 	int j;
 	FILE *fp;
-	float __attribute__((annotate(ANNOTATION_RGBPIXEL))) **pixels = (float **)image->pixels;
-	//int **pixels2 = (int **)image->pixels;
 
 	//printf("Saving %s ...\n", fileName);
 
@@ -164,9 +167,9 @@ int saveRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) im
 
 	for(i = 0; i < image->h; i++) {
 		for(j = 0; j < (image->w - 1); j++) {
-			fprintf(fp, "%d,%d,%d,", int(RGBPIXEL_R(pixels[i], j) * scale), int(RGBPIXEL_G(pixels[i], j) * scale), int(RGBPIXEL_B(pixels[i], j) * scale));
+			fprintf(fp, "%d,%d,%d,", int(image->pixels[i][j].r * scale), int(image->pixels[i][j].g * scale), int(image->pixels[i][j].b * scale));
 		}
-		fprintf(fp, "%d,%d,%d\n", int(RGBPIXEL_R(pixels[i], j) * scale), int(RGBPIXEL_G(pixels[i], j) * scale), int(RGBPIXEL_B(pixels[i], j) * scale));
+		fprintf(fp, "%d,%d,%d\n", int(image->pixels[i][j].r * scale), int(image->pixels[i][j].g * scale), int(image->pixels[i][j].b * scale));
 	}
 
 	fprintf(fp, "%s", image->meta);
@@ -177,7 +180,7 @@ int saveRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) im
 	return 1;
 }
 
-void freeRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) image) {
+void freeRgbImage(RgbImage* image) {
 	int i;
 
 	if (image->meta != NULL)
@@ -188,31 +191,30 @@ void freeRgbImage(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) i
 
 	for (i = 0; i < image->h; i++)
 		if (image->pixels != NULL)
-			free(((void**)image->pixels)[i]);
+			free(image->pixels[i]);
 
 	free(image->pixels);
 }
 
-void makeGrayscale(RgbImage* __attribute__((annotate("range " RANGE_RGBPIXEL))) image) {
+void makeGrayscale(RgbImage* __attribute((annotate(ANNOTATION_RGBIMAGE))) image) {
 	int i;
 	int j;
-	float __attribute__((annotate(ANNOTATION_RGBPIXEL))) luminance;
-	float __attribute__((annotate(ANNOTATION_RGBPIXEL))) **pixels = (float **)image->pixels;
+	float __attribute((annotate("scalar()"))) luminance;
 
-	float __attribute__((annotate(ANNOTATION_RGBPIXEL))) rC = 0.30;
-	float __attribute__((annotate(ANNOTATION_RGBPIXEL))) gC = 0.59;
-	float __attribute__((annotate(ANNOTATION_RGBPIXEL))) bC = 0.11;
+	float __attribute((annotate("scalar()"))) rC = 0.30;
+	float __attribute((annotate("scalar()"))) gC = 0.59;
+	float __attribute((annotate("scalar()"))) bC = 0.11;
 
 	for(i = 0; i < image->h; i++) {
 		for(j = 0; j < image->w; j++) {
 			luminance =
-				rC * RGBPIXEL_R(pixels[i], j) +
-				gC * RGBPIXEL_G(pixels[i], j) +
-				bC * RGBPIXEL_B(pixels[i], j);
+				rC * image->pixels[i][j].r +
+				gC * image->pixels[i][j].g +
+				bC * image->pixels[i][j].b;
 
-			RGBPIXEL_R(pixels[i], j) = (unsigned char)luminance;
-			RGBPIXEL_G(pixels[i], j) = (unsigned char)luminance;
-			RGBPIXEL_B(pixels[i], j) = (unsigned char)luminance;
+			image->pixels[i][j].r = (unsigned char)luminance;
+			image->pixels[i][j].g = (unsigned char)luminance;
+			image->pixels[i][j].b = (unsigned char)luminance;
 		}
 	}
 }

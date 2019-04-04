@@ -13,12 +13,13 @@
 int count = 0;
 #define MAX_COUNT 1200000
 
-float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) {
-	float __attribute__((annotate("no_float 24 8 signed 0.1 1"))) r;
+float euclideanDistance(RgbPixel* __attribute((annotate(ANNOTATION_RGBPIXEL))) p,
+			Centroid* __attribute((annotate(ANNOTATION_CENTROID))) c1) {
+	float __attribute((annotate("scalar()"))) r;
 
 	r = 0;
-	double __attribute__((annotate("no_float 24 8 signed 0.1 1"))) r_tmp;
-	
+	double __attribute((annotate("scalar()"))) r_tmp;
+
 	/*
 	double dataIn[6];
 	dataIn[0] = RGBPIXEL_R(p, 0);
@@ -31,9 +32,9 @@ float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p,
 
 //#pragma parrot(input, "kmeans", [6]dataIn)
 
-	r += (RGBPIXEL_R(p, 0) - CENTROID_R(c1, 0)) * (RGBPIXEL_R(p, 0) - CENTROID_R(c1, 0));
-	r += (RGBPIXEL_G(p, 0) - CENTROID_G(c1, 0)) * (RGBPIXEL_G(p, 0) - CENTROID_G(c1, 0));
-	r += (RGBPIXEL_B(p, 0) - CENTROID_B(c1, 0)) * (RGBPIXEL_B(p, 0) - CENTROID_B(c1, 0));
+	r += (p->r - c1->r) * (p->r - c1->r);
+	r += (p->g - c1->g) * (p->g - c1->g);
+	r += (p->b - c1->b) * (p->b - c1->b);
 
 	r_tmp = sqrt(r);
 
@@ -42,32 +43,31 @@ float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p,
 	return r_tmp;
 }
 
-int pickCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) {
-	float d1;
+int pickCluster(RgbPixel* __attribute((annotate(ANNOTATION_RGBPIXEL))) p,
+		Centroid* __attribute((annotate(ANNOTATION_CENTROID))) c1) {
+	float __attribute((annotate("scalar()"))) d1;
 
 	d1 = euclideanDistance(p, c1);
 
-	if (RGBPIXEL_DISTANCE(p, 0) <= d1)
+	if (p->distance <= d1)
 		return 0;
 
 	return 1;
 }
 
-void assignCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, Clusters* __attribute__((annotate("range " RANGE_CENTROID))) clusters) {
+void assignCluster(RgbPixel* __attribute((annotate(ANNOTATION_RGBPIXEL))) p,
+		   Clusters* __attribute((annotate(ANNOTATION_CLUSTER))) clusters) {
 	int i = 0;
-	int *p2 = (int *)p;
-	float __attribute__((annotate(ANNOTATION_CENTROID))) *centroids = (float *)clusters->centroids;
 
-	float __attribute__((annotate("target:distance " ANNOTATION_RGBPIXEL))) d;
-	d = euclideanDistance(p, &CENTROID(centroids, i));
-	RGBPIXEL_DISTANCE(p, 0) = d;
+	float __attribute((annotate("scalar()"))) d;
+	d = euclideanDistance(p, &clusters->centroids[i]);
+	p->distance = d;
 
 	for(i = 1; i < clusters->k; ++i) {
-		d = euclideanDistance(p, &CENTROID(centroids, i));
-		if (d < RGBPIXEL_DISTANCE(p, 0)) {
-			RGBPIXEL2_CLUSTER(p2, 0) = i;
-			RGBPIXEL_DISTANCE(p, 0) = d;
+		d = euclideanDistance(p, &clusters->centroids[i]);
+		if (d < p->distance) {
+			p->cluster = i;
+			p->distance = d;
 		}
 	}
 }
-
