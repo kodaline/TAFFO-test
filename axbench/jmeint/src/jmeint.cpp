@@ -17,6 +17,7 @@
 
 #include "benchmark.hpp"
 
+#define ANNOTATION_RANGE "scalar(disabled range(0.01,1))"
 
 int main(int argc, char* argv[])
 {
@@ -42,7 +43,7 @@ int main(int argc, char* argv[])
 	inputFileHandler >> n;
 
 	// create the directory for storing data
-	float* __attribute__((annotate("range 0.1 1 0"))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
+	float* __attribute((annotate(ANNOTATION_RANGE))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
 	if(xyz == NULL)
 	{
 		std::cout << "cannot allocate memory for the triangle coordinates!" << std::endl;
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
 	i = 0;
 	while (i < n)
 	{
-		float a[18];
+		float __attribute((annotate(ANNOTATION_RANGE))) a[18];
 		inputFileHandler >> 	a[0] 	>> 	a[1] 	>> 	a[2] 	>> a[3] 	>> a[4] 		>> a[5] >>
 						a[6]	>>	a[7]	>> 	a[8]	>> a[9]		>> a[10]		>> a[11] >>
 						a[12]	>> 	a[13] 	>> 	a[14] 	>> a[15] 	>> a[16]	 	>> a[17];
@@ -95,7 +96,7 @@ int main(int argc, char* argv[])
 		dataIn[16] 	= xyz[i + 16];
 		dataIn[17] 	= xyz[i + 17];
 
-		float res[2];
+		float __attribute((annotate("target('res') scalar(disabled)"))) res[2];
 
 #pragma parrot(input, "jmeint", [18]dataIn)
 

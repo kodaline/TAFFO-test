@@ -39,7 +39,7 @@
 #define SORT(a,b)       \
              if(a>b)    \
              {          \
-               float __attribute__((annotate("no_float 8 24 signed 0.1 1"))) c; \
+               float __attribute((annotate("scalar()"))) c; \
                c=a;     \
                a=b;     \
                b=c;     \
@@ -104,14 +104,14 @@
     {                                                 \
       if(e<=0 && e>=f) return 1;                      \
     }                                                 \
-  }                                
+  }
 
 #define EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2) \
 {                                              \
-  float __attribute__((annotate("no_float 8 24 signed 0.1 1")))Ax,__attribute__((annotate("no_float 8 24 signed 0.1 1")))Ay; \
-  float __attribute__((annotate("no_float 8 24 signed 0.1 1")))Bx,__attribute__((annotate("no_float 8 24 signed 0.1 1")))By; \
-  float __attribute__((annotate("no_float 8 24 signed 0.1 1")))Cx,__attribute__((annotate("no_float 8 24 signed 0.1 1")))Cy; \
-  float __attribute__((annotate("no_float 8 24 signed 0.1 1")))e,__attribute__((annotate("no_float 8 24 signed 0.1 1")))d,__attribute__((annotate("no_float 8 24 signed 0.1 1")))f;   \
+  float __attribute((annotate("scalar()"))) Ax, __attribute((annotate("scalar()"))) Ay; \
+  float __attribute((annotate("scalar()"))) Bx, __attribute((annotate("scalar()"))) By; \
+  float __attribute((annotate("scalar()"))) Cx, __attribute((annotate("scalar()"))) Cy; \
+  float __attribute((annotate("scalar()"))) e, __attribute((annotate("scalar()"))) d, __attribute((annotate("scalar()"))) f; \
   Ax=V1[i0]-V0[i0];                            \
   Ay=V1[i1]-V0[i1];                            \
   /* test edge U0,U1 against V0,V1 */          \
@@ -124,8 +124,8 @@
 
 #define POINT_IN_TRI(V0,U0,U1,U2)           \
 {                                           \
-  float __attribute__((annotate("no_float 8 24 signed 0.1 1")))a,__attribute__((annotate("no_float 8 24 signed 0.1 1")))b,__attribute__((annotate("no_float 8 24 signed 0.1 1")))c; \
-  float __attribute__((annotate("no_float 8 24 signed 0.1 1")))d0,__attribute__((annotate("no_float 8 24 signed 0.1 1")))d1,__attribute__((annotate("no_float 8 24 signed 0.1 1")))d2;                     \
+  float __attribute((annotate("scalar()")))a, __attribute((annotate("scalar()")))b, __attribute((annotate("scalar()")))c; \
+  float __attribute((annotate("scalar()")))d0, __attribute((annotate("scalar()")))d1, __attribute((annotate("scalar()")))d2;                     \
   /* is T1 completly inside T2? */          \
   /* check if V0 is inside tri(U0,U1,U2) */ \
   a=U1[i1]-U0[i1];                          \
@@ -148,15 +148,15 @@
   }                                         \
 }
 
-int coplanar_tri_tri(float N[3] __attribute__((annotate("range 0.1 1 0"))),
-		     float V0[3] __attribute__((annotate("range 0.1 1 0"))),
-		     float V1[3] __attribute__((annotate("range 0.1 1 0"))),
-		     float V2[3] __attribute__((annotate("range 0.1 1 0"))),
-                     float U0[3] __attribute__((annotate("range 0.1 1 0"))),
-		     float U1[3] __attribute__((annotate("range 0.1 1 0"))),
-		     float U2[3] __attribute__((annotate("range 0.1 1 0"))))
+int coplanar_tri_tri(float N[3],
+		     float V0[3],
+		     float V1[3],
+		     float V2[3],
+                     float U0[3],
+		     float U1[3],
+		     float U2[3])
 {
-   float  __attribute__((annotate("no_float 8 24 signed 0.1 1"))) A[3];
+   float  __attribute((annotate("scalar()"))) A[3];
    short i0,i1;
    /* first project onto an axis-aligned plane, that maximizes the area */
    /* of the triangles, compute indices: i0,i1. */
@@ -165,7 +165,7 @@ int coplanar_tri_tri(float N[3] __attribute__((annotate("range 0.1 1 0"))),
    A[2]=fabs(N[2]);
    if(A[0]>A[1])
    {
-      if(A[0]>A[2])  
+      if(A[0]>A[2])
       {
           i0=1;      /* A[0] is greatest */
           i1=2;
@@ -202,11 +202,11 @@ int coplanar_tri_tri(float N[3] __attribute__((annotate("range 0.1 1 0"))),
     return 0;
 }
 
-int tri_tri_intersect(float V0[3] __attribute__((annotate("range 0.1 1 0"))),float V1[3] __attribute__((annotate("range 0.1 1 0"))),float V2[3] __attribute__((annotate("range 0.1 1 0"))),
-                      float U0[3] __attribute__((annotate("range 0.1 1 0"))),float U1[3] __attribute__((annotate("range 0.1 1 0"))),float U2[3] __attribute__((annotate("range 0.1 1 0"))),
+int tri_tri_intersect(float V0[3], float V1[3], float V2[3],
+                      float U0[3], float U1[3], float U2[3],
 		      float *res)
 {
-  #pragma clang attribute push( __attribute__((annotate("target:all no_float 8 24 signed 0.1 1"))) , apply_to = variable)
+  #pragma clang attribute push( __attribute((annotate("scalar()"))) , apply_to = variable)
   float E1[3],E2[3];
   float N1[3],N2[3],d1,d2;
   float du0,du1,du2,dv0,dv1,dv2;
@@ -274,7 +274,7 @@ int tri_tri_intersect(float V0[3] __attribute__((annotate("range 0.1 1 0"))),flo
 
   dv0dv1=dv0*dv1;
   dv0dv2=dv0*dv2;
-        
+
   if(dv0dv1>0.0f && dv0dv2>0.0f)
   { /* same sign on all of them + not equal 0 ? */
     //*output = 1 ;
@@ -475,7 +475,7 @@ int NoDivTriTriIsect(float V0[3],float V1[3],float V2[3],
 #define SORT2(a,b,smallest)       \
              if(a>b)       \
              {             \
-               float __attribute__((annotate("no_float 8 24 signed 0.1 1"))) c;    \
+               float __attribute((annotate("scalar()"))) c;    \
                c=a;        \
                a=b;        \
                b=c;        \
@@ -485,17 +485,17 @@ int NoDivTriTriIsect(float V0[3],float V1[3],float V2[3],
 
 
 inline void isect2(float VTX0[3],float VTX1[3],float VTX2[3],float VV0,float VV1,float VV2,
-	    float D0,float D1,float D2,float *isect0,float *isect1,float isectpoint0[3],float isectpoint1[3]) 
+	    float D0,float D1,float D2,float *isect0,float *isect1,float isectpoint0[3],float isectpoint1[3])
 {
-  float __attribute__((annotate("range 0.1 1 0"))) tmp=D0/(D0-D1);          
-  float __attribute__((annotate("range 0.1 1 0"))) diff[3];
-  *isect0=VV0+(VV1-VV0)*tmp;         
-  SUB(diff,VTX1,VTX0);              
-  MULT(diff,diff,tmp);               
-  ADD(isectpoint0,diff,VTX0);        
-  tmp=D0/(D0-D2);                    
-  *isect1=VV0+(VV2-VV0)*tmp;          
-  SUB(diff,VTX2,VTX0);                   
-  MULT(diff,diff,tmp);                 
-  ADD(isectpoint1,VTX0,diff);          
+  float tmp=D0/(D0-D1);
+  float diff[3];
+  *isect0=VV0+(VV1-VV0)*tmp;
+  SUB(diff,VTX1,VTX0);
+  MULT(diff,diff,tmp);
+  ADD(isectpoint0,diff,VTX0);
+  tmp=D0/(D0-D2);
+  *isect1=VV0+(VV2-VV0)*tmp;
+  SUB(diff,VTX2,VTX0);
+  MULT(diff,diff,tmp);
+  ADD(isectpoint1,VTX0,diff);
 }
