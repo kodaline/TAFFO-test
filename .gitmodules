@@ -1,0 +1,4 @@
+[submodule "axbench-libvc/libVersioningCompiler"]
+	path = axbench-libvc/libVersioningCompiler
+	url = git@github.com:skeru/libVersioningCompiler.git
+	branch = taffo
