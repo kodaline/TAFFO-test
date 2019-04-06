@@ -51,11 +51,11 @@ fptype __attribute((annotate("scalar(range(0.1,1))"))) *prices;
 int numOptions;
 
 int    * otype;
-fptype __attribute((annotate("scalar(range(0.33,0.92) error(1e-8))"))) *sptprice;
-fptype __attribute((annotate("scalar(range(0.33,0.92) error(1e-8))"))) *strike;
-fptype __attribute((annotate("scalar(range(0.03,0.1) error(0))"))) *rate;
-fptype __attribute((annotate("scalar(range(0.05,6.5e-1) error(1e-8))"))) *volatility;
-fptype __attribute((annotate("scalar(range(0.05,1) error(0))"))) *otime;
+fptype __attribute((annotate("scalar(range(0.7,0.75) error(1e-8))"))) *sptprice;
+fptype __attribute((annotate("scalar(range(0.75,0.8) error(1e-8))"))) *strike; // range(0.33,1.0)
+fptype __attribute((annotate("scalar(range(0.0275,0.1) error(0))"))) *rate;
+fptype __attribute((annotate("scalar(range(0.5,0.65) error(1e-8))"))) *volatility; // range(0.05,0.65)
+fptype __attribute((annotate("scalar(range(0.1,1) error(0))"))) *otime;
 int numError = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ int bs_thread(void *tid_ptr) {
     int tid = *(int *)tid_ptr;
     int start = tid * (numOptions);
     int end = start + (numOptions);
-    fptype __attribute((annotate("target('price_orig') scalar(range(0.1,1))"))) price_orig;
+    fptype __attribute((annotate("target('price_orig') scalar()"))) price_orig;
 
     for (j=0; j<NUM_RUNS; j++) {
         for (i=start; i<end; i++) {
