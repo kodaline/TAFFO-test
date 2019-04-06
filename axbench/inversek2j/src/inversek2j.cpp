@@ -19,6 +19,8 @@
 
 #define PI 3.141592653589
 
+#define ANNOTATION_RANGE "range(-1.5707963267948966192313216916397,1.5707963267948966192313216916397)"
+
 #include <boost/math/special_functions/fpclassify.hpp>
 
 int main(int argc, const char* argv[])
@@ -39,7 +41,7 @@ int main(int argc, const char* argv[])
 	inputFileHandler >> n;
 
 
-	float* __attribute((annotate("target('t1t2xy') scalar(range(-1.57,1.57))"))) t1t2xy = (float*)malloc(n * 2 * 2 * sizeof(float));
+	float* __attribute((annotate("target('t1t2xy') scalar(" ANNOTATION_RANGE ")"))) t1t2xy = (float*)malloc(n * 2 * 2 * sizeof(float));
 
 	if(t1t2xy == NULL)
 	{
@@ -50,7 +52,7 @@ int main(int argc, const char* argv[])
 	srand (time(NULL));
 
 	for (int i=0; i<n*2*2; i+=2*2) {
-		float theta1, theta2;
+		float __attribute((annotate("scalar(" ANNOTATION_RANGE ")"))) theta1, __attribute((annotate("scalar(" ANNOTATION_RANGE ")"))) theta2;
 		inputFileHandler >> theta1 >> theta2;
 
 		t1t2xy[i] = theta1;

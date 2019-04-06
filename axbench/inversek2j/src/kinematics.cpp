@@ -25,6 +25,7 @@ void inversek2j(float __attribute((annotate("scalar()"))) x,
 		float* __attribute((annotate("scalar()"))) theta1,
 		float* __attribute((annotate("scalar()"))) theta2) {
 
+/*
 	double dataIn[2];
 	dataIn[0] = x;
 	dataIn[1] = y;
@@ -32,10 +33,12 @@ void inversek2j(float __attribute((annotate("scalar()"))) x,
 	double dataOut[2];
 
 #pragma parrot(input, "inversek2j", [2]dataIn)
+*/
 
 	*theta2 = (float)acos(((x * x) + (y * y) - (l1 * l1) - (l2 * l2))/(2 * l1 * l2));
 	*theta1 = (float)asin((y * (l1 + l2 * cos(*theta2)) - x * l2 * sin(*theta2))/(x * x + y * y));
 
+/*
 	dataOut[0] = (*theta1);
 	dataOut[1] = (*theta2);
 
@@ -44,4 +47,5 @@ void inversek2j(float __attribute((annotate("scalar()"))) x,
 
 	*theta1 = dataOut[0];
 	*theta2 = dataOut[1];
+*/
 }
