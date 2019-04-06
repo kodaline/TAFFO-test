@@ -9,8 +9,8 @@
 #include "kinematics.hpp"
 
 
-float  __attribute((annotate("scalar()"))) l1 = 0.5 ;
-float  __attribute((annotate("scalar()"))) l2 = 0.5 ;
+float  __attribute((annotate(ANNOTATION_L1))) l1 = 0.5 ;
+float  __attribute((annotate(ANNOTATION_L2))) l2 = 0.5 ;
 
 void forwardk2j(float  __attribute((annotate("scalar()"))) theta1,
 		float  __attribute((annotate("scalar()"))) theta2,

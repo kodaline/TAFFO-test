@@ -10,6 +10,8 @@ PI=3.141592653589
 
 outFile = open(sys.argv[2], "w")
 
+l1 = random.uniform(0.2, 0.8)
+outFile.write("%f\t%f\n" % (l1, 1.0 - l1))
 outFile.write("%d\n" % (int(sys.argv[1])))
 
 for i in range(int(sys.argv[1])):
