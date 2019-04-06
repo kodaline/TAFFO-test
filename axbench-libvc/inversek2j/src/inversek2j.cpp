@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <libgen.h>
 #include <fstream> 
 
 #include <time.h>
@@ -52,6 +53,7 @@ extern "C" void kernel_func(float *t1t2xy_flt, int n)
 	for (int i=0; i<n*2*2; i+=1) {
 		t1t2xy_flt[i] = t1t2xy[i];
 	}
+	free(t1t2xy);
 }
 
 
@@ -94,12 +96,15 @@ int main(int argc, const char* argv[])
 		t1t2xy[i + 1] = theta2;
 	}
 	
+	char *selfpath = strdup(argv[0]);
+	std::string basedir = dirname(selfpath);
+	free(selfpath);
 	vc::compiler_ptr_t taffo = vc::make_compiler<vc::TAFFOCompiler>(
-    "taffo", "", "", "", "", ".", "./test.log");
+		"taffo", "", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
 	vc::Version::Builder builder;
-	builder.addSourceFile("../src/inversek2j.cpp");
-	builder.addIncludeDir("../src");
-	builder.addIncludeDir("../../common/src");
+	builder.addSourceFile(basedir + "/../src/inversek2j.cpp");
+	builder.addIncludeDir(basedir + "/../src");
+	builder.addIncludeDir(basedir + "/../../common/src");
 	builder.addFunctionFlag("LIBVC_DYN");
 	builder._functionName.push_back("kernel_func");
 	builder._compiler = taffo;
