@@ -9,11 +9,10 @@
 #include <cstdlib>
 #include <libgen.h>
 #include <fstream> 
-
+#include <cstring>
 #include <time.h>
 #include <iomanip>
 #include <string> 
-
 #include "benchmark.hpp"
 
 #define PI 3.141592653589
