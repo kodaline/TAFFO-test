@@ -16,10 +16,7 @@
  #define ANNOTATION_L2 "scalar()"
  #endif
 
- extern float __attribute((annotate(ANNOTATION_L1))) l1 ;
- extern float __attribute((annotate(ANNOTATION_L2))) l2 ;
-
- void forwardk2j(float theta1, float theta2, float* x, float* y) ;
- void inversek2j(float x, float y, float* theta1, float* theta2) ;
+ void forwardk2j(float l1, float l2, float theta1, float theta2, float* x, float* y) ;
+ void inversek2j(float l1, float l2, float x, float y, float* theta1, float* theta2) ;
 
  #endif

@@ -9,27 +9,30 @@
 #include "kinematics.hpp"
 
 
-float  __attribute((annotate(ANNOTATION_L1))) l1 = 0.5 ;
-float  __attribute((annotate(ANNOTATION_L2))) l2 = 0.5 ;
-
-void forwardk2j(float  __attribute((annotate("scalar()"))) theta1,
+void forwardk2j(
+		float  __attribute((annotate(ANNOTATION_L1))) l1,
+		float  __attribute((annotate(ANNOTATION_L2))) l2,
+		float  __attribute((annotate("scalar()"))) theta1,
 		float  __attribute((annotate("scalar()"))) theta2,
-		float* __attribute((annotate("scalar()"))) x, // range(-1,1)
-		float* __attribute((annotate("scalar()"))) y) { // range(-1,1)
+		float* __attribute((annotate("scalar(range(-1.57,1.57))"))) x, // range(-1,1)
+		float* __attribute((annotate("scalar(range(-1.57,1.57))"))) y)  { // range(-1,1)
 	*x = l1 * cos(theta1) + l2 * cos(theta1 + theta2) ;
 	*y = l1 * sin(theta1) + l2 * sin(theta1 + theta2) ;
 }
 
-void inversek2j(float __attribute((annotate("scalar()"))) x,
+void inversek2j(
+		float  __attribute((annotate(ANNOTATION_L1))) l1,
+		float  __attribute((annotate(ANNOTATION_L2))) l2,
+		float __attribute((annotate("scalar()"))) x,
 		float __attribute((annotate("scalar()"))) y,
-		float* __attribute((annotate("scalar()"))) theta1,
-		float* __attribute((annotate("scalar()"))) theta2) {
+		float* __attribute((annotate("scalar(range(-1.57,1.57))"))) theta1,
+		float* __attribute((annotate("scalar(range(-1.57,1.57))"))) theta2) {
 
-	double dataIn[2];
+	double __attribute((annotate("scalar()"))) dataIn[2];
 	dataIn[0] = x;
 	dataIn[1] = y;
 
-	double dataOut[2];
+	double __attribute((annotate("scalar()"))) dataOut[2];
 
 #pragma parrot(input, "inversek2j", [2]dataIn)
 
