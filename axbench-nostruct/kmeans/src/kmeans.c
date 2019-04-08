@@ -17,8 +17,8 @@
 
 int main (int argc, const char* argv[]) {
 
-	RgbImage srcImage __attribute__((annotate("range " RANGE_RGBPIXEL)));
-	Clusters clusters __attribute__((annotate("range " RANGE_CENTROID)));
+	RgbImage srcImage;
+	Clusters clusters;
 
 	initRgbImage(&srcImage);
 
@@ -44,7 +44,7 @@ int main (int argc, const char* argv[]) {
 
 
 	freeRgbImage(&srcImage);
-	freeClusters(&clusters);
+	//freeClusters(&clusters);
 	return 0;
 }
 

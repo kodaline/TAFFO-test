@@ -21,7 +21,7 @@ typedef struct {
 #endif
 
 #define RANGE_CENTROID      "1572864.0 0.0"
-#define ANNOTATION_CENTROID "no_float 20 12 signed " RANGE_CENTROID
+#define ANNOTATION_CENTROID "range " RANGE_CENTROID
 #define SIZEOF_CENTROID     (4 * __SIZEOF_FLOAT__)
 #define CENTROID(c, i)      (((c)[(i) * 4]))
 #define CENTROID_R(c, i)    (((c)[(i) * 4 + 0]))

@@ -1,8 +1,6 @@
-CC			:= clang++
-LD			:= clang++
-LLVM_DIR			?= $(shell llvm-config --obj-root)
-
-include ../Makefile.inc
+LLVM_DIR		?= $(shell llvm-config --obj-root)
+CC			:= $(LLVM_DIR)/bin/clang++
+LD			:= $(LLVM_DIR)/bin/clang++
 
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
@@ -17,6 +15,9 @@ LFLAGS		+= #-lboost_regex
 HEADERS		:= src
 INCLUDE 		+= -I${HEADERS} -I../common/src
 
+MIOSIX_EABI     := /opt/arm-miosix-eabi/arm-miosix-eabi
+MIOSIX_CFLAGS   := -target arm-none-linux-eabi --sysroot=$(MIOSIX_EABI) -I$(MIOSIX_EABI)/include/ -I$(MIOSIX_EABI)/include/c++/4.7.3/ -I$(MIOSIX_EABI)/include/c++/4.7.3/arm-miosix-eabi/ -D_MIOSIX -D_MIOSIX_GCC_PATCH_VERSION=1 -mcpu=cortex-m3 -mthumb -ffunction-sections -Wall
+
 MODULE		:= kmeans.out
 
 CPP_FILES := $(wildcard src/*.c)
@@ -28,7 +29,7 @@ OBJ_FIX   := obj/main.fixp.o
 
 all: DIR $(MODULE)
 
-.PRECIOUS: obj/%.ll obj/%.o obj/%.s
+.PRECIOUS: obj/%.ll obj/%.o obj/%.s obj/%.init.ll obj/%.vra.ll obj/%.fixp.ll
 
 DIR:
 	@echo ${CPP_FILES}
@@ -36,7 +37,7 @@ DIR:
 	mkdir -p obj
 	mkdir -p stats
 
-$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt
+$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt
 	$(LD) $(OBJ_FLOAT) $(LFLAGS) -o bin/$@
 	$(LD) $(OBJ_FIX) $(LFLAGS) -o bin/$@.fixp
 
@@ -51,10 +52,13 @@ $(OBJ_FLOAT) : obj/main.ll
 	$(CC) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=flttofix$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit -vracompat -dce $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	
+obj/main.tuner.ll : obj/main.init.ll
+	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
-obj/main.fixp.ll : obj/main.init.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg -stats $< -o $@ 2> stats/flttofix.log
+obj/main.fixp.ll : obj/main.tuner.ll
+	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg -stats $(if $(ISDEBUG), -debug-only=taffo-conversion) $< -o $@ 2> stats/flttofix.log
 
 obj/main.err.ll : obj/main.fixp.ll
 	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -errorprop -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
@@ -79,12 +83,12 @@ miosix_o: miosix_cflags DIR $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.f
 miosix_float: miosix_o
 	make clean -C $(MIOSIX_ROOT)
 	make BENCH=$(basename $(MODULE)).o -j 8 -C $(MIOSIX_ROOT)
-	make program -C $(MIOSIX_ROOT)
+	#make program -C $(MIOSIX_ROOT)
 
 miosix_fix: miosix_o
 	make clean -C $(MIOSIX_ROOT)
 	make BENCH=$(basename $(MODULE)).fixp.o -j 8 -C $(MIOSIX_ROOT)
-	make program -C $(MIOSIX_ROOT)
+	#make program -C $(MIOSIX_ROOT)
 
 clean:
 	rm -rf *.o
