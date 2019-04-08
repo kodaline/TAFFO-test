@@ -1,11 +1,5 @@
 add_executable(kmeans
-  src/kmeans.cpp
-  src/distance.cpp
-  src/distance.hpp
-  src/rgbimage.cpp
-  src/rgbimage.hpp
-  src/segmentation.cpp
-  src/segmentation.hpp)
+  src/kmeans.cpp)
 
 set_property(TARGET kmeans PROPERTY CXX_STANDARD 11)
 set_property(TARGET kmeans PROPERTY CXX_STANDARD_REQUIRED ON)

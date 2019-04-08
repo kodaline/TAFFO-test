@@ -83,7 +83,6 @@ int loadRgbImage(const char* fileName, RgbImage* image, float __attribute__((ann
 		return 0;
 	}
 
-  printf("2\n");
 	c = 0;
 	for(i = 0; i < image->h; i++) {
 		pixels[i] = (float*)malloc(image->w * SIZEOF_RGBPIXEL);
