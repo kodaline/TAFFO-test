@@ -21,7 +21,6 @@
 
 #define ANNOTATION_RANGE "range(-1.5707963267948966192313216916397,1.5707963267948966192313216916397)"
 
-#include <boost/math/special_functions/fpclassify.hpp>
 
 int main(int argc, const char* argv[])
 {
