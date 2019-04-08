@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on Apr 10, 2011
 
@@ -10,7 +11,7 @@ import csv
 
 def png2rgb(file):
     r=png.Reader(file);
-    img = r.asRGB()
+    img = r.asRGBA()
     print(file, img)
     return img
 pass
@@ -30,7 +31,8 @@ def rgb2gray(img):
     pixels = []
     for row in img[2]:
         grayRow = []
-        for i in range(0, len(row), 3):
+        skip = (4 if img[3]['alpha'] else 3)
+        for i in range(0, len(row), skip):
             luminance = int(r * row[i] + g * row[i+1] + b * row[i+2] + 0.5) % 256
             for j in range(3): grayRow.append(luminance)
         pass
@@ -44,11 +46,12 @@ def rgbsave(img, file):
     f = open(file, 'w')
     f.write(str(img[0]) + ',' + str(img[1]) + '\n')
 
-    pixels = list(img[2])    
+    pixels = list(img[2])
+    skip = (4 if img[3]['alpha'] else 3)
     for row in pixels:
-        for p in row[:-1]: 
-            f.write(str(p) + ',')
-        f.write(str(p) + '\n')
+        for i in range(0, len(row)-skip, skip): 
+            f.write(str(row[i]) + ',' + str(row[i+1]) + ',' + str(row[i+2]) + ',')
+        f.write(str(row[i]) + ',' + str(row[i+1]) + ',' + str(row[i+2]) + '\n')
     pass
     
     f.write('"' + str(img[3]) + '"')
@@ -62,7 +65,7 @@ def rgbload(file):
     pixels = []
     width = 0
     height = 0
-    meta = {}
+    meta = {'alpha': False}
     for row in csvReader:
         if (i == 0):
             width = int(row[0])
