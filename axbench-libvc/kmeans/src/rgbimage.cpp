@@ -47,7 +47,7 @@ int readCell(FILE *fp, char* w) {
 	return c;
 }
 
-int loadRgbImage(const char* fileName, RgbImage* image, float __attribute__((annotate("range 256.0 0.0")))scale) {
+int loadRgbImage(const char* fileName, RgbImage* image, float __attribute__((annotate("range 256.0 0.0")))scale) __attribute__((annotate("scalar()"))) {
 	int c;
 	int i;
 	int j;
@@ -144,7 +144,7 @@ int loadRgbImage(const char* fileName, RgbImage* image, float __attribute__((ann
 	return 1;
 }
 
-int saveRgbImage(RgbImage* image, const char* fileName, float __attribute__((annotate("range 0 256"))) scale) {
+int saveRgbImage(RgbImage* image, const char* fileName, float __attribute__((annotate("range 0 256"))) scale) __attribute__((annotate("scalar()"))) {
 	int i;
 	int j;
 	FILE *fp;

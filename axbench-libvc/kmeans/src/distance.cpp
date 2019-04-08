@@ -11,7 +11,7 @@
 #include <map>
 
 
-float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) {
+float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) __attribute__((annotate("scalar(range(0, 256))"))) {
 	float __attribute__((annotate("range 0 256"))) r;
 
 	r = 0;
@@ -40,7 +40,7 @@ float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p,
 	return r_tmp;
 }
 
-int pickCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) {
+int pickCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) __attribute__((annotate("scalar()"))) {
 	float d1;
 
 	d1 = euclideanDistance(p, c1);
@@ -51,7 +51,7 @@ int pickCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* 
 	return 1;
 }
 
-void assignCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, Clusters* __attribute__((annotate("range " RANGE_CENTROID))) clusters) {
+void assignCluster(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, Clusters* clusters) __attribute__((annotate("scalar()"))) {
 	int i = 0;
 	int *p2 = (int *)p;
 	float __attribute__((annotate(ANNOTATION_CENTROID))) *centroids = (float *)clusters->centroids;
