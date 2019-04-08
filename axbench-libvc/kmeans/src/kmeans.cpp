@@ -8,8 +8,6 @@
 
 #include <stdio.h>
 #include <string>
-#include "rgbimage.hpp"
-#include "segmentation.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -26,6 +24,7 @@
 
 extern "C" double kernel_func(std::string& inImageName, std::string& outImageName)
 {
+	srand(0xfeedface);
 	RgbImage srcImage;
 
 	initRgbImage(&srcImage);

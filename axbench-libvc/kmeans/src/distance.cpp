@@ -10,14 +10,12 @@
 #include <math.h>
 #include <map>
 
-int count = 0;
-#define MAX_COUNT 1200000
 
 float euclideanDistance(float* __attribute__((annotate(ANNOTATION_RGBPIXEL))) p, float* __attribute__((annotate(ANNOTATION_CENTROID))) c1) {
-	float __attribute__((annotate("signed 0 256"))) r;
+	float __attribute__((annotate("range 0 256"))) r;
 
 	r = 0;
-	double __attribute__((annotate("signed 0 256"))) r_tmp;
+	double __attribute__((annotate("range 0 256"))) r_tmp;
 	
 	/*
 	double dataIn[6];
