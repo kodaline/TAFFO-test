@@ -58,13 +58,20 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 
 
 void do_version(
-	vc::Version::Builder& builder, 
-	std::string label, 
-	std::string& inImageName, 
-	std::string& outImageName)
+	vc::Version::Builder& builder,
+	std::string label,
+	std::string& inImageName,
+	std::string& outImageName,
+	bool split_compile)
 {
 	std::cout << label << " version..." << std::endl;
 	vc::version_ptr_t v = builder.build();
+	if (split_compile) {
+		if (!v->prepareIR()) {
+			std::cout << "libVC compilation failed" << std::endl;
+			return;
+		}
+	}
 	if (!v->compile()) {
 		std::cout << "libVC compilation failed" << std::endl;
 		return;
@@ -121,8 +128,9 @@ int main (int argc, const char* argv[])
 
 	builder._compiler = systemcpp;
 	
-	do_version(builder, "baseline", inImageName, outImageName);
-	do_version(taffoBuilder, "taffo", inImageName, outImageName);
+
+	do_version(builder, "baseline", inImageName, outImageName, false);
+	do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
 
 	return 0;
 }
