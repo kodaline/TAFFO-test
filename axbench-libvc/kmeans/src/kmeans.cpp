@@ -51,7 +51,9 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 #else
 
 
+#include <algorithm>
 #include <libgen.h>
+#include <vector>
 #include "versioningCompiler/Version.hpp"
 #include "versioningCompiler/CompilerImpl/TAFFOCompiler.hpp"
 #include "versioningCompiler/CompilerImpl/SystemCompiler.hpp"
@@ -80,13 +82,16 @@ void do_version(
 	typedef double (*kernel_func_t)(std::string&, std::string&);
 	kernel_func_t taffo_kfp = (kernel_func_t)v->getSymbol("kernel_func");
 	double time_accum = 0;
+	std::vector<double> times;
 	for (int i=0; i<20; i++) {
 		std::string real_out_name;
 		if (i == 0)
 		 	real_out_name = outImageName + "." + label;
-		time_accum += taffo_kfp(inImageName, real_out_name);
+		time_accum = taffo_kfp(inImageName, real_out_name);
+		times.push_back(time_accum);
 	}
-	std::cout << label << " version avg time = " << time_accum / 20.0 << " s" << std::endl;
+	std::sort(times.begin(), times.end());
+	std::cout << label << " version avg time = " << times[times.size()/2] << " s" << std::endl;
 	v->fold();
 }
 
