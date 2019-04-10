@@ -39,7 +39,7 @@ else
   export INSTMIX=$(taffo_setenv_find $1 'bin' 'istr_type')
   
   if [[ -z "$LLVM_DIR" ]]; then
-    LLVM_DIR=$(llvm-config --obj-root 2> /dev/null)
+    LLVM_DIR=$(llvm-config --prefix 2> /dev/null)
     if [[ $? -ne 0 ]]; then
       printf "*** WARNING ***\nCannot set LLVM_DIR using llvm-config\n"
     fi
