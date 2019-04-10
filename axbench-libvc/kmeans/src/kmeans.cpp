@@ -56,7 +56,7 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 #include <vector>
 #include "versioningCompiler/Version.hpp"
 #include "versioningCompiler/CompilerImpl/TAFFOCompiler.hpp"
-#include "versioningCompiler/CompilerImpl/SystemCompiler.hpp"
+#include "versioningCompiler/CompilerImpl/SystemCompilerOptimizer.hpp"
 
 
 void do_version(
@@ -113,8 +113,8 @@ int main (int argc, const char* argv[])
 		"taffo", "", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
 	taffo->setDisableVRA(true);
 	taffo->setRestrictiveFunctionCloning(true);
-	vc::compiler_ptr_t systemcpp = vc::make_compiler<vc::SystemCompiler>(
-		"baseline", "c++", basedir, basedir+"/test.log", "/usr/bin");
+	vc::compiler_ptr_t systemcpp = vc::make_compiler<vc::SystemCompilerOptimizer>(
+		"baseline", "clang++", "opt", basedir, basedir+"/test.log", "/usr/bin", "/usr/bin");
 
 	vc::Version::Builder builder;
 	builder.addSourceFile(basedir + "/../src/kmeans.cpp");
@@ -134,7 +134,7 @@ int main (int argc, const char* argv[])
 	builder._compiler = systemcpp;
 	
 
-	do_version(builder, "baseline", inImageName, outImageName, false);
+	do_version(builder, "baseline", inImageName, outImageName, true);
 	do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
 
 	return 0;
