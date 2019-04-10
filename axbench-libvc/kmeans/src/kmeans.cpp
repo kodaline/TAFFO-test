@@ -80,18 +80,18 @@ void do_version(
 	}
 
 	typedef double (*kernel_func_t)(std::string&, std::string&);
-	kernel_func_t taffo_kfp = (kernel_func_t)v->getSymbol("kernel_func");
+	kernel_func_t kfp = (kernel_func_t)v->getSymbol("kernel_func");
 	double time_accum = 0;
 	std::vector<double> times;
-	for (int i=0; i<20; i++) {
+	for (int i=0; i<21; i++) {
 		std::string real_out_name;
 		if (i == 0)
 		 	real_out_name = outImageName + "." + label;
-		time_accum = taffo_kfp(inImageName, real_out_name);
+		time_accum = kfp(inImageName, real_out_name);
 		times.push_back(time_accum);
 	}
 	std::sort(times.begin(), times.end());
-	std::cout << label << " version avg time = " << times[times.size()/2] << " s" << std::endl;
+	std::cout << label << " version median time = " << times[times.size()/2] << " s" << std::endl;
 	v->fold();
 }
 
