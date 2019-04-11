@@ -4,17 +4,21 @@
  * Created on: Sep 9, 2013
  * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
-#include "rgb_image.hpp"
-#include "convolution.hpp"
 #include <iostream>
 #include <cmath>
-#include "benchmark.hpp"
 
+
+#ifdef LIBVC_DYN
+
+
+#include "rgb_image.hpp"
+#include "convolution.hpp"
+#include "benchmark.hpp"
 #include "convolution.cpp"
 #include "rgb_image.cpp"
 
 
-int main ( int argc, const char* argv[])
+extern "C" double kernel_func(std::string& inImageName, std::string& outImageName)
 {
 	int x, y;
 	float __attribute((annotate("range -128 127"))) s = 0;
@@ -31,14 +35,8 @@ int main ( int argc, const char* argv[])
 		{0, 0, 0}
 	};
 
-
-	#ifdef _MIOSIX
-	  srcImagePtr->loadRgbImage( INPUT ); // source image
-	  dstImagePtr->loadRgbImage( INPUT ); // destination image
-	#else
-	  srcImagePtr->loadRgbImage( argv[1] ); // source image
-	  dstImagePtr->loadRgbImage( argv[1] ); // destination image
-	#endif
+  srcImagePtr->loadRgbImage(inImageName); // source image
+	dstImagePtr->loadRgbImage(inImageName); // destination image
 
 	srcImagePtr->makeGrayscale( ); // convert the source file to grayscale
 
@@ -107,7 +105,105 @@ int main ( int argc, const char* argv[])
 	}
 	
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
-	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
-
-	return 0 ;
+	
+	if (!outImageName.empty())
+	  dstImagePtr->saveRgbImage(outImageName, std::sqrt(256 * 256 + 256 * 256)) ;
+	
+	return ((double)kernel_time) / 1000000000.0;
 }
+
+
+#else
+
+
+#include <algorithm>
+#include <libgen.h>
+#include <vector>
+#include "versioningCompiler/Version.hpp"
+#include "versioningCompiler/CompilerImpl/TAFFOCompiler.hpp"
+#include "versioningCompiler/CompilerImpl/SystemCompilerOptimizer.hpp"
+
+
+void do_version(
+	vc::Version::Builder& builder,
+	std::string label,
+	std::string& inImageName,
+	std::string& outImageName,
+	bool split_compile)
+{
+	std::cout << label << " version..." << std::endl;
+	vc::version_ptr_t v = builder.build();
+	if (split_compile) {
+		if (!v->prepareIR()) {
+			std::cout << "libVC compilation failed" << std::endl;
+			return;
+		}
+	}
+	if (!v->compile()) {
+		std::cout << "libVC compilation failed" << std::endl;
+		return;
+	}
+
+	typedef double (*kernel_func_t)(std::string&, std::string&);
+	kernel_func_t kfp = (kernel_func_t)v->getSymbol("kernel_func");
+	double time_accum = 0;
+	std::vector<double> times;
+	for (int i=0; i<21; i++) {
+		std::string real_out_name;
+		if (i == 0)
+		 	real_out_name = outImageName + "." + label;
+		time_accum = kfp(inImageName, real_out_name);
+		times.push_back(time_accum);
+	}
+	std::sort(times.begin(), times.end());
+	std::cout << label << " version median time = " << times[times.size()/2] << " s" << std::endl;
+	v->fold();
+}
+
+
+int main (int argc, const char* argv[])
+{
+	std::string inImageName  = argv[1];
+	std::string outImageName = argv[2];
+	FILE *infp = fopen(inImageName.c_str(), "r");
+	int w, h;
+	fscanf(infp, "%d,%d", &w, &h);
+	fclose(infp);
+
+	char *selfpath = strdup(argv[0]);
+	std::string basedir = dirname(selfpath);
+	free(selfpath);
+	
+	std::shared_ptr<vc::TAFFOCompiler> taffo = std::make_shared<vc::TAFFOCompiler>(
+		"taffo", "", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
+	taffo->setDisableVRA(true);
+	vc::compiler_ptr_t systemcpp = vc::make_compiler<vc::SystemCompilerOptimizer>(
+		"baseline", "clang++", "opt", basedir, basedir+"/test.log", "/usr/bin", "/usr/bin");
+
+	vc::Version::Builder builder;
+	builder.addSourceFile(basedir + "/../src/sobel.cpp");
+	builder.addIncludeDir(basedir + "/../src");
+	builder.addIncludeDir(basedir + "/../../common/src");
+	builder.addFunctionFlag("LIBVC_DYN");
+	builder._functionName.push_back("kernel_func");
+	builder._optionList.push_back(vc::Option("o", "-O", "3"));
+	std::string imgw = std::to_string(w);
+	std::string imgh = std::to_string(h);
+	builder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
+	builder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
+
+	vc::Version::Builder taffoBuilder(builder);
+	taffoBuilder._compiler = taffo;
+
+	builder._compiler = systemcpp;
+	
+
+	do_version(builder, "baseline", inImageName, outImageName, true);
+	do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
+
+	return 0;
+}
+
+
+#endif
+

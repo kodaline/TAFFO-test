@@ -67,20 +67,20 @@ int Image::loadRgbImage(std::string filename)
 
 	if(DEBUG)
 	{
-		std::cout << "# Width:  " << this->width ;
-		std::cout << "# Height: " << this->height  << std::endl ;
+		std::cout << "# Width:  " << IMAGE_WIDTH(this) ;
+		std::cout << "# Height: " << IMAGE_HEIGHT(this) << std::endl ;
 	} 
 
-  this->_pixels = (void*)malloc(this->height * (this->width * 3) * sizeof(float));
+  this->_pixels = (void*)malloc(IMAGE_HEIGHT(this) * (IMAGE_WIDTH(this) * 3) * sizeof(float));
 
 	// We assume there is a newline after each row
-	for (int h = 0 ; h < this->height ; h++)
+	for (int h = 0 ; h < IMAGE_HEIGHT(this); h++)
 	{
 		std::getline(imageFile, line) ;
 		std::vector<int> currRowString;
 		tokenize(currRowString, line);
 
-		for(int w = 0 ; w < this->width ; w++)
+		for(int w = 0 ; w < IMAGE_WIDTH(this); w++)
 		{
 			int index = w * 3 ;
 			float r = currRowString[index++];
@@ -108,11 +108,11 @@ int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("ra
 	std::ofstream outFile ;
 	outFile.open(outFilename.c_str()) ;
 
-	outFile << this->width << "," << this->height << std::endl ;
+	outFile << IMAGE_WIDTH(this) << "," << IMAGE_HEIGHT(this) << std::endl ;
 
-	for(int h = 0 ; h < this->height ; h++)
+	for(int h = 0 ; h < IMAGE_HEIGHT(this); h++)
 	{
-		for(int w = 0 ; w < (this->width - 1); w++)
+		for(int w = 0 ; w < (IMAGE_WIDTH(this) - 1); w++)
 		{
 			// Write Red
 			int red   = (int)(this->getPixel_r(w, h) * scale) ;
@@ -133,9 +133,9 @@ int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("ra
 			
 		}
 
-		int red   = (int)(this->getPixel_r(this->width - 1, h) * scale) ;
-		int green = (int)(this->getPixel_g(this->width - 1, h) * scale);
-		int blue  = (int)(this->getPixel_b(this->width - 1, h) * scale) ;
+		int red   = (int)(this->getPixel_r(IMAGE_WIDTH(this) - 1, h) * scale) ;
+		int green = (int)(this->getPixel_g(IMAGE_WIDTH(this) - 1, h) * scale);
+		int blue  = (int)(this->getPixel_b(IMAGE_WIDTH(this) - 1, h) * scale) ;
 
 
 		// Write Red
@@ -161,9 +161,9 @@ void Image::makeGrayscale()
 	float __attribute((annotate("range -511 511"))) gC = 0.59 / 256.0 ;
 	float __attribute((annotate("range -511 511"))) bC = 0.11 / 256.0 ;
 
-	for(int h = 0 ; h < this->height ; h++)
+	for(int h = 0 ; h < IMAGE_HEIGHT(this) ; h++)
 	{
-		for(int w = 0 ; w < this->width ; w++)
+		for(int w = 0 ; w < IMAGE_WIDTH(this); w++)
 		{
 			luminance = ( rC * this->getPixel_b(w, h) ) + 
 						( gC * this->getPixel_g(w, h) ) + 

@@ -30,15 +30,15 @@
 #define HALF_WINDOW(imagePtr, x, y, window) {                                                                           \
     window[0][0] = (x == 0 || y == 0                                        ) ? 0 : imagePtr->getPixel_r(x - 1, y - 1);  \
     window[0][1] = (y == 0                                                  ) ? 0 : imagePtr->getPixel_r(x, y - 1);      \
-    window[0][2] = (x == imagePtr->width -1 || y == 0                       ) ? 0 : imagePtr->getPixel_r(x + 1, y - 1);  \
+    window[0][2] = (x == IMAGE_WIDTH(imagePtr) -1 || y == 0                       ) ? 0 : imagePtr->getPixel_r(x + 1, y - 1);  \
 \
     window[1][0] = (x == 0                                                  ) ? 0 : imagePtr->getPixel_r(x - 1, y);      \
     window[1][1] =                                                                  imagePtr->getPixel_r(x, y);          \
-    window[1][2] = (x == imagePtr->width -1                                 ) ? 0 : imagePtr->getPixel_r(x + 1, y);      \
+    window[1][2] = (x == IMAGE_WIDTH(imagePtr) -1                                 ) ? 0 : imagePtr->getPixel_r(x + 1, y);      \
 \
-    window[2][0] = (x == 0 || y == imagePtr->height - 1                     ) ? 0 : imagePtr->getPixel_r(x - 1, y + 1);  \
-    window[2][1] = (y == imagePtr->height - 1                               ) ? 0 : imagePtr->getPixel_r(x, y + 1);      \
-    window[2][2] = (x == imagePtr->width -1 || y == imagePtr->height - 1    ) ? 0 : imagePtr->getPixel_r(x + 1, y + 1);  \
+    window[2][0] = (x == 0 || y == IMAGE_HEIGHT(imagePtr) - 1                     ) ? 0 : imagePtr->getPixel_r(x - 1, y + 1);  \
+    window[2][1] = (y == IMAGE_HEIGHT(imagePtr) - 1                               ) ? 0 : imagePtr->getPixel_r(x, y + 1);      \
+    window[2][2] = (x == IMAGE_WIDTH(imagePtr) -1 || y == IMAGE_HEIGHT(imagePtr) - 1    ) ? 0 : imagePtr->getPixel_r(x + 1, y + 1);  \
 }
 
  #endif
