@@ -6,6 +6,7 @@
  */
 #include <iostream>
 #include <cmath>
+#include <cstring>
 
 
 #ifdef LIBVC_DYN
