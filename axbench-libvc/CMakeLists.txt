@@ -5,5 +5,6 @@ project(axbench-libvc)
 add_subdirectory(libVersioningCompiler)
 add_subdirectory(inversek2j)
 add_subdirectory(kmeans)
+add_subdirectory(sobel)
 
 
