@@ -98,7 +98,7 @@ int Image::loadRgbImage(std::string filename)
 	return 1 ;
 }
 
-int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("range -1024 1024"))) scale)
+int Image::saveRgbImage(std::string outFilename, float __attribute((annotate("range -1024 1024"))) scale) __attribute((annotate("scalar()")))
 {
 	if(DEBUG)
 	{

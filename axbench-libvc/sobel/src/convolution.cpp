@@ -36,7 +36,7 @@ float convolve(float w[][3],
 	return r ;
 }
 
-float sobel(float w[][3])
+float sobel(float w[][3]) __attribute((annotate("scalar(range(-128, 127))")))
 {
 	float __attribute((annotate("range -128 127"))) sx ;
 	float __attribute((annotate("range -128 127"))) sy ;
