@@ -47,12 +47,12 @@ typedef struct OptionData_ {
 OptionData *data;
 fptype *s;      // spot price  // TEMPORARY: USED ONLY BY PARSER
 fptype *stk;    // strike price // TEMPORARY: USED ONLY BY PARSER
-fptype __attribute((annotate("scalar(range(0.1,1))"))) *prices;
+fptype __attribute((annotate("scalar()"))) *prices;
 int numOptions;
 
 int    * otype;
-fptype __attribute((annotate("scalar(range(0.7,0.75) error(1e-8))"))) *sptprice;
-fptype __attribute((annotate("scalar(range(0.75,0.8) error(1e-8))"))) *strike; // range(0.33,1.0)
+fptype __attribute((annotate("scalar(range(0.8,0.84) error(1e-8))"))) *sptprice;
+fptype __attribute((annotate("scalar(range(0.75,0.92) error(1e-8))"))) *strike; // range(0.33,1.0)
 fptype __attribute((annotate("scalar(range(0.0275,0.1) error(0))"))) *rate;
 fptype __attribute((annotate("scalar(range(0.5,0.65) error(1e-8))"))) *volatility; // range(0.05,0.65)
 fptype __attribute((annotate("scalar(range(0.1,1) error(0))"))) *otime;
@@ -70,10 +70,10 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
 {
     int sign;
 
-    fptype __attribute((annotate("scalar()"))) OutputX;
+    fptype __attribute((annotate("scalar()"))) OutputX; //range(-106.998909,107.998909)
     fptype __attribute((annotate("scalar()"))) xInput;
     fptype __attribute((annotate("scalar()"))) xNPrimeofX;
-    fptype __attribute((annotate("scalar()"))) expValues;
+    fptype __attribute((annotate("scalar()"))) expValues; //range(0.144059,6.941593)
     fptype __attribute((annotate("scalar()"))) xK2;
     fptype __attribute((annotate("scalar()"))) xK2_2, xK2_3;
     fptype __attribute((annotate("scalar()"))) xK2_4, xK2_5;
@@ -140,11 +140,13 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 			    fptype __attribute((annotate("scalar()"))) rate,
                             fptype __attribute((annotate("scalar()"))) volatility,
 			    fptype __attribute((annotate("scalar()"))) time,
-                            int otype, float timet,
-                            fptype* N1, fptype* N2 )
+                            int otype,
+			    float __attribute((annotate("scalar()"))) timet,
+                            fptype* __attribute((annotate("scalar(disabled)"))) N1,
+			    fptype* __attribute((annotate("scalar(disabled)"))) N2 )
 {
     //printf("BlkSchlsEqEuroNoDiv %f %f %f %f %f %f\n", sptprice, strike, rate, volatility, time, timet);
-    fptype __attribute((annotate("scalar()"))) OptionPrice;
+    fptype __attribute((annotate("scalar()"))) OptionPrice; //range(-128.071959,128.071959)
 
     // local private working variables for the calculation
     //fptype xStockPrice;
@@ -162,11 +164,13 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
     fptype __attribute((annotate("scalar()"))) xDen;
     fptype __attribute((annotate("scalar()"))) d1;
     fptype __attribute((annotate("scalar()"))) d2;
-    fptype __attribute((annotate("scalar()"))) FutureValueX;
+    fptype __attribute((annotate("scalar()"))) FutureValueX; //range(0.678628,0.797803)
     fptype __attribute((annotate("scalar()"))) NofXd1;
     fptype __attribute((annotate("scalar()"))) NofXd2;
     fptype __attribute((annotate("scalar()"))) NegNofXd1;
     fptype __attribute((annotate("scalar()"))) NegNofXd2;
+
+    fptype __attribute((annotate("scalar()"))) asd1;
 
     //xStockPrice = sptprice;
     //xStrikePrice = strike;
@@ -177,7 +181,8 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 
     xSqrtTime = sqrt(xTime);
 
-    logValues = log( sptprice / strike );
+    asd1 = sptprice / strike;
+    logValues = log( asd1 /*sptprice / strike*/ );
 
     xLogTerm = logValues;
 
@@ -189,10 +194,8 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
     xD1 = xD1 * xTime;
     xD1 = xD1 + xLogTerm;
 
-
-
     xDen = xVolatility * xSqrtTime;
-    xD1 = xD1 / xDen;
+    xD1 = xD1 / xDen; // FIXME
     xD2 = xD1 -  xDen;
 
     d1 = xD1;
@@ -239,15 +242,15 @@ int bs_thread(void *tid_ptr) {
     int tid = *(int *)tid_ptr;
     int start = tid * (numOptions);
     int end = start + (numOptions);
-    fptype __attribute((annotate("target('price_orig') scalar()"))) price_orig;
+    fptype __attribute((annotate("target('price_orig') scalar(range(-128.071959,128.071959))"))) price_orig;
 
     for (j=0; j<NUM_RUNS; j++) {
         for (i=start; i<end; i++) {
             /* Calling main function to calculate option value based on
              * Black & Scholes's equation.
              */
-            fptype __attribute((annotate("scalar(range(0.1,1))"))) N1,
-	      __attribute((annotate("scalar(range(0.1,1))"))) N2;
+            fptype __attribute((annotate("scalar(disabled range(-128.071959,128.071959))"))) N1,
+	      __attribute((annotate("scalar(disabled range(-128.071959,128.071959))"))) N2;
             float __attribute((annotate("scalar(range(0,1) error(0))"))) timet = 0;
 /*
             double dataIn[6];
