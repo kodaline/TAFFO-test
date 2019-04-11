@@ -127,8 +127,8 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 void do_version(
 	vc::Version::Builder& builder,
 	std::string label,
-	std::string& inImageName,
-	std::string& outImageName,
+	std::string inImageName,
+	std::string outImageName,
 	bool split_compile)
 {
 	std::cout << label << " version..." << std::endl;
@@ -150,7 +150,7 @@ void do_version(
 	std::vector<double> times;
 	for (int i=0; i<21; i++) {
 		std::string real_out_name;
-		if (i == 0)
+		if (i == 0 && !outImageName.empty())
 		 	real_out_name = outImageName + "." + label;
 		time_accum = kfp(inImageName, real_out_name);
 		times.push_back(time_accum);
@@ -189,17 +189,24 @@ int main (int argc, const char* argv[])
 	builder._optionList.push_back(vc::Option("o", "-O", "3"));
 	std::string imgw = std::to_string(w);
 	std::string imgh = std::to_string(h);
-	builder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
-	builder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
 
 	vc::Version::Builder taffoBuilder(builder);
 	taffoBuilder._compiler = taffo;
 
 	builder._compiler = systemcpp;
-	
+
+	vc::Version::Builder defineBuilder(builder);
+	builder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
+	builder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
+
+	vc::Version::Builder taffoDefineBuilder(taffoBuilder);
+	taffoDefineBuilder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
+	taffoDefineBuilder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
 
 	do_version(builder, "baseline", inImageName, outImageName, true);
 	do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
+	do_version(defineBuilder, "baseline+define", inImageName, "", true);
+	do_version(taffoDefineBuilder, "taffo+define", inImageName, "", true);
 
 	return 0;
 }
