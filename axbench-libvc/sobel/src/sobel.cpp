@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstring>
+#include "benchmark.hpp"
 
 
 #ifdef LIBVC_DYN
@@ -14,7 +15,6 @@
 
 #include "rgb_image.hpp"
 #include "convolution.hpp"
-#include "benchmark.hpp"
 #include "convolution.cpp"
 #include "rgb_image.cpp"
 
@@ -125,7 +125,7 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 #include "versioningCompiler/CompilerImpl/SystemCompilerOptimizer.hpp"
 
 
-void do_version(
+double do_version(
 	vc::Version::Builder& builder,
 	std::string label,
 	std::string inImageName,
@@ -134,16 +134,18 @@ void do_version(
 {
 	std::cout << label << " version..." << std::endl;
 	vc::version_ptr_t v = builder.build();
+	AxBenchTimer compile_time;
 	if (split_compile) {
 		if (!v->prepareIR()) {
 			std::cout << "libVC compilation failed" << std::endl;
-			return;
+			return -1.0;
 		}
 	}
 	if (!v->compile()) {
 		std::cout << "libVC compilation failed" << std::endl;
-		return;
+		return -1.0;
 	}
+	double comp_t = compile_time.nanosecondsSinceInit() / 1000000000.0;
 
 	typedef double (*kernel_func_t)(std::string&, std::string&);
 	kernel_func_t kfp = (kernel_func_t)v->getSymbol("kernel_func");
@@ -159,6 +161,7 @@ void do_version(
 	std::sort(times.begin(), times.end());
 	std::cout << label << " version median time = " << times[times.size()/2] << " s" << std::endl;
 	v->fold();
+	return comp_t;
 }
 
 
@@ -206,9 +209,11 @@ int main (int argc, const char* argv[])
 	taffoDefineBuilder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
 
 	do_version(builder, "baseline", inImageName, outImageName, true);
-	do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
+	double compile_t = do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
 	do_version(defineBuilder, "baseline+define", inImageName, "", true);
 	do_version(taffoDefineBuilder, "taffo+define", inImageName, "", true);
+
+	std::cerr << "compilation time: " << compile_t << " s" << std::endl;
 
 	return 0;
 }
