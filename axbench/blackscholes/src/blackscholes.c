@@ -146,7 +146,7 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 			    fptype* __attribute((annotate("scalar(disabled)"))) N2 )
 {
     //printf("BlkSchlsEqEuroNoDiv %f %f %f %f %f %f\n", sptprice, strike, rate, volatility, time, timet);
-    fptype __attribute((annotate("scalar()"))) OptionPrice; //range(-128.071959,128.071959)
+    fptype __attribute((annotate("scalar()"))) OptionPrice;
 
     // local private working variables for the calculation
     //fptype xStockPrice;
@@ -164,13 +164,11 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
     fptype __attribute((annotate("scalar()"))) xDen;
     fptype __attribute((annotate("scalar()"))) d1;
     fptype __attribute((annotate("scalar()"))) d2;
-    fptype __attribute((annotate("scalar()"))) FutureValueX; //range(0.678628,0.797803)
+    fptype __attribute((annotate("scalar()"))) FutureValueX;
     fptype __attribute((annotate("scalar()"))) NofXd1;
     fptype __attribute((annotate("scalar()"))) NofXd2;
     fptype __attribute((annotate("scalar()"))) NegNofXd1;
     fptype __attribute((annotate("scalar()"))) NegNofXd2;
-
-    fptype __attribute((annotate("scalar()"))) asd1;
 
     //xStockPrice = sptprice;
     //xStrikePrice = strike;
@@ -181,8 +179,7 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 
     xSqrtTime = sqrt(xTime);
 
-    asd1 = sptprice / strike;
-    logValues = log( asd1 /*sptprice / strike*/ );
+    logValues = log( sptprice / strike );
 
     xLogTerm = logValues;
 
@@ -195,7 +192,7 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
     xD1 = xD1 + xLogTerm;
 
     xDen = xVolatility * xSqrtTime;
-    xD1 = xD1 / xDen; // FIXME
+    xD1 = xD1 / xDen;
     xD2 = xD1 -  xDen;
 
     d1 = xD1;
@@ -249,8 +246,8 @@ int bs_thread(void *tid_ptr) {
             /* Calling main function to calculate option value based on
              * Black & Scholes's equation.
              */
-            fptype __attribute((annotate("scalar(disabled range(-128.071959,128.071959))"))) N1,
-	      __attribute((annotate("scalar(disabled range(-128.071959,128.071959))"))) N2;
+            fptype __attribute((annotate("scalar(disabled)"))) N1,
+	      __attribute((annotate("scalar(disabled)"))) N2;
             float __attribute((annotate("scalar(range(0,1) error(0))"))) timet = 0;
 /*
             double dataIn[6];
