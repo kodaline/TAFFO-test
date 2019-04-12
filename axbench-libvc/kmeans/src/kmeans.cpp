@@ -59,25 +59,27 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 #include "versioningCompiler/CompilerImpl/SystemCompilerOptimizer.hpp"
 
 
-void do_version(
+double do_version(
 	vc::Version::Builder& builder,
 	std::string label,
-	std::string& inImageName,
-	std::string& outImageName,
+	std::string inImageName,
+	std::string outImageName,
 	bool split_compile)
 {
 	std::cout << label << " version..." << std::endl;
 	vc::version_ptr_t v = builder.build();
+	AxBenchTimer compile_time;
 	if (split_compile) {
 		if (!v->prepareIR()) {
 			std::cout << "libVC compilation failed" << std::endl;
-			return;
+			return -1.0;
 		}
 	}
 	if (!v->compile()) {
 		std::cout << "libVC compilation failed" << std::endl;
-		return;
+		return -1.0;
 	}
+	double comp_t = compile_time.nanosecondsSinceInit() / 1000000000.0;
 
 	typedef double (*kernel_func_t)(std::string&, std::string&);
 	kernel_func_t kfp = (kernel_func_t)v->getSymbol("kernel_func");
@@ -93,6 +95,7 @@ void do_version(
 	std::sort(times.begin(), times.end());
 	std::cout << label << " version median time = " << times[times.size()/2] << " s" << std::endl;
 	v->fold();
+	return comp_t;
 }
 
 
@@ -125,17 +128,26 @@ int main (int argc, const char* argv[])
 	builder._optionList.push_back(vc::Option("o", "-O", "3"));
 	std::string imgw = std::to_string(w);
 	std::string imgh = std::to_string(h);
-	builder.addDefine("IMAGE_W", imgw.c_str());
-	builder.addDefine("IMAGE_H", imgh.c_str());
 
 	vc::Version::Builder taffoBuilder(builder);
 	taffoBuilder._compiler = taffo;
 
 	builder._compiler = systemcpp;
-	
+
+	vc::Version::Builder defineBuilder(builder);
+	builder.addDefine("IMAGE_W", imgw.c_str());
+	builder.addDefine("IMAGE_H", imgh.c_str());
+
+	vc::Version::Builder taffoDefineBuilder(taffoBuilder);
+	taffoDefineBuilder.addDefine("IMAGE_W", imgw.c_str());
+	taffoDefineBuilder.addDefine("IMAGE_H", imgh.c_str());
 
 	do_version(builder, "baseline", inImageName, outImageName, true);
-	do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
+	double compile_t = do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
+	do_version(defineBuilder, "baseline+define", inImageName, "", true);
+	do_version(taffoDefineBuilder, "taffo+define", inImageName, "", true);
+
+	std::cout << "compilation time: " << compile_t << " s" << std::endl;
 
 	return 0;
 }

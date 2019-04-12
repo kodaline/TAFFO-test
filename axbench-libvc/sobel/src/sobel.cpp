@@ -213,7 +213,7 @@ int main (int argc, const char* argv[])
 	do_version(defineBuilder, "baseline+define", inImageName, "", true);
 	do_version(taffoDefineBuilder, "taffo+define", inImageName, "", true);
 
-	std::cerr << "compilation time: " << compile_t << " s" << std::endl;
+	std::cout << "compilation time: " << compile_t << " s" << std::endl;
 
 	return 0;
 }

@@ -5,7 +5,7 @@ export LANG=en_US.UTF-8
 
 
 if [[ -z $FORMAT ]]; then
-  FORMAT='%25s %12s %12s %12s %12s %12s%12s\n'
+  FORMAT='%25s %12s %12s %12s %12s %12s%12s %12s\n'
 fi
 
 
@@ -25,7 +25,7 @@ rm -rf data/output
 mkdir -p data/output
 benchmark=sobel
 
-printf "$FORMAT" "" "T_fix" "T_flt" "T_fix_def" "T_flo_def" "E%" 'EA'
+printf "$FORMAT" "" "T_fix" "T_flt" "T_fix_def" "T_flo_def" "E%" 'EA' 'T_build'
 
 for f in ./../common/img/*.rgb
 do
@@ -39,6 +39,7 @@ do
     mfix=$(match_time "$res" 'taffo version median')
     mfloatdef=$(match_time "$res" 'baseline\+define version median')
     mfixdef=$(match_time "$res" 'taffo\+define version median')
+    mbuildt=$(match_time "$res" 'compilation time')
   else
     mfloat='0'
     mfix='0'
@@ -54,5 +55,5 @@ do
     mrel_error='0'
   fi
   
-  printf "$FORMAT" "${benchmark}_${filename}" $mfix $mfloat $mfixdef $mfloatdef "$mrel_error" '-'
+  printf "$FORMAT" "${benchmark}_${filename}" $mfix $mfloat $mfixdef $mfloatdef "$mrel_error" '-' $mbuildt
 done
