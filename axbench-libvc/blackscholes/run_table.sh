@@ -5,7 +5,7 @@ export LANG=en_US.UTF-8
 
 
 if [[ -z $FORMAT ]]; then
-  FORMAT='%25s %12s %12s %12s %12s %12s%12s %12s\n'
+  FORMAT='%32s %12s %12s %12s %12s %12s%12s %12s\n'
 fi
 
 
@@ -13,6 +13,17 @@ match_time()
 {
   matchstr="$2"
   regex="${matchstr}[^0-9\n]*([0-9.]+)"
+  if [[ ( $1 =~ $regex ) ]]; then
+    echo ${BASH_REMATCH[1]}
+  else
+    echo -1
+  fi
+}
+
+
+match_error()
+{
+  regex="^[^${2:0:1}]*$2[^0-9]*([0-9.]+)"
   if [[ ( $1 =~ $regex ) ]]; then
     echo ${BASH_REMATCH[1]}
   else
@@ -45,15 +56,14 @@ do
     mfix='0'
   fi
 
-  # if [[ -z $NOERROR ]]; then
-  #   python3 ./../common/scripts/png2data.py png data/output/${filename}_${benchmark}.data.baseline data/output/${filename}_${benchmark}.baseline.png > out1.tmp
-  #   python3 ./../common/scripts/png2data.py png data/output/${filename}_${benchmark}.data.taffo data/output/${filename}_${benchmark}.taffo.png > out2.tmp
-	#
-  #   compare -metric RMSE data/output/${filename}_${benchmark}.baseline.png data/output/${filename}_${benchmark}.taffo.png /dev/null > tmp.log 2> tmp.err
-  #   mrel_error=$(awk '{ printf("%0.6f", substr($2, 2, length($2) - 2) * 100) }' tmp.err)
-  # else
+  if [[ -z $NOERROR ]]; then
+    error=$(./scripts/qos.py data/output/${filename}_${benchmark}.data.baseline data/output/${filename}_${benchmark}.data.taffo)
+    mabs_error=$(match_error "$error" 'Absolute error')
+    mrel_error=$(match_error "$error" 'Relative error')
+  else
+    mabs_error='0'
     mrel_error='0'
-  # fi
+  fi
 
-  printf "$FORMAT" "${benchmark}_${filename}" $mfix $mfloat $mfixdef $mfloatdef "$mrel_error" '-' $mbuildt
+  printf "$FORMAT" "${filename}" $mfix $mfloat $mfixdef $mfloatdef "$mrel_error" "$mabs_error" $mbuildt
 done
