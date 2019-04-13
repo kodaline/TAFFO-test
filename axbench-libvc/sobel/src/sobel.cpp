@@ -179,11 +179,11 @@ int main (int argc, const char* argv[])
 	free(selfpath);
 	
 	std::shared_ptr<vc::TAFFOCompiler> taffo = std::make_shared<vc::TAFFOCompiler>(
-		"taffo", "", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
+		"taffo", "/usr/local", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
 	taffo->setDisableVRA(true);
 	taffo->setRestrictiveFunctionCloning(true);
 	vc::compiler_ptr_t systemcpp = vc::make_compiler<vc::SystemCompilerOptimizer>(
-		"baseline", "clang++", "opt", basedir, basedir+"/test.log", "/usr/bin", "/usr/bin");
+		"baseline", "clang++", "opt", basedir, basedir+"/test.log", "/usr/local/bin", "/usr/local/bin");
 
 	vc::Version::Builder builder;
 	builder.addSourceFile(basedir + "/../src/sobel.cpp");

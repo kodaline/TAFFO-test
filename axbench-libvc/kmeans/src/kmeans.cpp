@@ -1,6 +1,6 @@
 /*
  * kmeans.c
- * 
+ *
  * Created on: Sep 9, 2013
  * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
@@ -33,14 +33,14 @@ extern "C" double kernel_func(std::string& inImageName, std::string& outImageNam
 
   Clusters clusters;
   initClusters(&clusters, 6, 1);
-  
+
   AxBenchTimer timer;
 	segmentImage(&srcImage, &clusters, 1);
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 
 	if (outImageName.size())
 		saveRgbImage(&srcImage, outImageName.c_str(), 255);
-  
+
   freeClusters(&clusters);
 	freeRgbImage(&srcImage);
 
@@ -111,7 +111,7 @@ int main (int argc, const char* argv[])
 	char *selfpath = strdup(argv[0]);
 	std::string basedir = dirname(selfpath);
 	free(selfpath);
-	
+
 	std::shared_ptr<vc::TAFFOCompiler> taffo = std::make_shared<vc::TAFFOCompiler>(
 		"taffo", "", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
 	taffo->setDisableVRA(true);
