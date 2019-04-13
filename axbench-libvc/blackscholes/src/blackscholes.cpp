@@ -103,14 +103,10 @@ extern "C" double kernel_func(std::string& inputFile, std::string& outputFile)
 	int rv = 0; // utility to check print error
 	srand(0xfeedface);
 
-	const char* in = inputFile.c_str();
-
-	std::cerr << "inputFile: " << in << '\n';
-
 	//Read input data from file
-	file = fopen(in, "r");
+	file = fopen(inputFile.c_str(), "r");
 	if(file == NULL) {
-		printf("ERROR: Unable to open file `%s'.\n", in);
+		printf("ERROR: Unable to open file `%s'.\n", inputFile.c_str());
 		exit(1);
 	}
 	rv = fscanf(file, "%i", &numOptions);
@@ -171,33 +167,36 @@ extern "C" double kernel_func(std::string& inputFile, std::string& outputFile)
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 
 	//Write prices to output file
-	file = fopen(outputFile.c_str(), "w");
-	if(file == NULL) {
-		printf("ERROR: Unable to open file `%s'.\n", outputFile.c_str());
-		exit(1);
-	}
-	//rv = fprintf(file, "%i\n", numOptions);
-	if(rv < 0) {
-		printf("ERROR: Unable to write to file `%s'.\n", outputFile.c_str());
-		fclose(file);
-		exit(1);
-	}
-	for(i=0; i<numOptions; i++) {
-		rv = fprintf(file, "%.18f\n", prices[i]);
-		if(rv < 0) {
-			printf("ERROR: Unable to write to file `%s'.\n", outputFile.c_str());
-			fclose(file);
-			exit(1);
+	if (!outputFile.empty()) {
+		file = fopen(outputFile.c_str(), "w");
+		if(file == NULL) {
+			printf("ERROR: Unable to open file `%s'.\n", outputFile.c_str());
 		}
+		// // rv = fprintf(file, "%i\n", numOptions);
+		// if(rv < 0) {
+		// 	printf("ERROR: Unable to write to file `%s'.\n", outputFile.c_str());
+		// 	fclose(file);
+		// 	exit(1);
+		// }
+		for(i=0; i<numOptions; i++) {
+			rv = fprintf(file, "%.18f\n", prices[i]);
+			if(rv < 0) {
+				printf("ERROR: Unable to write to file `%s'.\n", outputFile.c_str());
+				// fclose(file);
+				// exit(1);
+				break;
+			}
+		}
+		fclose(file);
 	}
-	rv = fclose(file);
-	if(rv != 0) {
-		printf("ERROR: Unable to close file `%s'.\n", outputFile.c_str());
-		exit(1);
-	}
+	// if(rv != 0) {
+	// 	printf("ERROR: Unable to close file `%s'.\n", outputFile.c_str());
+	// }
 
-	free(data);
-	free(prices);
+	if (data) free(data);
+	if (s) free(s);
+	if (prices)	free(prices);
+	if (stk) free(stk);
 
 	return ((double)kernel_time) / 1000000000.0;
 }
