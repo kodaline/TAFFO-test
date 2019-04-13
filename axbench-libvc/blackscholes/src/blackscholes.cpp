@@ -478,8 +478,6 @@ int main (int argc, const char* argv[])
 
 	std::shared_ptr<vc::TAFFOCompiler> taffo = std::make_shared<vc::TAFFOCompiler>(
 		"taffo", "/usr/local", vc::TAFFOCompiler::Language::CXX, "", basedir, basedir+"/test.log");
-	taffo->setDisableVRA(true);
-	taffo->setRestrictiveFunctionCloning(true);
 	vc::compiler_ptr_t systemcpp = vc::make_compiler<vc::SystemCompilerOptimizer>(
 		"baseline", "clang++", "opt", basedir, basedir+"/test.log", "/usr/local/bin", "/usr/local/bin");
 
