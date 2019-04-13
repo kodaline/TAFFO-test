@@ -455,7 +455,7 @@ double do_version(
 	std::vector<double> times;
 	for (int i=0; i<21; i++) {
 		std::string real_out_name;
-		if (i == 0)
+		if (i == 0 && !outputFile.empty())
 		 	real_out_name = outputFile + "." + label;
 		time_accum = kfp(inputFile, real_out_name);
 		times.push_back(time_accum);
