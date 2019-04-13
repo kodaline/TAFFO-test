@@ -51,6 +51,7 @@
 #else
 #define _strike_MAX STR(strike_MAX)
 #endif
+#define strike_annotation "scalar(range(" _strike_MIN "," _strike_MAX ") error(1e-8))"
 
 #ifndef volatility_MIN
 #define _volatility_MIN "0.5"
@@ -63,6 +64,7 @@
 #else
 #define _volatility_MAX STR(volatility_MAX)
 #endif
+#define volatilty_annotation "scalar(range(" _volatility_MIN "," _volatility_MAX ") error(1e-8))"
 
 typedef struct OptionData_ {
         fptype r;          // risk-free interest rate
@@ -83,9 +85,9 @@ int numOptions;
 
 int    * otype;
 fptype __attribute((annotate(sptprice_annotation))) *sptprice;
-fptype __attribute((annotate("scalar(range(" _strike_MIN "," _strike_MAX ") error(1e-8))"))) *strike; // range(0.33,1.0)
+fptype __attribute((annotate(strike_annotation))) *strike; // range(0.33,1.0)
 fptype __attribute((annotate("scalar(range(0.0275,0.1) error(0))"))) *rate;		//always
-fptype __attribute((annotate("scalar(range(" _volatility_MIN "," _volatility_MAX ") error(1e-8))"))) *volatility; // range(0.05,0.65)
+fptype __attribute((annotate(volatilty_annotation))) *volatility; // range(0.05,0.65)
 fptype __attribute((annotate("scalar(range(0.1,1) error(0))"))) *otime;				// always
 int numError = 0;
 
