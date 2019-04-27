@@ -47,7 +47,7 @@ typedef struct OptionData_ {
 OptionData *data;
 fptype *s;      // spot price  // TEMPORARY: USED ONLY BY PARSER
 fptype *stk;    // strike price // TEMPORARY: USED ONLY BY PARSER
-fptype __attribute((annotate("scalar()"))) *prices;
+fptype *prices;
 int numOptions;
 
 int    * otype;

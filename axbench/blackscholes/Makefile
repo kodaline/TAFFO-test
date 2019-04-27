@@ -59,7 +59,7 @@ obj/%.vra.ll: obj/%.init.ll
 	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
 
 obj/%.tuner.ll : obj/%.vra.ll
-	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta -notypemerge $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+	time $(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/%.fixp.ll: obj/%.tuner.ll
 	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=flttofix) -stats $< -o $@ 2> stats/flttofix.log
