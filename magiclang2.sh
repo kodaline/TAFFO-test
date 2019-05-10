@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM
+
 if [[ -z $PASSLIB ]]; then
   echo -e '\033[31m'"Error"'\033[39m'" please set PASSLIB to the location of LLVMFloatToFixed.so";
 fi
