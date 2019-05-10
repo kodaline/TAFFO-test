@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS -disable-vra
+///TAFFO_TEST_ARGS 
 
 typedef struct spell {
   float might;

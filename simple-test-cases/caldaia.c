@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS -disable-vra
+///TAFFO_TEST_ARGS 
 /* Scrivere un programma che acquisisce una seq di num reali corrisp a diversi valori di 
  * pressione in una caldaia. Questi val sono misurati a intervalli regolari in sequenza.
  * La seq è terminata dall'inserimento di un valore negativo. Il programma calcola la

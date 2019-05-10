@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS -disable-vra
+///TAFFO_TEST_ARGS 
 float __attribute((annotate("range -540000000000 540000000000"))) global = 3.333;
 
 float** fun(float **x, float *y){

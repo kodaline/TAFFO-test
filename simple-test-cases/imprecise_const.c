@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS -disable-vra
+///TAFFO_TEST_ARGS 
 
 int main(int argc, char *argv[])
 {

@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS -disable-vra
+///TAFFO_TEST_ARGS 
 #include <stdio.h>
 
 /* This dumb test highlights the performance speed up that could be obtained with

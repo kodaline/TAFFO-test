@@ -1,0 +1,8 @@
+raw-times
+raw-times-*
+multiconf_results
+*.log
+*_multiconf_results
+output-data-32
+output-data-64
+stats
