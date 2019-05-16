@@ -70,10 +70,10 @@ attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-
 !4 = !{i1 false, i1 false, i1 false}
 !5 = !{!12, i1 false, !12}
 !6 = !{double -3.000000e+03, double 3.000000e+03}
-!7 = !{!11, !8, i1 false}
+!7 = !{!11, !8, i1 false, i1 true}
 !8 = !{double 0x7FF8000000000000, double 0x7FF8000000000000}
 !9 = !{i32 0, i1 0,i32 0, i1 0,i32 0, i1 0,i32 0, i1 0}
 !10 = !{i32 0, i1 0}
 !11 = !{!"fixp", i32 -32, i32 19}
-!12 = !{!11, !6, i1 false}
-!13 = !{i1 false, !8, i1 false}
+!12 = !{!11, !6, i1 false, i1 true}
+!13 = !{i1 false, !8, i1 false, i1 true}

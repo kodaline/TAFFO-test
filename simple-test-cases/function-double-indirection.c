@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS 
+///TAFFO_TEST_ARGS
 #include <stdio.h>
 #include <math.h>
 
@@ -33,12 +33,12 @@ void function_2_1(float *y)
 
 int main(int argc, char *argv[])
 {
-  float x __attribute((annotate("scalar(range(0, 10))"))) = 5.0;
+  float x __attribute((annotate("scalar(range(0, 20))"))) = 5.0;
   int y = 2.0;
   function_1_1(&x, y);
-  printf("%f", x);
+  printf("%f\n", x);
   function_2_1(&x);
-  printf("%f", x);
+  printf("%f\n", x);
   return 0;
 }
 
