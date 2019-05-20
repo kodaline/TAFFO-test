@@ -1,4 +1,4 @@
-///TAFFO_TEST_ARGS -disable-vra-Xinit -mem2reg
+///TAFFO_TEST_ARGS -disable-vra -Xinit -mem2reg
 #include <stdio.h>
 
 float test(float a)
