@@ -14,10 +14,11 @@ if [[ -z "$CLANG" ]]; then CLANG=${llvmbin}clang; fi
 if [[ -z "$CLANGXX" ]]; then CLANGXX=${CLANG}++; fi
 if [[ -z "$OPT" ]]; then OPT=${llvmbin}opt; fi
 if [[ -z "$LLC" ]]; then LLC=${llvmbin}llc; fi
+if [[ -z "$LLVM_LINK" ]]; then LLVM_LINK=${llvmbin}llvm-link; fi
 
 parse_state=0
 raw_opts="$@"
-input_files=
+input_files=()
 output_file="a"
 float_output_file=
 optimization=
@@ -83,10 +84,10 @@ for opt in $raw_opts; do
           opts="$opts $opt";
           ;;
         *.c | *.ll)
-          input_files="$input_files $opt";
+          input_files+=( "$opt" );
           ;;
         *.cpp | *.cc)
-          input_files="$input_files $opt";
+          input_files+=( "$opt" );
           iscpp=$CLANGXX
           ;;
         *)
@@ -121,13 +122,35 @@ for opt in $raw_opts; do
   esac;
 done
 
+# enable bash logging
 set -x
 
-${CLANG} \
-  $opts -O0 \
-  -c -emit-llvm \
-  ${input_files} \
-  -S -o "${output_file}.1.magiclangtmp.ll" || exit $?
+if [[ ${#input_files[@]} -eq 1 ]]; then
+  # one input file
+  ${CLANG} \
+    $opts -O0 \
+    -c -emit-llvm \
+    ${input_files} \
+    -S -o "${output_file}.1.magiclangtmp.ll" || exit $?
+else
+  # > 1 input files
+  tmp=()
+  for input_file in "${input_files[@]}"; do
+    thisfn=$(basename "$input_file")
+    thisfn=${thisfn%.*}
+    thisfn="${output_file}.${thisfn}.0.magiclangtmp.ll"
+    tmp+=( $thisfn )
+    ${CLANG} \
+      $opts -O0 \
+      -c -emit-llvm \
+      ${input_file} \
+      -S -o "${thisfn}" || exit $?
+  done
+  ${LLVM_LINK} \
+    ${tmp[@]} \
+    -S -o "${output_file}.1.magiclangtmp.ll" || exit $?
+fi
+
 ${OPT} \
   -load "$INITLIB" \
   -taffoinit \
@@ -166,7 +189,7 @@ if [[ ! ( -z ${float_output_file} ) ]]; then
   ${iscpp} \
     $opts ${optimization} \
     ${dontlink} \
-    ${input_files} \
+    ${input_files[*]} \
     -o "$float_output_file" || exit $?
 fi
 
