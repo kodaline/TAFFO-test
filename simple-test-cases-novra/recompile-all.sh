@@ -37,6 +37,9 @@ recompile_one() {
   fi
   out=${1%.*}.out
   printf '[....] %s' "$input"
+  if [[ $FLOAT -eq 1 ]]; then
+    args="$args -float-output ${1%.*}.float.out"
+  fi
   $TIMEOUT "$SCRIPTPATH"/../magiclang2.sh "$args" -o "$out" "$input" $extraargs -debug 2> "$input".log
   bpid_fc=$?
   if [[ $bpid_fc -ne 0 ]]; then
@@ -57,6 +60,11 @@ if [[ "$1" == "clean" ]]; then
   rm "$SCRIPTPATH"/*.out
   rm "$SCRIPTPATH"/*.log
   exit 0
+fi
+
+FLOAT=0
+if [[ "$1" == "float" ]]; then
+  FLOAT=1
 fi
 
 for fn in "$SCRIPTPATH"/*.c "$SCRIPTPATH"/*.cpp "$SCRIPTPATH"/*.ll; do

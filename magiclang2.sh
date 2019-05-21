@@ -19,6 +19,7 @@ parse_state=0
 raw_opts="$@"
 input_files=
 output_file="a"
+float_output_file=
 optimization=
 opts=
 init_flags=
@@ -50,6 +51,9 @@ for opt in $raw_opts; do
           else
             output_file=`echo "$opt" | cut -b 2`;
           fi;
+          ;;
+        -float-output)
+          parse_state=6;
           ;;
         -O*)
           optimization=$opt;
@@ -110,6 +114,10 @@ for opt in $raw_opts; do
       vra_flags="$vra_flags $opt";
       parse_state=0;
       ;;
+    6)
+      float_output_file="$opt";
+      parse_state=0;
+      ;;
   esac;
 done
 
@@ -154,5 +162,12 @@ ${iscpp} \
   ${dontlink} \
   "${output_file}.5.magiclangtmp.ll" \
   -o "$output_file" || exit $?
+if [[ ! ( -z ${float_output_file} ) ]]; then
+  ${iscpp} \
+    $opts ${optimization} \
+    ${dontlink} \
+    ${input_files} \
+    -o "$float_output_file" || exit $?
+fi
 
 
