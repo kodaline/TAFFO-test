@@ -24,11 +24,11 @@
 /* Array initialization. */
 static
 void init_array(int m, int n,
-		DATA_TYPE ANN1(-64, 64) *alpha,
-		DATA_TYPE ANN2(-64, 64) *beta,
-		DATA_TYPE ANN1(-64, 64) POLYBENCH_2D(C,M,N,m,n),
-		DATA_TYPE ANN2(-64, 64) POLYBENCH_2D(A,M,M,m,m),
-		DATA_TYPE ANN1(-64, 64) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-32, 32) *alpha,
+		DATA_TYPE ANN2(-32, 32) *beta,
+		DATA_TYPE ANN1(-32, 32) POLYBENCH_2D(C,M,N,m,n),
+		DATA_TYPE ANN2(-32, 32) POLYBENCH_2D(A,M,M,m,m),
+		DATA_TYPE ANN1(-32, 32) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -52,7 +52,7 @@ void init_array(int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m, int n,
-		 DATA_TYPE ANN1(-64, 64) POLYBENCH_2D(C,M,N,m,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-32, 32) POLYBENCH_2D(C,M,N,m,n)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -72,14 +72,14 @@ void print_array(int m, int n,
    including the call and return. */
 static
 void kernel_symm(int m, int n,
-		 DATA_TYPE ANN1(-64, 64) alpha,
-		 DATA_TYPE ANN2(-64, 64) beta,
-		 DATA_TYPE ANN1(-64, 64) POLYBENCH_2D(C,M,N,m,n),
-		 DATA_TYPE ANN2(-64, 64) POLYBENCH_2D(A,M,M,m,m),
-		 DATA_TYPE ANN1(-64, 64) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-32, 32) alpha,
+		 DATA_TYPE ANN2(-32, 32) beta,
+		 DATA_TYPE ANN1(-32, 32) POLYBENCH_2D(C,M,N,m,n),
+		 DATA_TYPE ANN2(-32, 32) POLYBENCH_2D(A,M,M,m,m),
+		 DATA_TYPE ANN1(-32, 32) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
 {
   int i, j, k;
-  DATA_TYPE ANN1(-64, 64) temp2;
+  DATA_TYPE ANN1(-32, 32) temp2;
 
 //BLAS PARAMS
 //SIDE = 'L'
@@ -112,11 +112,11 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-64, 64) alpha;
-  DATA_TYPE ANN2(-64, 64) beta;
-  POLYBENCH_2D_ARRAY_DECL(C,DATA_TYPE ANN1(-64, 64),M,N,m,n);
-  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN2(-64, 64),M,M,m,m);
-  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE ANN1(-64, 64),M,N,m,n);
+  DATA_TYPE ANN1(-32, 32) alpha;
+  DATA_TYPE ANN2(-32, 32) beta;
+  POLYBENCH_2D_ARRAY_DECL(C,DATA_TYPE ANN1(-32, 32),M,N,m,n);
+  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN2(-32, 32),M,M,m,m);
+  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE ANN1(-32, 32),M,N,m,n);
 
   /* Initialize array(s). */
   init_array (m, n, &alpha, &beta,

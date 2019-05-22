@@ -24,8 +24,8 @@
 /* Array initialization. */
 static
 void init_array (int m, int n,
-		 DATA_TYPE ANN1(-4194304, 4194304) *float_n,
-		 DATA_TYPE ANN2(-4194304, 4194304) POLYBENCH_2D(data,N,M,n,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-2097152, 2097152) *float_n,
+		 DATA_TYPE ANN2(-2097152, 2097152) POLYBENCH_2D(data,N,M,n,m)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -41,7 +41,7 @@ void init_array (int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m,
-		 DATA_TYPE ANN1(-4194304, 4194304) POLYBENCH_2D(cov,M,M,m,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-2097152, 2097152) POLYBENCH_2D(cov,M,M,m,m)) __attribute__((always_inline))
 
 {
   int i, j;
@@ -62,10 +62,10 @@ void print_array(int m,
    including the call and return. */
 static
 void kernel_covariance(int m, int n,
-		       DATA_TYPE ANN1(-4194304, 4194304) float_n,
-		       DATA_TYPE ANN2(-4194304, 4194304) POLYBENCH_2D(data,N,M,n,m),
-		       DATA_TYPE ANN1(-4194304, 4194304) POLYBENCH_2D(cov,M,M,m,m),
-		       DATA_TYPE ANN2(-4194304, 4194304) POLYBENCH_1D(mean,M,m)) __attribute__((always_inline))
+		       DATA_TYPE ANN1(-2097152, 2097152) float_n,
+		       DATA_TYPE ANN2(-2097152, 2097152) POLYBENCH_2D(data,N,M,n,m),
+		       DATA_TYPE ANN1(-2097152, 2097152) POLYBENCH_2D(cov,M,M,m,m),
+		       DATA_TYPE ANN2(-2097152, 2097152) POLYBENCH_1D(mean,M,m)) __attribute__((always_inline))
 {
   int i, j, k;
 
@@ -103,10 +103,10 @@ int main(int argc, char** argv)
   int m = M;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-4194304, 4194304) float_n;
-  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE ANN2(-4194304, 4194304),N,M,n,m);
-  POLYBENCH_2D_ARRAY_DECL(cov,DATA_TYPE ANN1(-4194304, 4194304),M,M,m,m);
-  POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE ANN2(-4194304, 4194304),M,m);
+  DATA_TYPE ANN1(-2097152, 2097152) float_n;
+  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE ANN2(-2097152, 2097152),N,M,n,m);
+  POLYBENCH_2D_ARRAY_DECL(cov,DATA_TYPE ANN1(-2097152, 2097152),M,M,m,m);
+  POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE ANN2(-2097152, 2097152),M,m);
 
 
   /* Initialize array(s). */
