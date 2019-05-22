@@ -30,7 +30,7 @@ typedef char base;
 static
 void init_array (int n,
                  base POLYBENCH_1D(seq,N,n),
-		 DATA_TYPE1 POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -49,7 +49,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE1 POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
 
 {
   int i, j;
@@ -78,14 +78,14 @@ void print_array(int n,
 */
 static
 void kernel_nussinov(int n, base POLYBENCH_1D(seq,N,n),
-			   DATA_TYPE1 POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
+			   DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
 {
   int i, j, k;
 
 #pragma scop
  for (i = _PB_N-1; i >= 0; i--) {
   for (j=i+1; j<_PB_N; j++) {
-   DATA_TYPE2 table_i_j = table[i][j];
+   DATA_TYPE ANN2(-256, 255) table_i_j = table[i][j];
    
    if (j-1>=0)
       table_i_j = max_score(table_i_j, table[i][j-1]);
@@ -118,7 +118,7 @@ int main(int argc, char** argv)
 
   /* Variable declaration/allocation. */
   POLYBENCH_1D_ARRAY_DECL(seq, base, N, n);
-  POLYBENCH_2D_ARRAY_DECL(table, DATA_TYPE1, N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(table, DATA_TYPE ANN1(-256, 255), N, N, n, n);
 
   /* Initialize array(s). */
   init_array (n, POLYBENCH_ARRAY(seq), POLYBENCH_ARRAY(table));
