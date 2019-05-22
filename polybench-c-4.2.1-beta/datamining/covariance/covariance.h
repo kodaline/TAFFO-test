@@ -60,19 +60,18 @@
 #endif
 
 #if defined(CONF_BAD)
-#define ANN_1 __attribute__((annotate("no_float")))
-#define ANN_2 __attribute__((annotate("no_float 27 5")))
+#define ANN1(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
+#define ANN2(min, max) __attribute__((annotate("scalar(range(-134217728,134217728))")))
 #elif defined(CONF_WORSE)
-#define ANN_1
-#define ANN_2 __attribute__((annotate("no_float")))
+#define ANN1(min, max)
+#define ANN2(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
 #else  // CONF_GOOD
-#define ANN_1 __attribute__((annotate("no_float")))
-#define ANN_2 __attribute__((annotate("no_float")))
+#define ANN1(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
+#define ANN2(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
 #endif
 
 #ifdef DATA_TYPE_IS_FLOAT
-#  define DATA_TYPE1 ANN_1 float
-#  define DATA_TYPE2 ANN_2 float
+#  define DATA_TYPE float
 #  define DATA_PRINTF_MODIFIER "%0.16f "
 #  define SCALAR_VAL(x) x##f
 #  define SQRT_FUN(x) sqrtf(x)
@@ -81,8 +80,7 @@
 # endif
 
 #ifdef DATA_TYPE_IS_DOUBLE
-#  define DATA_TYPE1 ANN_1 double
-#  define DATA_TYPE2 ANN_2 double
+#  define DATA_TYPE double
 #  define DATA_PRINTF_MODIFIER "%0.16lf "
 #  define SCALAR_VAL(x) x
 #  define SQRT_FUN(x) sqrt(x)
