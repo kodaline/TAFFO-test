@@ -30,7 +30,7 @@ void init_array (int n,
 		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
 {
   int i, j;
-  DATA_TYPE ANN1(-512, 511) fn = (DATA_TYPE ANN1(-512, 511))n;
+  DATA_TYPE ANN1(-512, 511) fn = (DATA_TYPE)n;
 
   for (i = 0; i < n; i++)
     {
@@ -42,7 +42,7 @@ void init_array (int n,
   for (i = 0; i < n; i++)
     {
       for (j = 0; j <= i; j++)
-	A[i][j] = (DATA_TYPE ANN1(-512, 511))(-j % n) / n + 1;
+	A[i][j] = (DATA_TYPE)(-j % n) / n + 1;
       for (j = i+1; j < n; j++) {
 	A[i][j] = 0;
       }

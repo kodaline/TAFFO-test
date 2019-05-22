@@ -35,7 +35,7 @@ void init_array(int n,
       x[i] = - 999;
       b[i] =  i ;
       for (j = 0; j <= i; j++)
-	L[i][j] = (DATA_TYPE ANN1(-512, 511)) (i+n-j+1)*2/n;
+	L[i][j] = (DATA_TYPE) (i+n-j+1)*2/n;
     }
 }
 

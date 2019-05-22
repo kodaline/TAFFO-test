@@ -34,7 +34,7 @@ void init_array (int w, int h, DATA_TYPE ANN2(-4, 3)* alpha,
   //input should be between 0 and 1 (grayscale image pixel)
   for (i = 0; i < w; i++)
      for (j = 0; j < h; j++)
-	imgIn[i][j] = (DATA_TYPE ANN1(-4, 3)) ((313*i+991*j)%65536) / 65535.0f;
+	imgIn[i][j] = (DATA_TYPE) ((313*i+991*j)%65536) / 65535.0f;
 }
 
 

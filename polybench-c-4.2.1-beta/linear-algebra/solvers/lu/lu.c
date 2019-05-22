@@ -31,7 +31,7 @@ void init_array (int n,
   for (i = 0; i < n; i++)
     {
       for (j = 0; j <= i; j++)
-	A[i][j] = (DATA_TYPE ANN1(-2, 1))(-j % n) / n + 1;
+	A[i][j] = (DATA_TYPE)(-j % n) / n + 1;
       for (j = i+1; j < n; j++) {
 	A[i][j] = 0;
       }
@@ -90,14 +90,14 @@ void kernel_lu(int n,
   for (i = 0; i < _PB_N; i++) {
     for (j = 0; j <i; j++) {
        for (k = 0; k < j; k++) {
-          DATA_TYPE ANN2(-2, 1) tmp = A[i][k] * A[k][j];
+          DATA_TYPE tmp = A[i][k] * A[k][j];
           A[i][j] -= tmp;
        }
         A[i][j] /= A[j][j];
     }
    for (j = i; j < _PB_N; j++) {
        for (k = 0; k < i; k++) {
-          DATA_TYPE ANN2(-2, 1) tmp = A[i][k] * A[k][j];
+          DATA_TYPE tmp = A[i][k] * A[k][j];
           A[i][j] -= tmp;
        }
     }

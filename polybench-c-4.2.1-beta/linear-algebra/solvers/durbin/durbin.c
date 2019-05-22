@@ -30,7 +30,7 @@ void init_array (int n,
 
   for (i = 0; i < n; i++)
     {
-      r[i] = (DATA_TYPE ANN1(-2, 1))(n+1-i) / (n*200.0) + 1.5;
+      r[i] = (DATA_TYPE)(n+1-i) / (n*200.0) + 1.5;
     }
 }
 
