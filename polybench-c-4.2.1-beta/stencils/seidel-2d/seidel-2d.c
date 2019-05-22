@@ -24,13 +24,13 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE1 POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
 {
   int i, j;
 
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++)
-      A[i][j] = ((DATA_TYPE1) i*(j+2) + 2) / n;
+      A[i][j] = ((DATA_TYPE ANN1(-4096, 4095)) i*(j+2) + 2) / n;
 }
 
 
@@ -38,7 +38,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE1 POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
 
 {
   int i, j;
@@ -60,7 +60,7 @@ void print_array(int n,
 static
 void kernel_seidel_2d(int tsteps,
 		      int n,
-		      DATA_TYPE1 POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		      DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
 {
   int t, i, j;
 
@@ -68,12 +68,12 @@ void kernel_seidel_2d(int tsteps,
   for (t = 0; t <= _PB_TSTEPS - 1; t++)
     for (i = 1; i<= _PB_N - 2; i++)
       for (j = 1; j <= _PB_N - 2; j++) {
-        DATA_TYPE2 term1 = A[i-1][j-1] + A[i-1][j] + A[i-1][j+1]
+        DATA_TYPE ANN2(-4096, 4095) term1 = A[i-1][j-1] + A[i-1][j] + A[i-1][j+1]
                    + A[i][j-1];
-        DATA_TYPE2 term2 = A[i][j] + A[i][j+1]
+        DATA_TYPE ANN2(-4096, 4095) term2 = A[i][j] + A[i][j+1]
                    + A[i+1][j-1] + A[i+1][j] + A[i+1][j+1];
-        DATA_TYPE1 sum = term1 + term2;
-        DATA_TYPE2 div = sum / SCALAR_VAL(9.0);
+        DATA_TYPE ANN1(-4096, 4095) sum = term1 + term2;
+        DATA_TYPE ANN2(-4096, 4095) div = sum / SCALAR_VAL(9.0);
         A[i][j] = div;
       }
 #pragma endscop
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
   int tsteps = TSTEPS;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE1, N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-4096, 4095), N, N, n, n);
 
 
   /* Initialize array(s). */
