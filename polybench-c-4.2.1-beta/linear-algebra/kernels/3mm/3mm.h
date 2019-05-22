@@ -79,7 +79,7 @@
 
 #if defined(CONF_BAD)
 #define ANN1(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
-#define ANN2(min, max) __attribute__((annotate("scalar(range(-2048,2048))")))
+#define ANN2(min, max) __attribute__((annotate("scalar(range(-2048,2047))")))
 #elif defined(CONF_WORSE)
 #define ANN1(min, max)
 #define ANN2(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
