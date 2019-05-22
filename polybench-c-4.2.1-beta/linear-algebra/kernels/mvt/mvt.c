@@ -24,11 +24,11 @@
 /* Array initialization. */
 static
 void init_array(int n,
-		DATA_TYPE ANN2(-256, 256) POLYBENCH_1D(x1,N,n),
-		DATA_TYPE ANN1(-256, 256) POLYBENCH_1D(x2,N,n),
-		DATA_TYPE ANN2(-256, 256) POLYBENCH_1D(y_1,N,n),
-		DATA_TYPE ANN1(-256, 256) POLYBENCH_1D(y_2,N,n),
-		DATA_TYPE ANN1(-256, 256) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x1,N,n),
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n),
+		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(y_1,N,n),
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y_2,N,n),
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -48,8 +48,8 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN2(-256, 256) POLYBENCH_1D(x1,N,n),
-		 DATA_TYPE ANN1(-256, 256) POLYBENCH_1D(x2,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x1,N,n),
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n)) __attribute__((always_inline))
 
 {
   int i;
@@ -76,11 +76,11 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_mvt(int n,
-		DATA_TYPE ANN2(-256, 256) POLYBENCH_1D(x1,N,n),
-		DATA_TYPE ANN1(-256, 256) POLYBENCH_1D(x2,N,n),
-		DATA_TYPE ANN2(-256, 256) POLYBENCH_1D(y_1,N,n),
-		DATA_TYPE ANN1(-256, 256) POLYBENCH_1D(y_2,N,n),
-		DATA_TYPE ANN1(-256, 256) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x1,N,n),
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n),
+		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(y_1,N,n),
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y_2,N,n),
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -102,11 +102,11 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-256, 256), N, N, n, n);
-  POLYBENCH_1D_ARRAY_DECL(x1, DATA_TYPE ANN2(-256, 256), N, n);
-  POLYBENCH_1D_ARRAY_DECL(x2, DATA_TYPE ANN1(-256, 256), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y_1, DATA_TYPE ANN2(-256, 256), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y_2, DATA_TYPE ANN1(-256, 256), N, n);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-256, 255), N, N, n, n);
+  POLYBENCH_1D_ARRAY_DECL(x1, DATA_TYPE ANN2(-256, 255), N, n);
+  POLYBENCH_1D_ARRAY_DECL(x2, DATA_TYPE ANN1(-256, 255), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y_1, DATA_TYPE ANN2(-256, 255), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y_2, DATA_TYPE ANN1(-256, 255), N, n);
 
 
   /* Initialize array(s). */

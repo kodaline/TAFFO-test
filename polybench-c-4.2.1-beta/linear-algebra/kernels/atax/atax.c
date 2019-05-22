@@ -24,11 +24,11 @@
 /* Array initialization. */
 static
 void init_array (int m, int n,
-		 DATA_TYPE ANN1(-4096, 4096) POLYBENCH_2D(A,M,N,m,n),
-		 DATA_TYPE ANN2(-4096, 4096) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,M,N,m,n),
+		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
 {
   int i, j;
-  DATA_TYPE ANN1(-4096, 4096) fn;
+  DATA_TYPE ANN1(-4096, 4095) fn;
   fn = (DATA_TYPE)n;
 
   for (i = 0; i < n; i++)
@@ -43,7 +43,7 @@ void init_array (int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-4096, 4096) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
 
 {
   int i;
@@ -63,10 +63,10 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_atax(int m, int n,
-		 DATA_TYPE ANN1(-4096, 4096) POLYBENCH_2D(A,M,N,m,n),
-		 DATA_TYPE ANN2(-4096, 4096) POLYBENCH_1D(x,N,n),
-		 DATA_TYPE ANN1(-4096, 4096) POLYBENCH_1D(y,N,n),
-		 DATA_TYPE ANN2(-4096, 4096) POLYBENCH_1D(tmp,M,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,M,N,m,n),
+		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(x,N,n),
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_1D(y,N,n),
+		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(tmp,M,m)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -93,10 +93,10 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-4096, 4096), M, N, m, n);
-  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE ANN2(-4096, 4096), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE ANN1(-4096, 4096), N, n);
-  POLYBENCH_1D_ARRAY_DECL(tmp, DATA_TYPE ANN2(-4096, 4096), M, m);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-4096, 4095), M, N, m, n);
+  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE ANN2(-4096, 4095), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE ANN1(-4096, 4095), N, n);
+  POLYBENCH_1D_ARRAY_DECL(tmp, DATA_TYPE ANN2(-4096, 4095), M, m);
 
   /* Initialize array(s). */
   init_array (m, n, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(x));

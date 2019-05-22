@@ -24,12 +24,12 @@
 /* Array initialization. */
 static
 void init_array(int ni, int nj, int nk, int nl,
-		DATA_TYPE ANN1(-16384, 16384) *alpha,
-		DATA_TYPE ANN2(-16384, 16384) *beta,
-		DATA_TYPE ANN2(-16384, 16384) POLYBENCH_2D(A,NI,NK,ni,nk),
-		DATA_TYPE ANN1(-16384, 16384) POLYBENCH_2D(B,NK,NJ,nk,nj),
-		DATA_TYPE ANN2(-16384, 16384) POLYBENCH_2D(C,NJ,NL,nj,nl),
-		DATA_TYPE ANN1(-16384, 16384) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-16384, 16383) *alpha,
+		DATA_TYPE ANN2(-16384, 16383) *beta,
+		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(A,NI,NK,ni,nk),
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(B,NK,NJ,nk,nj),
+		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(C,NJ,NL,nj,nl),
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -54,7 +54,7 @@ void init_array(int ni, int nj, int nk, int nl,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int ni, int nl,
-		 DATA_TYPE ANN1(-16384, 16384) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
 {
   int i, j;
 
@@ -74,13 +74,13 @@ void print_array(int ni, int nl,
    including the call and return. */
 static
 void kernel_2mm(int ni, int nj, int nk, int nl,
-		DATA_TYPE ANN1(-16384, 16384) alpha,
-		DATA_TYPE ANN2(-16384, 16384) beta,
-		DATA_TYPE ANN1(-16384, 16384) POLYBENCH_2D(tmp,NI,NJ,ni,nj),
-		DATA_TYPE ANN2(-16384, 16384) POLYBENCH_2D(A,NI,NK,ni,nk),
-		DATA_TYPE ANN1(-16384, 16384) POLYBENCH_2D(B,NK,NJ,nk,nj),
-		DATA_TYPE ANN2(-16384, 16384) POLYBENCH_2D(C,NJ,NL,nj,nl),
-		DATA_TYPE ANN1(-16384, 16384) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-16384, 16383) alpha,
+		DATA_TYPE ANN2(-16384, 16383) beta,
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(tmp,NI,NJ,ni,nj),
+		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(A,NI,NK,ni,nk),
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(B,NK,NJ,nk,nj),
+		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(C,NJ,NL,nj,nl),
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
 {
   int i, j, k;
 
@@ -114,13 +114,13 @@ int main(int argc, char** argv)
   int nl = NL;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-16384, 16384) alpha;
-  DATA_TYPE ANN2(-16384, 16384) beta;
-  POLYBENCH_2D_ARRAY_DECL(tmp,DATA_TYPE ANN1(-16384, 16384),NI,NJ,ni,nj);
-  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN2(-16384, 16384),NI,NK,ni,nk);
-  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE ANN1(-16384, 16384),NK,NJ,nk,nj);
-  POLYBENCH_2D_ARRAY_DECL(C,DATA_TYPE ANN2(-16384, 16384),NJ,NL,nj,nl);
-  POLYBENCH_2D_ARRAY_DECL(D,DATA_TYPE ANN1(-16384, 16384),NI,NL,ni,nl);
+  DATA_TYPE ANN1(-16384, 16383) alpha;
+  DATA_TYPE ANN2(-16384, 16383) beta;
+  POLYBENCH_2D_ARRAY_DECL(tmp,DATA_TYPE ANN1(-16384, 16383),NI,NJ,ni,nj);
+  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN2(-16384, 16383),NI,NK,ni,nk);
+  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE ANN1(-16384, 16383),NK,NJ,nk,nj);
+  POLYBENCH_2D_ARRAY_DECL(C,DATA_TYPE ANN2(-16384, 16383),NJ,NL,nj,nl);
+  POLYBENCH_2D_ARRAY_DECL(D,DATA_TYPE ANN1(-16384, 16383),NI,NL,ni,nl);
 
   /* Initialize array(s). */
   init_array (ni, nj, nk, nl, &alpha, &beta,
