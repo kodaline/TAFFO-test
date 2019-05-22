@@ -23,7 +23,7 @@ compile_one()
   xparams=$2
   benchdir=$(dirname $benchpath)
   benchname=$(basename $benchdir)
-  ../magiclang2.sh \
+  $TIMEOUT ../magiclang2.sh \
     -o build/"$benchname".out \
     -float-output build/"$benchname".float.out \
     "$benchpath" \
@@ -82,18 +82,21 @@ mkdir -p build
 rm -f build.log
 
 all_benchs=$(cat ./utilities/benchmark_list)
+skipped_all=1
 for bench in $all_benchs; do
   if [[ "$bench" =~ $ONLY ]]; then
+    skipped_all=0
     printf '[....] %s' "$bench"
-    compile_one "$bench" "-D$D_CONF -D$D_STANDARD_DATASET -Xdta -totalbits -Xdta $TOT" 2>> build.log
+    compile_one "$bench" "-O3 -DPOLYBENCH_TIME -DPOLYBENCH_DUMP_ARRAYS -DPOLYBENCH_STACK_ARRAYS -D$D_CONF -D$D_STANDARD_DATASET -Xdta -totalbits -Xdta $TOT" 2>> build.log
     bpid_fc=$?
     if [[ $bpid_fc == 0 ]]; then
       bpid_fc=' ok '
     fi
     printf '\033[1G[%4s] %s\n' "$bpid_fc" "$bench"
-  else
-    printf '[SKIP] %s\n' "$bench"
   fi
 done
 
+if [[ $skipped_all -eq 1 ]]; then
+  echo 'warning: you specified to skip all tests'
+fi
 
