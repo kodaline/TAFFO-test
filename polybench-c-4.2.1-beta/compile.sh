@@ -41,19 +41,15 @@ D_SMALL_DATASET="SMALL_DATASET"
 D_STANDARD_DATASET="MEDIUM_DATASET"
 D_LARGE_DATASET="LARGE_DATASET"
 D_EXTRALARGE_DATASET="EXTRALARGE_DATASET"
-D_M=0
 D_DATA_TYPE='DATA_TYPE_IS_FLOAT'
 ONLY='.*'
-FRAC=''
 TOT='32'
-TBLDUMP=0
-LISTDUMP=0
 D_CONF="CONF_GOOD"
 
 for arg; do
   case $arg in
     64bit)
-      D_M=2
+      TOT='64'
       D_DATA_TYPE='DATA_TYPE_IS_DOUBLE'
       ;;
     [A-Z]*_DATASET)
@@ -87,7 +83,11 @@ for bench in $all_benchs; do
   if [[ "$bench" =~ $ONLY ]]; then
     skipped_all=0
     printf '[....] %s' "$bench"
-    compile_one "$bench" "-O3 -DPOLYBENCH_TIME -DPOLYBENCH_DUMP_ARRAYS -DPOLYBENCH_STACK_ARRAYS -D$D_CONF -D$D_STANDARD_DATASET -Xdta -totalbits -Xdta $TOT" 2>> build.log
+    compile_one "$bench" \
+      "-O3 -g -disable-vra \
+      -DPOLYBENCH_TIME -DPOLYBENCH_DUMP_ARRAYS -DPOLYBENCH_STACK_ARRAYS \
+      -D$D_CONF -D$D_STANDARD_DATASET \
+      -Xdta -totalbits -Xdta $TOT" 2>> build.log
     bpid_fc=$?
     if [[ $bpid_fc == 0 ]]; then
       bpid_fc=' ok '
