@@ -51,11 +51,11 @@ fptype *prices;
 int numOptions;
 
 int    * otype;
-fptype __attribute((annotate("scalar(range(0.8,0.84) error(1e-8))"))) *sptprice;
-fptype __attribute((annotate("scalar(range(0.75,0.92) error(1e-8))"))) *strike; // range(0.33,1.0)
+fptype __attribute((annotate("scalar(range(0.35,0.84) error(1e-8))"))) *sptprice;
+fptype __attribute((annotate("scalar(range(0.34,0.92) error(1e-8))"))) *strike;
 fptype __attribute((annotate("scalar(range(0.0275,0.1) error(0))"))) *rate;
-fptype __attribute((annotate("scalar(range(0.5,0.65) error(1e-8))"))) *volatility; // range(0.05,0.65)
-fptype __attribute((annotate("scalar(range(0.1,1) error(0))"))) *otime;
+fptype __attribute((annotate("scalar(range(0.05,0.65) error(1e-8))"))) *volatility;
+fptype __attribute((annotate("scalar(range(0.05,1) error(0))"))) *otime;
 int numError = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,10 +70,10 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
 {
     int sign;
 
-    fptype __attribute((annotate("scalar()"))) OutputX; //range(-106.998909,107.998909)
+    fptype __attribute((annotate("scalar()"))) OutputX;
     fptype __attribute((annotate("scalar()"))) xInput;
     fptype __attribute((annotate("scalar()"))) xNPrimeofX;
-    fptype __attribute((annotate("scalar()"))) expValues; //range(0.144059,6.941593)
+    fptype __attribute((annotate("scalar()"))) expValues;
     fptype __attribute((annotate("scalar()"))) xK2;
     fptype __attribute((annotate("scalar()"))) xK2_2, xK2_3;
     fptype __attribute((annotate("scalar()"))) xK2_4, xK2_5;
@@ -90,7 +90,7 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
     xInput = InputX;
 
     // Compute NPrimeX term common to both four & six decimal accuracy calcs
-    expValues = exp(-0.5f * InputX * InputX);
+    expValues = exp(-0.5f * (InputX * InputX));
     xNPrimeofX = expValues;
     xNPrimeofX = xNPrimeofX * inv_sqrt_2xPI;
 
@@ -115,8 +115,6 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
     xLocal   = xLocal_1 * xNPrimeofX;
 
     //printf("# xLocal: %10.10f\n", xLocal);
-
-
 
     xLocal   = 1.0 - xLocal;
 
