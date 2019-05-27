@@ -140,8 +140,8 @@ fptype BlkSchlsEqEuroNoDiv( fptype __attribute((annotate("scalar()"))) sptprice,
 			    fptype __attribute((annotate("scalar()"))) time,
                             int otype,
 			    float __attribute((annotate("scalar()"))) timet,
-                            fptype* __attribute((annotate("scalar(disabled)"))) N1,
-			    fptype* __attribute((annotate("scalar(disabled)"))) N2 )
+                            fptype* __attribute((annotate("scalar()"))) N1,
+			    fptype* __attribute((annotate("scalar()"))) N2 )
 {
     //printf("BlkSchlsEqEuroNoDiv %f %f %f %f %f %f\n", sptprice, strike, rate, volatility, time, timet);
     fptype __attribute((annotate("scalar()"))) OptionPrice;
@@ -244,8 +244,8 @@ int bs_thread(void *tid_ptr) {
             /* Calling main function to calculate option value based on
              * Black & Scholes's equation.
              */
-            fptype __attribute((annotate("scalar(disabled)"))) N1,
-	      __attribute((annotate("scalar(disabled)"))) N2;
+            fptype __attribute((annotate("scalar()"))) N1,
+	      __attribute((annotate("scalar()"))) N2;
             float __attribute((annotate("scalar(range(0,1) error(0))"))) timet = 0;
 /*
             double dataIn[6];
