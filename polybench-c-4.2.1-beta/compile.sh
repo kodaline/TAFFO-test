@@ -84,7 +84,7 @@ for bench in $all_benchs; do
     skipped_all=0
     printf '[....] %s' "$bench"
     compile_one "$bench" \
-      "-O3 -g -disable-vra \
+      "-O3 -g -Xvra -propagate-all \
       -DPOLYBENCH_TIME -DPOLYBENCH_DUMP_ARRAYS -DPOLYBENCH_STACK_ARRAYS \
       -D$D_CONF -D$D_STANDARD_DATASET \
       -Xdta -totalbits -Xdta $TOT" 2>> build.log

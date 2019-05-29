@@ -25,8 +25,8 @@
 static
 void init_array (int m,
 		 int n,
-		 DATA_TYPE ANN1(-512, 511) *float_n,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(data,N,M,n,m)) __attribute__((always_inline))
+		 DATA_TYPE *float_n,
+		 DATA_TYPE POLYBENCH_2D(data,N,M,n,m))
 {
   int i, j;
 
@@ -43,7 +43,7 @@ void init_array (int m,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m,
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(corr,M,M,m,m)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(corr,M,M,m,m))
 
 {
   int i, j;
@@ -64,15 +64,15 @@ void print_array(int m,
    including the call and return. */
 static
 void kernel_correlation(int m, int n,
-			DATA_TYPE ANN1(-512, 511) float_n,
-			DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(data,N,M,n,m),
-			DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(corr,M,M,m,m),
-			DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(mean,M,m),
-			DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(stddev,M,m)) __attribute__((always_inline))
+			DATA_TYPE float_n,
+			DATA_TYPE POLYBENCH_2D(data,N,M,n,m),
+			DATA_TYPE POLYBENCH_2D(corr,M,M,m,m),
+			DATA_TYPE POLYBENCH_1D(mean,M,m),
+			DATA_TYPE POLYBENCH_1D(stddev,M,m))
 {
   int i, j, k;
 
-  DATA_TYPE ANN2(-512, 511) eps = SCALAR_VAL(0.1);
+  DATA_TYPE eps = SCALAR_VAL(0.1);
 
 
 #pragma scop
@@ -131,11 +131,11 @@ int main(int argc, char** argv)
   int m = M;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-512, 511) float_n;
-  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE ANN1(-512, 511),N,M,n,m);
-  POLYBENCH_2D_ARRAY_DECL(corr,DATA_TYPE ANN2(-512, 511),M,M,m,m);
-  POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE ANN1(-512, 511),M,m);
-  POLYBENCH_1D_ARRAY_DECL(stddev,DATA_TYPE ANN2(-512, 511),M,m);
+  DATA_TYPE __attribute((annotate("scalar(range(1, 3000))"))) float_n;
+  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE __attribute((annotate("scalar(range(0, 512))"))),N,M,n,m);
+  POLYBENCH_2D_ARRAY_DECL(corr,DATA_TYPE __attribute((annotate("scalar()"))),M,M,m,m);
+  POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE __attribute((annotate("scalar()"))),M,m);
+  POLYBENCH_1D_ARRAY_DECL(stddev,DATA_TYPE __attribute((annotate("scalar()"))),M,m);
 
   /* Initialize array(s). */
   init_array (m, n, &float_n, POLYBENCH_ARRAY(data));
