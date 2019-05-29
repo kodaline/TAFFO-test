@@ -37,7 +37,7 @@ DIR:
 	mkdir -p obj
 	mkdir -p stats
 
-$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt
+$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt obj/main.err.ll
 	$(LD) $(OBJ_FLOAT) $(LFLAGS) -o bin/$@
 	$(LD) $(OBJ_FIX) $(LFLAGS) -o bin/$@.fixp
 
@@ -52,7 +52,7 @@ $(OBJ_FLOAT) : obj/main.ll
 	$(CC) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit -dce $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
 obj/main.vra.ll: obj/main.init.ll
 	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log

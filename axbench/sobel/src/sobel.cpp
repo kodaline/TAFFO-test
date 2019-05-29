@@ -1,6 +1,6 @@
 /*
  * sobel.cpp
- * 
+ *
  * Created on: Sep 9, 2013
  * 			Author: Amir Yazdanbakhsh <a.yazdanbakhsh@gatech.edu>
  */
@@ -20,10 +20,10 @@ int main ( int argc, const char* argv[])
 	float __attribute((annotate("target('s') scalar()"))) s = 0; // range(0,0.7)
 
 	// Source and destination image
-	Image __attribute((annotate("struct[void,void,struct[scalar(),scalar(),scalar()],void]"))) srcImage;
-	Image __attribute((annotate("struct[void,void,struct[scalar(),scalar(),scalar()],void]"))) dstImage;
-	Image *srcImagePtr = &srcImage;
-	Image *dstImagePtr = &dstImage;
+	Image __attribute((annotate(ANNOTATION_IMAGE))) srcImage;
+	Image __attribute((annotate(ANNOTATION_IMAGE))) dstImage;
+	Image * __attribute((annotate(ANNOTATION_IMAGE))) srcImagePtr = &srcImage;
+	Image * __attribute((annotate(ANNOTATION_IMAGE))) dstImagePtr = &dstImage;
 
 	float __attribute((annotate("target('s') scalar()"))) w[][3] = { // range(0,1)
 		{0, 0, 0},
@@ -38,9 +38,9 @@ int main ( int argc, const char* argv[])
 	srcImagePtr->makeGrayscale( ); // convert the source file to grayscale
 
 	y = 0 ;
-	
+
 	AxBenchTimer timer;
-	
+
 	// Start performing Sobel operation
 	for( x = 0 ; x < srcImagePtr->width ; x++ ) {
 		HALF_WINDOW(srcImagePtr, x, y, w) ;
@@ -77,7 +77,7 @@ int main ( int argc, const char* argv[])
 
 		x = srcImagePtr->width - 1 ;
 		HALF_WINDOW(srcImagePtr, x, y, w) ;
-		
+
 
 			s = sobel(w);
 
@@ -90,7 +90,7 @@ int main ( int argc, const char* argv[])
 
 	for(x = 0 ; x < srcImagePtr->width ; x++) {
 		HALF_WINDOW(srcImagePtr, x, y, w) ;
-		
+
 			s = sobel(w);
 
 		dstImagePtr->pixels[y][x].r = s ;
@@ -98,7 +98,7 @@ int main ( int argc, const char* argv[])
 		dstImagePtr->pixels[y][x].b = s ;
 
 	}
-	
+
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 

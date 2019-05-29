@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <iostream>
 
+#define ANNOTATION_IMAGE "struct[void,void,struct[scalar(),scalar(),scalar()],void]"
 
 #define DEBUG 0
 
