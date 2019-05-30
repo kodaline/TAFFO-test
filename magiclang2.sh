@@ -167,12 +167,12 @@ else
 fi
 ${OPT} \
   -load "$TUNERLIB" \
-  -taffodta \
+  -taffodta -globaldce \
   ${dta_flags} \
   -S -o "${output_file}.4.magiclangtmp.ll" "${output_file}.3.magiclangtmp.ll" || exit $?
 ${OPT} \
   -load "$PASSLIB" \
-  -flttofix -dce \
+  -flttofix -globaldce -dce \
   ${conversion_flags} \
   -S -o "${output_file}.5.magiclangtmp.ll" "${output_file}.4.magiclangtmp.ll" || exit $?
 ${CLANG} \
