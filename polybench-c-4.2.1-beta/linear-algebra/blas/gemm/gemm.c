@@ -24,11 +24,11 @@
 /* Array initialization. */
 static
 void init_array(int ni, int nj, int nk,
-		DATA_TYPE ANN1(-128, 127) *alpha,
-		DATA_TYPE ANN2(-128, 127) *beta,
-		DATA_TYPE ANN1(-128, 127) POLYBENCH_2D(C,NI,NJ,ni,nj),
-		DATA_TYPE ANN2(-128, 127) POLYBENCH_2D(A,NI,NK,ni,nk),
-		DATA_TYPE ANN1(-128, 127) POLYBENCH_2D(B,NK,NJ,nk,nj)) __attribute__((always_inline))
+		DATA_TYPE *alpha,
+		DATA_TYPE *beta,
+		DATA_TYPE POLYBENCH_2D(C,NI,NJ,ni,nj),
+		DATA_TYPE POLYBENCH_2D(A,NI,NK,ni,nk),
+		DATA_TYPE POLYBENCH_2D(B,NK,NJ,nk,nj))
 {
   int i, j;
 
@@ -50,7 +50,7 @@ void init_array(int ni, int nj, int nk,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int ni, int nj,
-		 DATA_TYPE ANN1(-128, 127) POLYBENCH_2D(C,NI,NJ,ni,nj)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(C,NI,NJ,ni,nj))
 {
   int i, j;
 
@@ -70,11 +70,11 @@ void print_array(int ni, int nj,
    including the call and return. */
 static
 void kernel_gemm(int ni, int nj, int nk,
-		 DATA_TYPE ANN1(-128, 127) alpha,
-		 DATA_TYPE ANN2(-128, 127) beta,
-		 DATA_TYPE ANN1(-128, 127) POLYBENCH_2D(C,NI,NJ,ni,nj),
-		 DATA_TYPE ANN2(-128, 127) POLYBENCH_2D(A,NI,NK,ni,nk),
-		 DATA_TYPE ANN1(-128, 127) POLYBENCH_2D(B,NK,NJ,nk,nj)) __attribute__((always_inline))
+		 DATA_TYPE alpha,
+		 DATA_TYPE beta,
+		 DATA_TYPE POLYBENCH_2D(C,NI,NJ,ni,nj),
+		 DATA_TYPE POLYBENCH_2D(A,NI,NK,ni,nk),
+		 DATA_TYPE POLYBENCH_2D(B,NK,NJ,nk,nj))
 {
   int i, j, k;
 
@@ -107,11 +107,11 @@ int main(int argc, char** argv)
   int nk = NK;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-128, 127) alpha;
-  DATA_TYPE ANN2(-128, 127) beta;
-  POLYBENCH_2D_ARRAY_DECL(C,DATA_TYPE ANN1(-128, 127),NI,NJ,ni,nj);
-  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN2(-128, 127),NI,NK,ni,nk);
-  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE ANN1(-128, 127),NK,NJ,nk,nj);
+  DATA_TYPE __attribute((annotate("scalar()"))) alpha;
+  DATA_TYPE __attribute((annotate("scalar()"))) beta;
+  POLYBENCH_2D_ARRAY_DECL(C,DATA_TYPE __attribute((annotate("scalar()"))),NI,NJ,ni,nj);
+  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE __attribute((annotate("scalar(range(-64, 64))"))),NI,NK,ni,nk);
+  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE __attribute((annotate("scalar()"))),NK,NJ,nk,nj);
 
   /* Initialize array(s). */
   init_array (ni, nj, nk, &alpha, &beta,
