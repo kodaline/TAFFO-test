@@ -72,7 +72,7 @@ void kernel_correlation(int m, int n,
 {
   int i, j, k;
 
-  DATA_TYPE eps = SCALAR_VAL(0.1);
+  DATA_TYPE __attribute((annotate("scalar()"))) eps = SCALAR_VAL(0.1);
 
 
 #pragma scop
@@ -132,10 +132,10 @@ int main(int argc, char** argv)
 
   /* Variable declaration/allocation. */
   DATA_TYPE __attribute((annotate("scalar(range(1, 3000))"))) float_n;
-  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE __attribute((annotate("scalar(range(0, 512))"))),N,M,n,m);
+  POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE __attribute((annotate("scalar(range(-512, 512) final)"))),N,M,n,m);
   POLYBENCH_2D_ARRAY_DECL(corr,DATA_TYPE __attribute((annotate("scalar()"))),M,M,m,m);
   POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE __attribute((annotate("scalar()"))),M,m);
-  POLYBENCH_1D_ARRAY_DECL(stddev,DATA_TYPE __attribute((annotate("scalar()"))),M,m);
+  POLYBENCH_1D_ARRAY_DECL(stddev,DATA_TYPE __attribute((annotate("scalar(range(-4096,4096) final)"))),M,m);
 
   /* Initialize array(s). */
   init_array (m, n, &float_n, POLYBENCH_ARRAY(data));

@@ -32,7 +32,8 @@ compile_one()
     -I./utilities \
     -I./ \
     $xparams \
-    -debug-taffo
+    -debug-taffo \
+    -lm
 }
 
 
