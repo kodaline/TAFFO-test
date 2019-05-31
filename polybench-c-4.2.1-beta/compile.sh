@@ -34,7 +34,7 @@ compile_one()
     $xparams \
     -debug-taffo \
     -lm \
-    2>> build/${benchname}.log
+    2> build/${benchname}.log
 }
 
 
