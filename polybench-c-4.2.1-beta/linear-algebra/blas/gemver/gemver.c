@@ -24,24 +24,25 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-8192, 8191) *alpha,
-		 DATA_TYPE ANN2(-8192, 8191) *beta,
-		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_2D(A,N,N,n,n),
-		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(u1,N,n),
-		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(v1,N,n),
-		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(u2,N,n),
-		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(v2,N,n),
-		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n),
-		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(x,N,n),
-		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(y,N,n),
-		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(z,N,n)) __attribute__((always_inline))
+		 DATA_TYPE *alpha,
+		 DATA_TYPE *beta,
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		 DATA_TYPE POLYBENCH_1D(u1,N,n),
+		 DATA_TYPE POLYBENCH_1D(v1,N,n),
+		 DATA_TYPE POLYBENCH_1D(u2,N,n),
+		 DATA_TYPE POLYBENCH_1D(v2,N,n),
+		 DATA_TYPE POLYBENCH_1D(w,N,n),
+		 DATA_TYPE POLYBENCH_1D(x,N,n),
+		 DATA_TYPE POLYBENCH_1D(y,N,n),
+		 DATA_TYPE POLYBENCH_1D(z,N,n))
 {
-  int i, j;
+  int i __attribute((annotate("scalar(range(0," PB_XSTR(N) "))")));
+  int j __attribute((annotate("scalar(range(0," PB_XSTR(N) "))")));
 
   *alpha = 1.5;
   *beta = 1.2;
 
-  DATA_TYPE ANN1(-8192, 8191) fn = (DATA_TYPE)n;
+  DATA_TYPE __attribute((annotate("scalar()"))) fn = (DATA_TYPE)n;
 
   for (i = 0; i < n; i++)
     {
@@ -63,7 +64,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(w,N,n))
 {
   int i;
 
@@ -82,17 +83,17 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_gemver(int n,
-		   DATA_TYPE ANN1(-8192, 8191) alpha,
-		   DATA_TYPE ANN2(-8192, 8191) beta,
-		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_2D(A,N,N,n,n),
-		   DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(u1,N,n),
-		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(v1,N,n),
-		   DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(u2,N,n),
-		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(v2,N,n),
-		   DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n),
-		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(x,N,n),
-		   DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(y,N,n),
-		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(z,N,n)) __attribute__((always_inline))
+		   DATA_TYPE alpha,
+		   DATA_TYPE beta,
+		   DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		   DATA_TYPE POLYBENCH_1D(u1,N,n),
+		   DATA_TYPE POLYBENCH_1D(v1,N,n),
+		   DATA_TYPE POLYBENCH_1D(u2,N,n),
+		   DATA_TYPE POLYBENCH_1D(v2,N,n),
+		   DATA_TYPE POLYBENCH_1D(w,N,n),
+		   DATA_TYPE POLYBENCH_1D(x,N,n),
+		   DATA_TYPE POLYBENCH_1D(y,N,n),
+		   DATA_TYPE POLYBENCH_1D(z,N,n))
 {
   int i, j;
 
@@ -123,17 +124,17 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-8192, 8191) alpha;
-  DATA_TYPE ANN2(-8192, 8191) beta;
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-8192, 8191), N, N, n, n);
-  POLYBENCH_1D_ARRAY_DECL(u1, DATA_TYPE ANN2(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(v1, DATA_TYPE ANN1(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(u2, DATA_TYPE ANN2(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(v2, DATA_TYPE ANN1(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(w, DATA_TYPE ANN2(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE ANN1(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE ANN2(-8192, 8191), N, n);
-  POLYBENCH_1D_ARRAY_DECL(z, DATA_TYPE ANN1(-8192, 8191), N, n);
+  DATA_TYPE __attribute((annotate("scalar()"))) alpha;
+  DATA_TYPE __attribute((annotate("scalar()"))) beta;
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE __attribute((annotate("scalar(range(-2, 2) final)"))), N, N, n, n);
+  POLYBENCH_1D_ARRAY_DECL(u1, DATA_TYPE __attribute((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(v1, DATA_TYPE __attribute((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(u2, DATA_TYPE __attribute((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(v2, DATA_TYPE __attribute((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(w, DATA_TYPE __attribute((annotate("scalar(range(-8000, 8000) final)"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE __attribute((annotate("scalar(range(-30, 30) final)"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE __attribute((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(z, DATA_TYPE __attribute((annotate("scalar()"))), N, n);
 
 
   /* Initialize array(s). */

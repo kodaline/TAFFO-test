@@ -29,6 +29,9 @@
 
 # include <stdlib.h>
 
+#define PB_STR(x) #x
+#define PB_XSTR(x) PB_STR(x)
+
 /* Array padding. By default, none is used. */
 # ifndef POLYBENCH_PADDING_FACTOR
 /* default: */
