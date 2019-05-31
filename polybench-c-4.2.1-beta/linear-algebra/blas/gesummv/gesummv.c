@@ -24,13 +24,14 @@
 /* Array initialization. */
 static
 void init_array(int n,
-		DATA_TYPE ANN1(-256, 255) *alpha,
-		DATA_TYPE ANN2(-256, 255) *beta,
-		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n),
-		DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(B,N,N,n,n),
-		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		DATA_TYPE *alpha,
+		DATA_TYPE *beta,
+		DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		DATA_TYPE POLYBENCH_2D(B,N,N,n,n),
+		DATA_TYPE POLYBENCH_1D(x,N,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(0," PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(0," PB_XSTR(N) "))")));
 
   *alpha = 1.5;
   *beta = 1.2;
@@ -49,7 +50,7 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(y,N,n))
 
 {
   int i;
@@ -69,13 +70,13 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_gesummv(int n,
-		    DATA_TYPE ANN1(-256, 255) alpha,
-		    DATA_TYPE ANN2(-256, 255) beta,
-		    DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n),
-		    DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(B,N,N,n,n),
-		    DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(tmp,N,n),
-		    DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x,N,n),
-		    DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		    DATA_TYPE alpha,
+		    DATA_TYPE beta,
+		    DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		    DATA_TYPE POLYBENCH_2D(B,N,N,n,n),
+		    DATA_TYPE POLYBENCH_1D(tmp,N,n),
+		    DATA_TYPE POLYBENCH_1D(x,N,n),
+		    DATA_TYPE POLYBENCH_1D(y,N,n))
 {
   int i, j;
 
@@ -102,13 +103,13 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-256, 255) alpha;
-  DATA_TYPE ANN2(-256, 255) beta;
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-256, 255), N, N, n, n);
-  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE ANN2(-256, 255), N, N, n, n);
-  POLYBENCH_1D_ARRAY_DECL(tmp, DATA_TYPE ANN1(-256, 255), N, n);
-  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE ANN2(-256, 255), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE ANN1(-256, 255), N, n);
+  DATA_TYPE __attribute__((annotate("scalar()"))) alpha;
+  DATA_TYPE __attribute__((annotate("scalar()"))) beta;
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
+  POLYBENCH_1D_ARRAY_DECL(tmp, DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final)"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final)"))), N, n);
 
 
   /* Initialize array(s). */
