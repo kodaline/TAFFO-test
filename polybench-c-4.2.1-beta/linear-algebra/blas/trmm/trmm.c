@@ -24,11 +24,12 @@
 /* Array initialization. */
 static
 void init_array(int m, int n,
-		DATA_TYPE ANN1(-256, 255) *alpha,
-		DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(A,M,M,m,m),
-		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
+		DATA_TYPE *alpha,
+		DATA_TYPE POLYBENCH_2D(A,M,M,m,m),
+		DATA_TYPE POLYBENCH_2D(B,M,N,m,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(0, " PB_XSTR(M) "))")));
+  int j __attribute__((annotate("scalar(range(0, " PB_XSTR(N) "))")));
 
   *alpha = 1.5;
   for (i = 0; i < m; i++) {
@@ -48,7 +49,7 @@ void init_array(int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m, int n,
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(B,M,N,m,n))
 {
   int i, j;
 
@@ -68,9 +69,9 @@ void print_array(int m, int n,
    including the call and return. */
 static
 void kernel_trmm(int m, int n,
-		 DATA_TYPE ANN1(-256, 255) alpha,
-		 DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(A,M,M,m,m),
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,M,N,m,n)) __attribute__((always_inline))
+		 DATA_TYPE alpha,
+		 DATA_TYPE POLYBENCH_2D(A,M,M,m,m),
+		 DATA_TYPE POLYBENCH_2D(B,M,N,m,n))
 {
   int i, j, k;
 
@@ -101,9 +102,9 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN1(-256, 255) alpha;
-  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN2(-256, 255),M,M,m,m);
-  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE ANN1(-256, 255),M,N,m,n);
+  DATA_TYPE __attribute__((annotate("scalar()"))) alpha;
+  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE __attribute__((annotate("scalar()"))),M,M,m,m);
+  POLYBENCH_2D_ARRAY_DECL(B,DATA_TYPE __attribute__((annotate("scalar(range(-256, 255) final)"))),M,N,m,n);
 
   /* Initialize array(s). */
   init_array (m, n, &alpha, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(B));
