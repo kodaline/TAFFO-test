@@ -12,7 +12,7 @@
 #include "distance.h"
 
 int initClusters(Clusters* __attribute((annotate(ANNOTATION_CLUSTER))) clusters,
-		 int k, float scale) {
+		 int k, float __attribute((annotate("scalar()"))) scale) {
 	int i;
 	float __attribute((annotate("scalar()"))) x;
 
@@ -75,6 +75,7 @@ void segmentImage(RgbImage* __attribute((annotate(ANNOTATION_RGBIMAGE))) image,
 				clusters->centroids[image->pixels[y][x].cluster].n += 1;
 			}
 		}
+
 		for (c  = 0; c < clusters->k; ++c) {
 			if (clusters->centroids[c].n != 0) {
 				clusters->centroids[c].r = clusters->centroids[c].r / clusters->centroids[c].n;

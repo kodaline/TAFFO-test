@@ -18,7 +18,7 @@ typedef struct {
    int n;
 } Centroid;
 
-#define ANNOTATION_CENTROID "struct[scalar(),scalar(),scalar(),void]"
+#define ANNOTATION_CENTROID "struct[scalar(type(signed 32 10)),scalar(type(signed 32 10)),scalar(type(signed 32 10)),scalar(disabled range(1,200000))]"
 #define ANNOTATION_CLUSTER  "struct[void," ANNOTATION_CENTROID "]"
 
 typedef struct {

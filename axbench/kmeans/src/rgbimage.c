@@ -19,7 +19,7 @@ void initRgbImage(RgbImage* image) {
 }
 
 int readCell(FILE *fp, char* w) {
-	int __attribute((annotate("scalar(disabled range(0,255))"))) c;
+	int __attribute((annotate("scalar(disabled range(1,255))"))) c;
 	int i;
 
 	w[0] = 0;
@@ -107,15 +107,15 @@ int loadRgbImage(const char* fileName,
 	for(i = 0; i < image->h; i++) {
 		for(j = 0; j < image->w; j++) {
 			c = readCell(fp, w);
-			float __attribute((annotate("scalar(range(0,255))"))) r = atoi(w);
+			float __attribute((annotate("scalar(range(1,255))"))) r = atoi(w);
 			pixels[i][j].r = r / scale;
 
 			c = readCell(fp, w);
-			float __attribute((annotate("scalar(range(0,255))"))) g = atoi(w);
+			float __attribute((annotate("scalar(range(1,255))"))) g = atoi(w);
 			pixels[i][j].g = g / scale;
 
 			c = readCell(fp, w);
-			float __attribute((annotate("scalar(range(0,255))"))) b = atoi(w);
+			float __attribute((annotate("scalar(range(1,255))"))) b = atoi(w);
 			pixels[i][j].b = b / scale;
 
 			pixels[i][j].cluster = 0;

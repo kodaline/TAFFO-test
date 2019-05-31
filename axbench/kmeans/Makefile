@@ -21,7 +21,7 @@ MIOSIX_CFLAGS   := -target arm-none-linux-eabi --sysroot=$(MIOSIX_EABI) -I$(MIOS
 MODULE		:= kmeans.out
 
 CPP_FILES := $(wildcard src/*.c)
-LL_FILES  := $(addprefix obj/,$(notdir $(CPP_FILES:.c=.ll))) 
+LL_FILES  := $(addprefix obj/,$(notdir $(CPP_FILES:.c=.ll)))
 OBJ_FLOAT := obj/main.o
 OBJ_FIX   := obj/main.fixp.o
 
@@ -37,7 +37,7 @@ DIR:
 	mkdir -p obj
 	mkdir -p stats
 
-$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) obj/main.err.ll stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt
+$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt #obj/main.err.ll
 	$(LD) $(OBJ_FLOAT) $(LFLAGS) -o bin/$@
 	$(LD) $(OBJ_FIX) $(LFLAGS) -o bin/$@.fixp
 
@@ -52,7 +52,7 @@ $(OBJ_FLOAT) : obj/main.ll
 	$(CC) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit -dce $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
 obj/main.vra.ll: obj/main.init.ll
 	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
@@ -61,7 +61,7 @@ obj/main.tuner.ll : obj/main.vra.ll
 	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg -stats $< -o $@ 2> stats/flttofix.log
+	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion$(comma)annotation) -stats $< -o $@ 2> stats/flttofix.log
 
 obj/main.err.ll : obj/main.fixp.ll
 	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -errorprop -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
