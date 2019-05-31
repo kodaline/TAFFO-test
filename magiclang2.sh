@@ -16,6 +16,8 @@ if [[ -z "$OPT" ]]; then OPT=${llvmbin}opt; fi
 if [[ -z "$LLC" ]]; then LLC=${llvmbin}llc; fi
 if [[ -z "$LLVM_LINK" ]]; then LLVM_LINK=${llvmbin}llvm-link; fi
 
+llvm_debug=$(($("$OPT" --version | grep DEBUG | wc -l)))
+
 parse_state=0
 raw_opts="$@"
 input_files=()
@@ -66,16 +68,20 @@ for opt in $raw_opts; do
           dontlink="$opt";
           ;;
         -debug)
-          init_flags="$init_flags -debug";
-          dta_flags="$dta_flags -debug";
-          conversion_flags="$conversion_flags -debug";
-          vra_flags="$vra_flags -debug";
+          if [[ $llvm_debug -ne 0 ]]; then
+            init_flags="$init_flags -debug";
+            dta_flags="$dta_flags -debug";
+            conversion_flags="$conversion_flags -debug";
+            vra_flags="$vra_flags -debug";
+          fi
           ;;
         -debug-taffo)
-          init_flags="$init_flags --debug-only=taffo-init";
-          dta_flags="$dta_flags --debug-only=taffo-dta";
-          conversion_flags="$conversion_flags --debug-only=taffo-conversion";
-          vra_flags="$vra_flags --debug-only=taffo-vra";
+          if [[ $llvm_debug -ne 0 ]]; then
+            init_flags="$init_flags --debug-only=taffo-init";
+            dta_flags="$dta_flags --debug-only=taffo-dta";
+            conversion_flags="$conversion_flags --debug-only=taffo-conversion";
+            vra_flags="$vra_flags --debug-only=taffo-vra";
+          fi
           ;;
         -disable-vra)
           disable_vra=1
