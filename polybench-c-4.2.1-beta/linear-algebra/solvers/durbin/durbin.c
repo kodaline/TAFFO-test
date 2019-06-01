@@ -31,7 +31,6 @@ void init_array (int n,
   for (i = 0; i < n; i++)
     {
       r[i] = (DATA_TYPE)(n+1-i) / (n*200.0) + 1.5;
-      fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER "\n", r[i]);
     }
 }
 
@@ -63,10 +62,10 @@ void kernel_durbin(int n,
 		   DATA_TYPE POLYBENCH_1D(r,N,n),
 		   DATA_TYPE POLYBENCH_1D(y,N,n))
 {
- DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) z[N];
- DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) alpha;
- DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) beta;
- DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) sum;
+ DATA_TYPE __attribute__((annotate("scalar()"))) z[N];
+ DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))) alpha;
+ DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))) beta;
+ DATA_TYPE __attribute__((annotate("scalar()"))) sum;
 
  int i,k;
 
@@ -102,7 +101,7 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_1D_ARRAY_DECL(r, DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(r, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
   POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))), N, n);
 
 

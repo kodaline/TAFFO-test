@@ -24,13 +24,14 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(A,N,N,n,n),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(b,N,n),
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		 DATA_TYPE POLYBENCH_1D(b,N,n),
+		 DATA_TYPE POLYBENCH_1D(x,N,n),
+		 DATA_TYPE POLYBENCH_1D(y,N,n))
 {
-  int i, j;
-  DATA_TYPE ANN1(-512, 511) fn = (DATA_TYPE)n;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  DATA_TYPE __attribute__((annotate("scalar()"))) fn = (DATA_TYPE)n;
 
   for (i = 0; i < n; i++)
     {
@@ -52,7 +53,7 @@ void init_array (int n,
   /* Make the matrix positive semi-definite. */
   /* not necessary for LU, but using same code as cholesky */
   int r,s,t;
-  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE ANN2(-512, 511), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
   for (r = 0; r < n; ++r)
     for (s = 0; s < n; ++s)
       (POLYBENCH_ARRAY(B))[r][s] = 0;
@@ -72,7 +73,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(x,N,n))
 
 {
   int i;
@@ -92,14 +93,14 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_ludcmp(int n,
-		   DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(A,N,N,n,n),
-		   DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(b,N,n),
-		   DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n),
-		   DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		   DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		   DATA_TYPE POLYBENCH_1D(b,N,n),
+		   DATA_TYPE POLYBENCH_1D(x,N,n),
+		   DATA_TYPE POLYBENCH_1D(y,N,n))
 {
   int i, j, k;
 
-  DATA_TYPE ANN1(-512, 511) w;
+  DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))) w;
 
 #pragma scop
   for (i = 0; i < _PB_N; i++) {
@@ -143,10 +144,10 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-512, 511), N, N, n, n);
-  POLYBENCH_1D_ARRAY_DECL(b, DATA_TYPE ANN2(-512, 511), N, n);
-  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE ANN1(-512, 511), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE ANN2(-512, 511), N, n);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))), N, N, n, n);
+  POLYBENCH_1D_ARRAY_DECL(b, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
 
 
   /* Initialize array(s). */

@@ -24,9 +24,10 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-2, 1) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
     {
@@ -41,7 +42,7 @@ void init_array (int n,
   /* Make the matrix positive semi-definite. */
   /* not necessary for LU, but using same code as cholesky */
   int r,s,t;
-  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE ANN2(-2, 1), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
   for (r = 0; r < n; ++r)
     for (s = 0; s < n; ++s)
       (POLYBENCH_ARRAY(B))[r][s] = 0;
@@ -61,7 +62,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2, 1) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 
 {
   int i, j;
@@ -82,7 +83,7 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_lu(int n,
-	       DATA_TYPE ANN1(-2, 1) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+	       DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 {
   int i, j, k;
 
@@ -90,14 +91,14 @@ void kernel_lu(int n,
   for (i = 0; i < _PB_N; i++) {
     for (j = 0; j <i; j++) {
        for (k = 0; k < j; k++) {
-          DATA_TYPE tmp = A[i][k] * A[k][j];
+          DATA_TYPE __attribute__((annotate("scalar()"))) tmp = A[i][k] * A[k][j];
           A[i][j] -= tmp;
        }
         A[i][j] /= A[j][j];
     }
    for (j = i; j < _PB_N; j++) {
        for (k = 0; k < i; k++) {
-          DATA_TYPE tmp = A[i][k] * A[k][j];
+          DATA_TYPE __attribute__((annotate("scalar()"))) tmp = A[i][k] * A[k][j];
           A[i][j] -= tmp;
        }
     }
@@ -112,7 +113,7 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-2, 1), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar(range(-2, 1) final)"))), N, N, n, n);
 
   /* Initialize array(s). */
   init_array (n, POLYBENCH_ARRAY(A));

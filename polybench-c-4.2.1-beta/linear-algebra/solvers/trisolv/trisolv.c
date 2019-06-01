@@ -24,18 +24,19 @@
 /* Array initialization. */
 static
 void init_array(int n,
-		DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(L,N,N,n,n),
-		DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n),
-		DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(b,N,n)) __attribute__((always_inline))
+		DATA_TYPE POLYBENCH_2D(L,N,N,n,n),
+		DATA_TYPE POLYBENCH_1D(x,N,n),
+		DATA_TYPE POLYBENCH_1D(b,N,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-8000, 8000))")));
+  int j __attribute__((annotate("scalar(range(-8000, 8000))")));
 
   for (i = 0; i < n; i++)
     {
       x[i] = - 999;
       b[i] =  i ;
       for (j = 0; j <= i; j++)
-	L[i][j] = (DATA_TYPE) (i+n-j+1)*2/n;
+        L[i][j] = (DATA_TYPE) (i+n-j+1)*2/n;
     }
 }
 
@@ -44,7 +45,7 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(x,N,n))
 
 {
   int i;
@@ -64,9 +65,9 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_trisolv(int n,
-		    DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(L,N,N,n,n),
-		    DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n),
-		    DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(b,N,n)) __attribute__((always_inline))
+		    DATA_TYPE POLYBENCH_2D(L,N,N,n,n),
+		    DATA_TYPE POLYBENCH_1D(x,N,n),
+		    DATA_TYPE POLYBENCH_1D(b,N,n))
 {
   int i, j;
 
@@ -89,9 +90,9 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(L, DATA_TYPE ANN1(-512, 511), N, N, n, n);
-  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE ANN2(-512, 511), N, n);
-  POLYBENCH_1D_ARRAY_DECL(b, DATA_TYPE ANN1(-512, 511), N, n);
+  POLYBENCH_2D_ARRAY_DECL(L, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
+  POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(b, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
 
 
   /* Initialize array(s). */

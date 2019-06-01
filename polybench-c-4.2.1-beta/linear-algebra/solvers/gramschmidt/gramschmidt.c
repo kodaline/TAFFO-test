@@ -24,11 +24,12 @@
 /* Array initialization. */
 static
 void init_array(int m, int n,
-		DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(A,M,N,m,n),
-		DATA_TYPE ANN2(-2097152, 2097151) POLYBENCH_2D(R,N,N,n,n),
-		DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) __attribute__((always_inline))
+		DATA_TYPE POLYBENCH_2D(A,M,N,m,n),
+		DATA_TYPE POLYBENCH_2D(R,N,N,n,n),
+		DATA_TYPE POLYBENCH_2D(Q,M,N,m,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < m; i++)
     for (j = 0; j < n; j++) {
@@ -45,9 +46,9 @@ void init_array(int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m, int n,
-		 DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(A,M,N,m,n),
-		 DATA_TYPE ANN2(-2097152, 2097151) POLYBENCH_2D(R,N,N,n,n),
-		 DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,M,N,m,n),
+		 DATA_TYPE POLYBENCH_2D(R,N,N,n,n),
+		 DATA_TYPE POLYBENCH_2D(Q,M,N,m,n))
 {
   int i, j;
 
@@ -77,13 +78,13 @@ void print_array(int m, int n,
  http://www.inf.ethz.ch/personal/gander/ */
 static
 void kernel_gramschmidt(int m, int n,
-			DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(A,M,N,m,n),
-			DATA_TYPE ANN2(-2097152, 2097151) POLYBENCH_2D(R,N,N,n,n),
-			DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) __attribute__((always_inline))
+			DATA_TYPE POLYBENCH_2D(A,M,N,m,n),
+			DATA_TYPE POLYBENCH_2D(R,N,N,n,n),
+			DATA_TYPE POLYBENCH_2D(Q,M,N,m,n))
 {
   int i, j, k;
 
-  DATA_TYPE ANN2(-2097152, 2097151) nrm;
+  DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))) nrm;
 
 #pragma scop
   for (k = 0; k < _PB_N; k++)
@@ -93,7 +94,10 @@ void kernel_gramschmidt(int m, int n,
         nrm += A[i][k] * A[i][k];
       R[k][k] = SQRT_FUN(nrm);
       for (i = 0; i < _PB_M; i++)
-        Q[i][k] = A[i][k] / R[k][k];
+        if (R[k][k] != 0.0)
+          Q[i][k] = A[i][k] / R[k][k];
+        else
+          Q[i][k] = 0.0;
       for (j = k + 1; j < _PB_N; j++)
 	{
 	  R[k][j] = SCALAR_VAL(0.0);
@@ -115,9 +119,9 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE ANN1(-2097152, 2097151),M,N,m,n);
-  POLYBENCH_2D_ARRAY_DECL(R,DATA_TYPE ANN2(-2097152, 2097151),N,N,n,n);
-  POLYBENCH_2D_ARRAY_DECL(Q,DATA_TYPE ANN1(-2097152, 2097151),M,N,m,n);
+  POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))),M,N,m,n);
+  POLYBENCH_2D_ARRAY_DECL(R,DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))),N,N,n,n);
+  POLYBENCH_2D_ARRAY_DECL(Q,DATA_TYPE __attribute__((annotate("scalar(range(-1000, 1000) final)"))),M,N,m,n);
 
   /* Initialize array(s). */
   init_array (m, n,
