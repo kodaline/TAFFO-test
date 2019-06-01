@@ -38,8 +38,8 @@ run_one()
   fix_out=build/"$benchname".out
   flt_out=build/"$benchname".float.out
   
-  $TASKSET $fix_out 2> $datadir/$benchname.csv > $datadir/$benchname.time.txt || return $?
   $TASKSET $flt_out 2> $datadir/$benchname.float.csv > $datadir/$benchname.float.time.txt || return $?
+  $TASKSET $fix_out 2> $datadir/$benchname.csv > $datadir/$benchname.time.txt || return $?
 }
 
 

@@ -24,33 +24,34 @@
 /* Array initialization. */
 static
 void init_array(int n,
-		DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
     {
       for (j = 0; j <= i; j++)
-	A[i][j] = (DATA_TYPE)(-j % n) / n + 1;
+        A[i][j] = (DATA_TYPE)(-j % n) / n + 1;
       for (j = i+1; j < n; j++) {
-	A[i][j] = 0;
+        A[i][j] = 0;
       }
       A[i][i] = 1;
     }
 
   /* Make the matrix positive semi-definite. */
   int r,s,t;
-  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE ANN2(-2, 2), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
   for (r = 0; r < n; ++r)
     for (s = 0; s < n; ++s)
       (POLYBENCH_ARRAY(B))[r][s] = 0;
   for (t = 0; t < n; ++t)
     for (r = 0; r < n; ++r)
       for (s = 0; s < n; ++s)
-	(POLYBENCH_ARRAY(B))[r][s] += A[r][t] * A[s][t];
+        (POLYBENCH_ARRAY(B))[r][s] += A[r][t] * A[s][t];
     for (r = 0; r < n; ++r)
       for (s = 0; s < n; ++s)
-	A[r][s] = (POLYBENCH_ARRAY(B))[r][s];
+        A[r][s] = (POLYBENCH_ARRAY(B))[r][s];
   POLYBENCH_FREE_ARRAY(B);
 
 }
@@ -60,7 +61,7 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 
 {
   int i, j;
@@ -81,7 +82,7 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_cholesky(int n,
-		     DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		     DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 {
   int i, j, k;
 
@@ -91,14 +92,14 @@ void kernel_cholesky(int n,
      //j<i
      for (j = 0; j < i; j++) {
         for (k = 0; k < j; k++) {
-           DATA_TYPE ANN2(-2, 2) tmp = A[i][k] * A[j][k];
+           DATA_TYPE __attribute__((annotate("scalar()"))) tmp = A[i][k] * A[j][k];
            A[i][j] -= tmp;
         }
         A[i][j] /= A[j][j];
      }
      // i==j case
      for (k = 0; k < i; k++) {
-        DATA_TYPE ANN2(-2, 2) tmp = A[i][k] * A[i][k];
+        DATA_TYPE __attribute__((annotate("scalar()"))) tmp = A[i][k] * A[i][k];
         A[i][i] -= tmp;
      }
      A[i][i] = SQRT_FUN(A[i][i]);
@@ -114,7 +115,7 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-2, 2), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar(range(-140, 140) final)"))), N, N, n, n);
 
   /* Initialize array(s). */
   init_array (n, POLYBENCH_ARRAY(A));

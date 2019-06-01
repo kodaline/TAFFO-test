@@ -24,13 +24,14 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(r,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(r,N,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
     {
       r[i] = (DATA_TYPE)(n+1-i) / (n*200.0) + 1.5;
+      fprintf (POLYBENCH_DUMP_TARGET, DATA_PRINTF_MODIFIER "\n", r[i]);
     }
 }
 
@@ -39,7 +40,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(y,N,n))
 
 {
   int i;
@@ -59,13 +60,13 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_durbin(int n,
-		   DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(r,N,n),
-		   DATA_TYPE ANN2(-2, 1) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		   DATA_TYPE POLYBENCH_1D(r,N,n),
+		   DATA_TYPE POLYBENCH_1D(y,N,n))
 {
- DATA_TYPE ANN1(-2, 1) z[N];
- DATA_TYPE ANN2(-2, 1) alpha;
- DATA_TYPE ANN1(-2, 1) beta;
- DATA_TYPE ANN2(-2, 1) sum;
+ DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) z[N];
+ DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) alpha;
+ DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) beta;
+ DATA_TYPE __attribute__((annotate("scalar(range(-10, 10) final)"))) sum;
 
  int i,k;
 
@@ -101,8 +102,8 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_1D_ARRAY_DECL(r, DATA_TYPE ANN1(-2, 1), N, n);
-  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE ANN2(-2, 1), N, n);
+  POLYBENCH_1D_ARRAY_DECL(r, DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(y, DATA_TYPE __attribute__((annotate("scalar(range(-2, 2) final)"))), N, n);
 
 
   /* Initialize array(s). */
