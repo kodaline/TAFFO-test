@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 	inputFileHandler >> n;
 
 	// create the directory for storing data
-	float* __attribute((annotate(ANNOTATION_RANGE))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
+	float* __attribute((annotate("scalar(range(0.01,1))"))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
 	if(xyz == NULL)
 	{
 		std::cout << "cannot allocate memory for the triangle coordinates!" << std::endl;
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 		dataIn[16] 	= xyz[i + 16];
 		dataIn[17] 	= xyz[i + 17];
 
-		float __attribute((annotate("target('res') scalar(disabled)"))) res[2];
+		float __attribute((annotate("target('res') scalar()"))) res[2];
 
 #pragma parrot(input, "jmeint", [18]dataIn)
 
