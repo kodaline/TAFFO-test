@@ -24,10 +24,12 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n),
-		 DATA_TYPE ANN2(-32, 31) POLYBENCH_3D(B,N,N,N,n,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_3D(A,N,N,N,n,n,n),
+		 DATA_TYPE POLYBENCH_3D(B,N,N,N,n,n,n))
 {
-  int i, j, k;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int k __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++)
@@ -40,7 +42,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_3D(A,N,N,N,n,n,n))
 
 {
   int i, j, k;
@@ -63,8 +65,8 @@ void print_array(int n,
 static
 void kernel_heat_3d(int tsteps,
 		      int n,
-		      DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n),
-		      DATA_TYPE ANN2(-32, 31) POLYBENCH_3D(B,N,N,N,n,n,n)) __attribute__((always_inline))
+		      DATA_TYPE POLYBENCH_3D(A,N,N,N,n,n,n),
+		      DATA_TYPE POLYBENCH_3D(B,N,N,N,n,n,n))
 {
   int t, i, j, k;
 
@@ -103,8 +105,8 @@ int main(int argc, char** argv)
   int tsteps = TSTEPS;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_3D_ARRAY_DECL(A, DATA_TYPE ANN1(-32, 31), N, N, N, n, n, n);
-  POLYBENCH_3D_ARRAY_DECL(B, DATA_TYPE ANN2(-32, 31), N, N, N, n, n, n);
+  POLYBENCH_3D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, N, n, n, n);
+  POLYBENCH_3D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, N, n, n, n);
 
 
   /* Initialize array(s). */

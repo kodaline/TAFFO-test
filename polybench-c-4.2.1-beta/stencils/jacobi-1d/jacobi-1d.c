@@ -24,10 +24,10 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n),
-		 DATA_TYPE ANN2(-4, 3) POLYBENCH_1D(B,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(A,N,n),
+		 DATA_TYPE POLYBENCH_1D(B,N,n))
 {
-  int i;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
       {
@@ -41,7 +41,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_1D(A,N,n))
 
 {
   int i;
@@ -63,8 +63,8 @@ void print_array(int n,
 static
 void kernel_jacobi_1d(int tsteps,
 			    int n,
-			    DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n),
-			    DATA_TYPE ANN2(-4, 3) POLYBENCH_1D(B,N,n)) __attribute__((always_inline))
+			    DATA_TYPE POLYBENCH_1D(A,N,n),
+			    DATA_TYPE POLYBENCH_1D(B,N,n))
 {
   int t, i;
 
@@ -88,8 +88,8 @@ int main(int argc, char** argv)
   int tsteps = TSTEPS;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_1D_ARRAY_DECL(A, DATA_TYPE ANN1(-4, 3), N, n);
-  POLYBENCH_1D_ARRAY_DECL(B, DATA_TYPE ANN2(-4, 3), N, n);
+  POLYBENCH_1D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
+  POLYBENCH_1D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, n);
 
 
   /* Initialize array(s). */

@@ -24,10 +24,11 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-2048, 2047) POLYBENCH_2D(A,N,N,n,n),
-		 DATA_TYPE ANN2(-2048, 2047) POLYBENCH_2D(B,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+		 DATA_TYPE POLYBENCH_2D(B,N,N,n,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++)
@@ -42,7 +43,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2048, 2047) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(A,N,N,n,n))
 
 {
   int i, j;
@@ -64,8 +65,8 @@ void print_array(int n,
 static
 void kernel_jacobi_2d(int tsteps,
 			    int n,
-			    DATA_TYPE ANN1(-2048, 2047) POLYBENCH_2D(A,N,N,n,n),
-			    DATA_TYPE ANN2(-2048, 2047) POLYBENCH_2D(B,N,N,n,n)) __attribute__((always_inline))
+			    DATA_TYPE POLYBENCH_2D(A,N,N,n,n),
+			    DATA_TYPE POLYBENCH_2D(B,N,N,n,n))
 {
   int t, i, j;
 
@@ -91,8 +92,8 @@ int main(int argc, char** argv)
   int tsteps = TSTEPS;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE ANN1(-2048, 2047), N, N, n, n);
-  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE ANN2(-2048, 2047), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(B, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
 
 
   /* Initialize array(s). */

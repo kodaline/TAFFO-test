@@ -26,12 +26,13 @@ static
 void init_array (int tmax,
 		 int nx,
 		 int ny,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(ex,NX,NY,nx,ny),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(ey,NX,NY,nx,ny),
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(_fict_,TMAX,tmax)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(ex,NX,NY,nx,ny),
+		 DATA_TYPE POLYBENCH_2D(ey,NX,NY,nx,ny),
+		 DATA_TYPE POLYBENCH_2D(hz,NX,NY,nx,ny),
+		 DATA_TYPE POLYBENCH_1D(_fict_,TMAX,tmax))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(NX) ", " PB_XSTR(NX) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(NY) ", " PB_XSTR(NY) "))")));
 
   for (i = 0; i < tmax; i++)
     _fict_[i] = (DATA_TYPE) i;
@@ -50,9 +51,9 @@ void init_array (int tmax,
 static
 void print_array(int nx,
 		 int ny,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(ex,NX,NY,nx,ny),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(ey,NX,NY,nx,ny),
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(ex,NX,NY,nx,ny),
+		 DATA_TYPE POLYBENCH_2D(ey,NX,NY,nx,ny),
+		 DATA_TYPE POLYBENCH_2D(hz,NX,NY,nx,ny))
 {
   int i, j;
 
@@ -90,10 +91,10 @@ static
 void kernel_fdtd_2d(int tmax,
 		    int nx,
 		    int ny,
-		    DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(ex,NX,NY,nx,ny),
-		    DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(ey,NX,NY,nx,ny),
-		    DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny),
-		    DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(_fict_,TMAX,tmax)) __attribute__((always_inline))
+		    DATA_TYPE POLYBENCH_2D(ex,NX,NY,nx,ny),
+		    DATA_TYPE POLYBENCH_2D(ey,NX,NY,nx,ny),
+		    DATA_TYPE POLYBENCH_2D(hz,NX,NY,nx,ny),
+		    DATA_TYPE POLYBENCH_1D(_fict_,TMAX,tmax))
 {
   int t, i, j;
 
@@ -127,10 +128,10 @@ int main(int argc, char** argv)
   int ny = NY;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(ex,DATA_TYPE ANN1(-512, 511),NX,NY,nx,ny);
-  POLYBENCH_2D_ARRAY_DECL(ey,DATA_TYPE ANN2(-512, 511),NX,NY,nx,ny);
-  POLYBENCH_2D_ARRAY_DECL(hz,DATA_TYPE ANN1(-512, 511),NX,NY,nx,ny);
-  POLYBENCH_1D_ARRAY_DECL(_fict_,DATA_TYPE ANN2(-512, 511),TMAX,tmax);
+  POLYBENCH_2D_ARRAY_DECL(ex,DATA_TYPE __attribute__((annotate("scalar()"))),NX,NY,nx,ny);
+  POLYBENCH_2D_ARRAY_DECL(ey,DATA_TYPE __attribute__((annotate("scalar()"))),NX,NY,nx,ny);
+  POLYBENCH_2D_ARRAY_DECL(hz,DATA_TYPE __attribute__((annotate("scalar()"))),NX,NY,nx,ny);
+  POLYBENCH_1D_ARRAY_DECL(_fict_,DATA_TYPE __attribute__((annotate("scalar()"))),TMAX,tmax);
 
   /* Initialize array(s). */
   init_array (tmax, nx, ny,

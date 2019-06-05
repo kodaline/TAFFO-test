@@ -24,9 +24,10 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(u,N,N,n,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-4000, 4000))")));
+  int j __attribute__((annotate("scalar(range(-4000, 4000))")));
 
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++)
@@ -40,7 +41,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(u,N,N,n,n))
 
 {
   int i, j;
@@ -65,16 +66,16 @@ void print_array(int n,
  */
 static
 void kernel_adi(int tsteps, int n,
-		DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n),
-		DATA_TYPE ANN2(-1024, 1023) POLYBENCH_2D(v,N,N,n,n),
-		DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(p,N,N,n,n),
-		DATA_TYPE ANN2(-1024, 1023) POLYBENCH_2D(q,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE POLYBENCH_2D(u,N,N,n,n),
+		DATA_TYPE POLYBENCH_2D(v,N,N,n,n),
+		DATA_TYPE POLYBENCH_2D(p,N,N,n,n),
+		DATA_TYPE POLYBENCH_2D(q,N,N,n,n))
 {
   int t, i, j;
-  DATA_TYPE ANN1(-1024, 1023) DX, DY, DT;
-  DATA_TYPE ANN2(-1024, 1023) B1, B2;
-  DATA_TYPE ANN1(-1024, 1023) mul1, mul2;
-  DATA_TYPE ANN2(-1024, 1023) a, b, c, d, e, f;
+  DATA_TYPE __attribute__((annotate("scalar()"))) DX, DY, DT;
+  DATA_TYPE __attribute__((annotate("scalar()"))) B1, B2;
+  DATA_TYPE __attribute__((annotate("scalar()"))) mul1, mul2;
+  DATA_TYPE __attribute__((annotate("scalar()"))) a, b, c, d, e, f;
 
 #pragma scop
 
@@ -101,7 +102,8 @@ void kernel_adi(int tsteps, int n,
       q[i][0] = v[0][i];
       for (j=1; j<_PB_N-1; j++) {
         p[i][j] = -c / (a*p[i][j-1]+b);
-        q[i][j] = (-d*u[j][i-1]+(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*d)*u[j][i] - f*u[j][i+1]-a*q[i][j-1])/(a*p[i][j-1]+b);
+        q[i][j] = (-d*u[j][i-1]+(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*d)*u[j][i] - f*u[j][i+1]-a*q[i][j-1]);
+        q[i][j] /= (a*p[i][j-1]+b);
       }
 
       v[_PB_N-1][i] = SCALAR_VAL(1.0);
@@ -116,7 +118,8 @@ void kernel_adi(int tsteps, int n,
       q[i][0] = u[i][0];
       for (j=1; j<_PB_N-1; j++) {
         p[i][j] = -f / (d*p[i][j-1]+e);
-        q[i][j] = (-a*v[i-1][j]+(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*a)*v[i][j] - c*v[i+1][j]-d*q[i][j-1])/(d*p[i][j-1]+e);
+        q[i][j] = (-a*v[i-1][j]+(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*a)*v[i][j] - c*v[i+1][j]-d*q[i][j-1]);
+        q[i][j] /= (d*p[i][j-1]+e);
       }
       u[i][_PB_N-1] = SCALAR_VAL(1.0);
       for (j=_PB_N-2; j>=1; j--) {
@@ -135,10 +138,10 @@ int main(int argc, char** argv)
   int tsteps = TSTEPS;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(u, DATA_TYPE ANN1(-1024, 1023), N, N, n, n);
-  POLYBENCH_2D_ARRAY_DECL(v, DATA_TYPE ANN2(-1024, 1023), N, N, n, n);
-  POLYBENCH_2D_ARRAY_DECL(p, DATA_TYPE ANN1(-1024, 1023), N, N, n, n);
-  POLYBENCH_2D_ARRAY_DECL(q, DATA_TYPE ANN2(-1024, 1023), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(u, DATA_TYPE __attribute__((annotate("scalar(range(-60,60) final)"))), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(v, DATA_TYPE __attribute__((annotate("scalar(range(-2,2) final)"))), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(p, DATA_TYPE __attribute__((annotate("scalar(range(-1,1) final)"))), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(q, DATA_TYPE __attribute__((annotate("scalar(range(-500,500) final)"))), N, N, n, n);
 
 
   /* Initialize array(s). */
