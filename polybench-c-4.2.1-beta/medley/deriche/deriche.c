@@ -23,12 +23,13 @@
 
 /* Array initialization. */
 static
-void init_array (int w, int h, DATA_TYPE ANN2(-4, 3)* alpha,
-		 DATA_TYPE ANN1(-4, 3) POLYBENCH_2D(imgIn,W,H,w,h),
-		 DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut,W,H,w,h)) __attribute__((always_inline))
+void init_array (int w, int h, DATA_TYPE* alpha,
+		 DATA_TYPE POLYBENCH_2D(imgIn,W,H,w,h),
+		 DATA_TYPE POLYBENCH_2D(imgOut,W,H,w,h))
 {
-  int i, j;
-
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(W) ", " PB_XSTR(W) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(H) ", " PB_XSTR(H) "))")));
+  
   *alpha=0.25; //parameter of the filter
 
   //input should be between 0 and 1 (grayscale image pixel)
@@ -42,7 +43,7 @@ void init_array (int w, int h, DATA_TYPE ANN2(-4, 3)* alpha,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int w, int h,
-		 DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut,W,H,w,h)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(imgOut,W,H,w,h))
 
 {
   int i, j;
@@ -64,20 +65,20 @@ void print_array(int w, int h,
    including the call and return. */
 /* Original code provided by Gael Deest */
 static
-void kernel_deriche(int w, int h, DATA_TYPE ANN2(-4, 3) alpha,
-       DATA_TYPE ANN1(-4, 3) POLYBENCH_2D(imgIn, W, H, w, h),
-       DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut, W, H, w, h),
-       DATA_TYPE ANN1(-4, 3) POLYBENCH_2D(y1, W, H, w, h),
-       DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(y2, W, H, w, h))  __attribute__((always_inline)) {
+void kernel_deriche(int w, int h, DATA_TYPE alpha,
+       DATA_TYPE POLYBENCH_2D(imgIn, W, H, w, h),
+       DATA_TYPE POLYBENCH_2D(imgOut, W, H, w, h),
+       DATA_TYPE POLYBENCH_2D(y1, W, H, w, h),
+       DATA_TYPE POLYBENCH_2D(y2, W, H, w, h)) {
     int i,j;
-    DATA_TYPE ANN1(-4, 3) xm1, tm1, ym1, ym2;
-    DATA_TYPE ANN2(-4, 3) xp1, xp2;
-    DATA_TYPE ANN1(-4, 3) tp1, tp2;
-    DATA_TYPE ANN2(-4, 3) yp1, yp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) xm1, tm1, ym1, ym2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) xp1, xp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) tp1, tp2;
+    DATA_TYPE __attribute__((annotate("scalar(range(-1, 1) final)"))) yp1, yp2;
 
-    DATA_TYPE ANN1(-4, 3) k;
-    DATA_TYPE ANN2(-4, 3) a1, a2, a3, a4, a5, a6, a7, a8;
-    DATA_TYPE ANN1(-4, 3) b1, b2, c1, c2;
+    DATA_TYPE __attribute__((annotate("scalar()"))) k;
+    DATA_TYPE __attribute__((annotate("scalar()"))) a1, a2, a3, a4, a5, a6, a7, a8;
+    DATA_TYPE __attribute__((annotate("scalar()"))) b1, b2, c1, c2;
 
 #pragma scop
    k = (SCALAR_VAL(1.0)-EXP_FUN(-alpha))*(SCALAR_VAL(1.0)-EXP_FUN(-alpha))/(SCALAR_VAL(1.0)+SCALAR_VAL(2.0)*alpha*EXP_FUN(-alpha)-EXP_FUN(SCALAR_VAL(2.0)*alpha));
@@ -162,11 +163,11 @@ int main(int argc, char** argv)
   int h = H;
 
   /* Variable declaration/allocation. */
-  DATA_TYPE ANN2(-4, 3) alpha;
-  POLYBENCH_2D_ARRAY_DECL(imgIn, DATA_TYPE ANN1(-4, 3), W, H, w, h);
-  POLYBENCH_2D_ARRAY_DECL(imgOut, DATA_TYPE ANN2(-4, 3), W, H, w, h);
-  POLYBENCH_2D_ARRAY_DECL(y1, DATA_TYPE ANN1(-4, 3), W, H, w, h);
-  POLYBENCH_2D_ARRAY_DECL(y2, DATA_TYPE ANN2(-4, 3), W, H, w, h);
+  DATA_TYPE __attribute__((annotate("scalar()"))) alpha;
+  POLYBENCH_2D_ARRAY_DECL(imgIn, DATA_TYPE  __attribute__((annotate("scalar()"))), W, H, w, h);
+  POLYBENCH_2D_ARRAY_DECL(imgOut, DATA_TYPE __attribute__((annotate("scalar()"))), W, H, w, h);
+  POLYBENCH_2D_ARRAY_DECL(y1, DATA_TYPE __attribute__((annotate("scalar()"))), W, H, w, h);
+  POLYBENCH_2D_ARRAY_DECL(y2, DATA_TYPE __attribute__((annotate("scalar()"))), W, H, w, h);
 
 
   /* Initialize array(s). */

@@ -53,17 +53,6 @@
 #  define DATA_PRINTF_MODIFIER "%d "
 #endif
 
-#if defined(CONF_BAD)
-#define ANN1(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
-#define ANN2(min, max) __attribute__((annotate("scalar(range(-512,511))")))
-#elif defined(CONF_WORSE)
-#define ANN1(min, max)
-#define ANN2(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
-#else  // CONF_GOOD
-#define ANN1(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
-#define ANN2(min, max) __attribute__((annotate("scalar(range(" #min "," #max "))")))
-#endif
-
 #ifdef DATA_TYPE_IS_FLOAT
 #  define DATA_TYPE float
 #  define DATA_PRINTF_MODIFIER "%0.16f "

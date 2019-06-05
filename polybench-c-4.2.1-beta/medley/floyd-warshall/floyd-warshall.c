@@ -24,9 +24,10 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-2048, 2047) POLYBENCH_2D(path,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(path,N,N,n,n))
 {
-  int i, j;
+  int i __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
+  int j __attribute__((annotate("scalar(range(-" PB_XSTR(N) ", " PB_XSTR(N) "))")));
 
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++) {
@@ -41,7 +42,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2048, 2047) POLYBENCH_2D(path,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE POLYBENCH_2D(path,N,N,n,n))
 
 {
   int i, j;
@@ -62,7 +63,7 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_floyd_warshall(int n,
-			   DATA_TYPE ANN1(-2048, 2047) POLYBENCH_2D(path,N,N,n,n)) __attribute__((always_inline))
+			   DATA_TYPE POLYBENCH_2D(path,N,N,n,n))
 {
   int i, j, k;
 
@@ -71,8 +72,8 @@ void kernel_floyd_warshall(int n,
     {
       for(i = 0; i < _PB_N; i++)
         for (j = 0; j < _PB_N; j++) {
-          DATA_TYPE ANN2(-2048, 2047) tmpa = path[i][k];
-          DATA_TYPE ANN2(-2048, 2047) tmpb = path[k][j];
+          DATA_TYPE __attribute__((annotate("scalar()"))) tmpa = path[i][k];
+          DATA_TYPE __attribute__((annotate("scalar()"))) tmpb = path[k][j];
           int cond = path[i][j] < path[i][k] + path[k][j];
           if (cond) {
             path[i][j] = path[i][j];
@@ -92,7 +93,7 @@ int main(int argc, char** argv)
   int n = N;
 
   /* Variable declaration/allocation. */
-  POLYBENCH_2D_ARRAY_DECL(path, DATA_TYPE ANN1(-2048, 2047), N, N, n, n);
+  POLYBENCH_2D_ARRAY_DECL(path, DATA_TYPE __attribute__((annotate("scalar()"))), N, N, n, n);
 
 
   /* Initialize array(s). */
