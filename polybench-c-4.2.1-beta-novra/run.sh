@@ -33,22 +33,33 @@ run_one()
 {
   benchpath=$1
   datadir=$2
+  times=$3
   benchdir=$(dirname $benchpath)
   benchname=$(basename $benchdir)
   fix_out=build/"$benchname".out
   flt_out=build/"$benchname".float.out
   
-  $TASKSET $fix_out 2> $datadir/$benchname.csv > $datadir/$benchname.time.txt || return $?
   $TASKSET $flt_out 2> $datadir/$benchname.float.csv > $datadir/$benchname.float.time.txt || return $?
+  for ((i=1; i<$times; i++)); do
+    $TASKSET $flt_out 2> /dev/null >> $datadir/$benchname.float.time.txt || return $?
+  done
+  $TASKSET $fix_out 2> $datadir/$benchname.csv > $datadir/$benchname.time.txt || return $?
+  for ((i=1; i<$times; i++)); do
+    $TASKSET $fix_out 2> /dev/null >> $datadir/$benchname.time.txt || return $?
+  done
 }
 
 
 ONLY='.*'
+TIMES=1
 
 for arg; do
   case $arg in
     --only=*)
       ONLY="${arg#*=}"
+      ;;
+    --times=*)
+      TIMES=$((${arg#*=}))
       ;;
     *)
       echo Unrecognized option $arg
@@ -64,7 +75,7 @@ for bench in $all_benchs; do
   if [[ "$bench" =~ $ONLY ]]; then
     skipped_all=0
     printf '[....] %s' "$bench"
-    run_one "$bench" ./results-out
+    run_one "$bench" ./results-out $TIMES
     bpid_fc=$?
     if [[ $bpid_fc == 0 ]]; then
       bpid_fc=' ok '

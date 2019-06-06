@@ -7,6 +7,8 @@ import math
 from decimal import *
 import argparse
 import re
+import pandas as pd
+from functools import *
 
 
 def PolybenchRootDir() -> Path:
@@ -65,6 +67,21 @@ def ComputeDifference(fix_data, flt_data):
           'e_perc': e_perc,
           'e_abs': e_abs}
           
+          
+def ComputeSpeedups(float_times, fixp_times):
+  float_list = [Decimal(di) for di in float_times]
+  fixp_list = [Decimal(di) for di in fixp_times]
+  float_avg = reduce((lambda a, b: a + b), float_list) / Decimal(len(float_list))
+  fixp_avg = reduce((lambda a, b: a + b), fixp_list) / Decimal(len(fixp_list))
+  speedup = float_avg / fixp_avg
+  return {'fix_t': fixp_avg, 'flt_t': float_avg, 'speedup': speedup}
+          
+          
+def PrettyPrint(table):
+  df = pd.DataFrame.from_dict(table)
+  df = df.transpose()
+  return df.to_string()
+          
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Validates Polybench output')
@@ -72,15 +89,24 @@ if __name__ == "__main__":
                       help='regex of benchmarks to include (default=".*")')
   args = parser.parse_args()
 
+  g_res = {}
   for bench in BenchmarkList():
     if not re.search(args.only, bench):
       continue
     name = BenchmarkName(bench)
     float_dataf = PolybenchRootDir() / 'results-out' / (name+'.float.csv')
     float_data = ReadValues(str(float_dataf))
+    float_timesf = PolybenchRootDir() / 'results-out' / (name+'.float.time.txt')
+    float_times = ReadValues(str(float_timesf))
     fixp_dataf = PolybenchRootDir() / 'results-out' / (name+'.csv')
     fixp_data = ReadValues(str(fixp_dataf))
+    fixp_timesf = PolybenchRootDir() / 'results-out' / (name+'.time.txt')
+    fixp_times = ReadValues(str(fixp_timesf))
+    
     res = ComputeDifference(fixp_data, float_data)
-    print(bench, ':', res)
+    res.update(ComputeSpeedups(float_times, fixp_times))
+    g_res[BenchmarkName(bench)] = res
+    
+  print(PrettyPrint(g_res))
     
 

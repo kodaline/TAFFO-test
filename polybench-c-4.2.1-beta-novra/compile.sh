@@ -32,7 +32,9 @@ compile_one()
     -I./utilities \
     -I./ \
     $xparams \
-    -debug-taffo
+    -debug-taffo \
+    -lm \
+    2> build/${benchname}.log
 }
 
 
@@ -87,7 +89,7 @@ for bench in $all_benchs; do
       "-O3 -g -disable-vra \
       -DPOLYBENCH_TIME -DPOLYBENCH_DUMP_ARRAYS -DPOLYBENCH_STACK_ARRAYS \
       -D$D_CONF -D$D_STANDARD_DATASET \
-      -Xdta -totalbits -Xdta $TOT" 2>> build.log
+      -Xdta -totalbits -Xdta $TOT"
     bpid_fc=$?
     if [[ $bpid_fc == 0 ]]; then
       bpid_fc=' ok '
