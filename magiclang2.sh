@@ -32,6 +32,7 @@ dta_flags=
 conversion_flags=
 dontlink=
 iscpp=$CLANG
+honest_mode=0
 for opt in $raw_opts; do
   case $parse_state in
     0)
@@ -85,6 +86,11 @@ for opt in $raw_opts; do
           ;;
         -disable-vra)
           disable_vra=1
+          ;;
+        -honest-mode)
+          # actually, whether this mode is more honest or not is still 
+          # subject of active research
+          honest_mode=1
           ;;
         -*)
           opts="$opts $opt";
@@ -192,11 +198,19 @@ ${iscpp} \
   "${output_file}.5.magiclangtmp.ll" \
   -o "$output_file" || exit $?
 if [[ ! ( -z ${float_output_file} ) ]]; then
-  ${iscpp} \
-    $opts ${optimization} \
-    ${dontlink} \
-    ${input_files[*]} \
-    -o "$float_output_file" || exit $?
+  if [[ $honest_mode -ne 0 ]]; then
+    ${iscpp} \
+      $opts ${optimization} \
+      ${dontlink} \
+      ${input_files[*]} \
+      -o "$float_output_file" || exit $?
+  else
+    ${iscpp} \
+      $opts ${optimization} \
+      ${dontlink} \
+      "${output_file}.1.magiclangtmp.ll" \
+      -o "$float_output_file" || exit $?
+  fi
 fi
 
 
