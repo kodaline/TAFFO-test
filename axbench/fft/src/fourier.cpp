@@ -22,10 +22,10 @@ void calcFftIndices(int K, int* indices)
 	}
 }
 
-void radix2DitCooleyTykeyFft(int K __attribute((annotate("scalar(disabled range(1,4194304))"))),
+void radix2DitCooleyTykeyFft(int K,
 			     int* indices __attribute((annotate("scalar(disabled range(1,4194304))"))),
-			     Complex* x __attribute((annotate("struct[scalar(range(-167776,167776)),scalar(range(-167776,167776))]"))), //__attribute((annotate("scalar(range(-167776,167776))"))),
-			     Complex* f __attribute((annotate("struct[scalar(range(-167776,167776)),scalar(range(-167776,167776))]")))) //__attribute((annotate("scalar(range(-167776,167776))"))))
+			     Complex* x __attribute((annotate(ANNOTATION_COMPLEX(,)))),
+			     Complex* f __attribute((annotate(ANNOTATION_COMPLEX(,)))))
 {
   /* This FFT implementation is buggy
    * x[0] should be < x[all i != 0] because the input is all positive, except it isn't
@@ -33,23 +33,22 @@ void radix2DitCooleyTykeyFft(int K __attribute((annotate("scalar(disabled range(
 	calcFftIndices(K, indices) ;
 
 	int step ;
-	float __attribute((annotate("scalar()"))) arg ; // range(0,1.0) error(1e-10)
+	float __attribute((annotate("scalar()"))) arg ;
 	int eI ;
 	int oI ;
 
-	float __attribute((annotate("target('dataOut') scalar()"))) fftSin ; // range(-1.0,1.0)
-	float __attribute((annotate("target('dataOut') scalar()"))) fftCos ; // range(-1.0,1.0)
+	float __attribute((annotate("scalar()"))) fftSin ;
+	float __attribute((annotate("scalar()"))) fftCos ;
 
-	Complex __attribute((annotate("struct[scalar(),scalar()]"))) t;
-	//float __attribute((annotate("target('t_real') scalar()"))) t_real ; // range(-167776,167776)
-	//float __attribute((annotate("target('t_imag') scalar()"))) t_imag ; // range(-167776,167776)
+	Complex __attribute((annotate(ANNOTATION_COMPLEX_RANGE))) t;
 	int i ;
 	int __attribute((annotate("scalar(disabled range(1,4194304))"))) N ;
 	int j ;
 	int __attribute((annotate("scalar(disabled range(1,4194304))"))) k ;
+
 /*
-	double __attribute((annotate("range -1.0 1.0"))) dataIn[1];
-	double __attribute((annotate("target:dataOut range -1.0 1.0"))) dataOut[2];
+	double dataIn[1];
+	double dataOut[2];
 */
 	for(i = 0, N = 1 << (i + 1); N <= K ; i++, N = 1 << (i + 1))
 	{
@@ -76,26 +75,14 @@ void radix2DitCooleyTykeyFft(int K __attribute((annotate("scalar(disabled range(
 				fftSin = dataOut[0];
 				fftCos = dataOut[1];
 */
-
 				// Non-approximate
 				t =  x[indices[eI]] ;
-				x[indices[eI]].real = t.real + (x[indices[oI]].real * fftCos - x[indices[oI]].imag * fftSin);
-				x[indices[eI]].imag = t.imag + (x[indices[oI]].imag * fftCos + x[indices[oI]].real * fftSin);
+				x[indices[eI]].real = t.real + (x[indices[oI]].real * fftCos - x[indices[eI]].imag * fftSin);
+				x[indices[eI]].imag = t.imag + (x[indices[eI]].imag * fftCos + x[indices[oI]].real * fftSin);
 
-				x[indices[oI]].real = t.real - (x[indices[oI]].real * fftCos - x[indices[oI]].imag * fftSin);
-				x[indices[oI]].imag = t.imag - (x[indices[oI]].imag * fftCos + x[indices[oI]].real * fftSin);
-/*
-				t_real = COMPLEX_REAL(x,indices[eI]);
-				t_imag = COMPLEX_IMAG(x,indices[eI]);
-				COMPLEX_REAL(x,indices[eI]) = t_real + (COMPLEX_REAL(x,indices[oI]) * fftCos - COMPLEX_IMAG(x,indices[eI]) * fftSin);
-                COMPLEX_IMAG(x,indices[eI]) = t_imag + (COMPLEX_IMAG(x,indices[eI]) * fftCos + COMPLEX_REAL(x,indices[oI]) * fftSin);
-
-                COMPLEX_REAL(x,indices[oI]) = t_real - (COMPLEX_REAL(x,indices[oI]) * fftCos - COMPLEX_IMAG(x,indices[eI]) * fftSin);
-                COMPLEX_IMAG(x,indices[eI]) = t_imag - (COMPLEX_IMAG(x,indices[eI]) * fftCos + COMPLEX_REAL(x,indices[oI]) * fftSin);
-*/
+				x[indices[oI]].real = t.real - (x[indices[oI]].real * fftCos - x[indices[eI]].imag * fftSin);
+				x[indices[oI]].imag = t.imag - (x[indices[eI]].imag * fftCos + x[indices[oI]].real * fftSin);
 			}
-
-			//printf("%f, %f, %f\n", arg, t_real, t_imag);
 		}
 	}
 

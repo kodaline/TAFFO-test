@@ -1,6 +1,9 @@
 #ifndef __COMPLEX_HPP__
 #define __COMPLEX_HPP__
 
+#define ANNOTATION_COMPLEX(R1,R2) "struct[scalar(" R1 "),scalar(" R2 ")]"
+#define ANNOTATION_COMPLEX_RANGE ANNOTATION_COMPLEX("range(-1000000, 1000000) final", "range(-1000000, 1000000) final")
+
 #define PI 3.1415926535897931
 
 #if 1
