@@ -52,7 +52,7 @@ int numOptions;
 
 int    * otype;
 fptype __attribute((annotate("scalar(range(0.35,0.84) error(1e-8))"))) *sptprice;
-fptype __attribute((annotate("scalar(range(0.34,0.92) error(1e-8))"))) *strike;
+fptype __attribute((annotate("scalar(range(0.33,0.92) error(1e-8))"))) *strike;
 fptype __attribute((annotate("scalar(range(0.0275,0.1) error(0))"))) *rate;
 fptype __attribute((annotate("scalar(range(0.05,0.65) error(1e-8))"))) *volatility;
 fptype __attribute((annotate("scalar(range(0.05,1) error(0))"))) *otime;
