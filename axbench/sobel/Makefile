@@ -61,14 +61,14 @@ obj/main.tuner.ll : obj/main.vra.ll
 	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -mem2reg -stats $(if $(ISDEBUG), -debug-only=taffo-conversion) $< -o $@ 2> stats/flttofix.log
+	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -stats $(if $(ISDEBUG), -debug-only=taffo-conversion) $< -o $@ 2> stats/flttofix.log
 
 $(OBJ_FIX) : obj/main.fixp.ll
 	$(CC) -S $(MIOSIX_FLAGS) $^ -o obj/main.fixp.s $(OX)
 	$(CC) -c $(MIOSIX_FLAGS) obj/main.fixp.s -o $@
 
 obj/main.err.ll : obj/main.fixp.ll
-	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -errorprop -startonly -nounroll $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
+	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -mem2reg -errorprop -startonly -nounroll $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
 
 stats/%.mix.txt: obj/%.ll
 	$(INSTMIX) $< > $@

@@ -20,9 +20,9 @@ int main ( int argc, const char* argv[])
 	float __attribute((annotate("target('s') scalar()"))) s = 0; // range(0,0.7)
 
 	// Source and destination image
-	Image __attribute((annotate(ANNOTATION_IMAGE))) srcImage;
+	Image __attribute((annotate(ANNOTATION_IMAGE_RANGE))) srcImage;
 	Image __attribute((annotate(ANNOTATION_IMAGE))) dstImage;
-	Image * __attribute((annotate(ANNOTATION_IMAGE))) srcImagePtr = &srcImage;
+	Image * __attribute((annotate(ANNOTATION_IMAGE_RANGE))) srcImagePtr = &srcImage;
 	Image * __attribute((annotate(ANNOTATION_IMAGE))) dstImagePtr = &dstImage;
 
 	float __attribute((annotate("target('s') scalar()"))) w[][3] = { // range(0,1)

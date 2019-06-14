@@ -14,6 +14,7 @@
 #include <iostream>
 
 #define ANNOTATION_IMAGE "struct[void,void,struct[scalar(),scalar(),scalar()],void]"
+#define ANNOTATION_IMAGE_RANGE "struct[void,void,struct[scalar(range(0,255)),scalar(range(0,255)),scalar(range(0,255))],void]"
 
 #define DEBUG 0
 
