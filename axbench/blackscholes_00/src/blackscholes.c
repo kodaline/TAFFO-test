@@ -79,6 +79,7 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
     fptype __attribute((annotate("scalar()"))) xK2_4, xK2_5;
     fptype __attribute((annotate("scalar()"))) xLocal, xLocal_1;
     fptype __attribute((annotate("scalar()"))) xLocal_2, xLocal_3;
+    fptype __attribute((annotate("scalar(range(30,7450) final)"))) InputXX;
 
     // Check for negative value of InputX
     if (InputX < 0.0) {
@@ -88,9 +89,10 @@ fptype CNDF ( fptype __attribute((annotate("scalar()"))) InputX )
         sign = 0;
 
     xInput = InputX;
+    InputXX = InputX;
 
     // Compute NPrimeX term common to both four & six decimal accuracy calcs
-    expValues = exp(-0.5f * (InputX * InputX));
+    expValues = exp(-0.5f * (InputXX * InputXX));
     xNPrimeofX = expValues;
     xNPrimeofX = xNPrimeofX * inv_sqrt_2xPI;
 
