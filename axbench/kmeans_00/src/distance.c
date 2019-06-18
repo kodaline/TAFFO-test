@@ -9,6 +9,7 @@
 #include "distance.h"
 #include <math.h>
 #include <map>
+#include <cstdio>
 
 int count = 0;
 #define MAX_COUNT 1200000
@@ -16,6 +17,7 @@ int count = 0;
 float euclideanDistance(RgbPixel* __attribute((annotate(ANNOTATION_RGBPIXEL))) p,
 			Centroid* __attribute((annotate(ANNOTATION_CENTROID))) c1) {
 	float __attribute((annotate("scalar()"))) r;
+	float __attribute((annotate("scalar(range(1.0e-2,2.976608) final)"))) rr;
 
 	r = 0;
 	double __attribute((annotate("scalar()"))) r_tmp;
@@ -36,9 +38,13 @@ float euclideanDistance(RgbPixel* __attribute((annotate(ANNOTATION_RGBPIXEL))) p
 	r += (p->g - c1->g) * (p->g - c1->g);
 	r += (p->b - c1->b) * (p->b - c1->b);
 
-	r_tmp = sqrt(r);
+	rr = r;
+
+	r_tmp = sqrt(rr);
 
 //#pragma parrot(output, "kmeans", <0.0; 1.0>r_tmp)
+
+	// fprintf(stderr, "%f\n", r_tmp);
 
 	return r_tmp;
 }
@@ -59,7 +65,7 @@ void assignCluster(RgbPixel* __attribute((annotate(ANNOTATION_RGBPIXEL))) p,
 		   Clusters* __attribute((annotate(ANNOTATION_CLUSTER))) clusters) {
 	int i = 0;
 
-	float __attribute((annotate("scalar()"))) d;
+	float __attribute((annotate("errtarget('distance') scalar()"))) d;
 	d = euclideanDistance(p, &clusters->centroids[i]);
 	p->distance = d;
 
