@@ -16,6 +16,13 @@ else
   TIMEOUT=''
 fi
 
+if [[ -z $LLVM_DIR ]]; then
+  echo -e '\033[33m'"Warning"'\033[39m'" using default llvm/clang";
+else
+  llvmbin="$LLVM_DIR/bin/";
+fi
+if [[ -z "$OPT" ]]; then OPT=${llvmbin}opt; fi
+
 
 compile_one()
 {
@@ -35,6 +42,15 @@ compile_one()
     -debug-taffo \
     -lm \
     2> build/${benchname}.log
+    
+  if [[ $RUN_METRICS -ne 0 ]]; then
+    mkdir -p results-out
+    $INSTMIX build/"$benchname".out.5.magiclangtmp.ll > results-out/${benchname}.imix.txt
+    $TAFFO_MLFEAT build/"$benchname".out.5.magiclangtmp.ll > results-out/${benchname}.mlfeat.txt
+    $OPT -S -O3 -o build/"$benchname".float.out.ll build/"$benchname".out.1.magiclangtmp.ll
+    $INSTMIX build/"$benchname".float.out.ll > results-out/${benchname}.float.imix.txt
+    $TAFFO_MLFEAT build/"$benchname".float.out.ll > results-out/${benchname}.float.mlfeat.txt
+  fi
 }
 
 
@@ -47,6 +63,7 @@ D_DATA_TYPE='DATA_TYPE_IS_FLOAT'
 ONLY='.*'
 TOT='32'
 D_CONF="CONF_GOOD"
+RUN_METRICS=0
 
 for arg; do
   case $arg in
@@ -69,6 +86,9 @@ for arg; do
       ;;
     --tot=*)
       TOT="${arg#*=}"
+      ;;
+    metrics)
+      RUN_METRICS=1
       ;;
     *)
       echo Unrecognized option $arg

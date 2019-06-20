@@ -37,6 +37,7 @@ else
   export PASSLIB=$(taffo_setenv_find $1 'lib' 'LLVMFloatToFixed')
   export ERRORLIB=$(taffo_setenv_find $1 'lib' 'LLVMErrorPropagator')
   export INSTMIX=$(taffo_setenv_find $1 'bin' 'taffo-instmix')
+  export TAFFO_MLFEAT=$(taffo_setenv_find $1 'bin' 'taffo-mlfeat')
   
   if [[ -z "$LLVM_DIR" ]]; then
     LLVM_DIR=$(llvm-config --prefix 2> /dev/null)
