@@ -34,7 +34,7 @@ void init_array (int n,
 		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n),
 		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(x,N,n),
 		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(y,N,n),
-		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(z,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(z,N,n)) 
 {
   int i, j;
 
@@ -63,7 +63,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n)) 
 {
   int i;
 
@@ -92,7 +92,7 @@ void kernel_gemver(int n,
 		   DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(w,N,n),
 		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(x,N,n),
 		   DATA_TYPE ANN2(-8192, 8191) POLYBENCH_1D(y,N,n),
-		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(z,N,n)) __attribute__((always_inline))
+		   DATA_TYPE ANN1(-8192, 8191) POLYBENCH_1D(z,N,n)) 
 {
   int i, j;
 

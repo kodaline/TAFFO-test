@@ -26,7 +26,7 @@ static
 void init_array (int m,
 		 int n,
 		 DATA_TYPE ANN1(-512, 511) *float_n,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(data,N,M,n,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(data,N,M,n,m)) 
 {
   int i, j;
 
@@ -43,7 +43,7 @@ void init_array (int m,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m,
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(corr,M,M,m,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(corr,M,M,m,m)) 
 
 {
   int i, j;
@@ -68,7 +68,7 @@ void kernel_correlation(int m, int n,
 			DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(data,N,M,n,m),
 			DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(corr,M,M,m,m),
 			DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(mean,M,m),
-			DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(stddev,M,m)) __attribute__((always_inline))
+			DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(stddev,M,m)) 
 {
   int i, j, k;
 

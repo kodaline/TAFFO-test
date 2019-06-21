@@ -24,7 +24,7 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n)) 
 {
   int i, j;
 
@@ -40,7 +40,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n)) 
 
 {
   int i, j;
@@ -68,7 +68,7 @@ void kernel_adi(int tsteps, int n,
 		DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(u,N,N,n,n),
 		DATA_TYPE ANN2(-1024, 1023) POLYBENCH_2D(v,N,N,n,n),
 		DATA_TYPE ANN1(-1024, 1023) POLYBENCH_2D(p,N,N,n,n),
-		DATA_TYPE ANN2(-1024, 1023) POLYBENCH_2D(q,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE ANN2(-1024, 1023) POLYBENCH_2D(q,N,N,n,n)) 
 {
   int t, i, j;
   DATA_TYPE ANN1(-1024, 1023) DX, DY, DT;

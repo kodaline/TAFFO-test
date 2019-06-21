@@ -29,7 +29,7 @@ void init_array(int ni, int nj, int nk, int nl,
 		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(A,NI,NK,ni,nk),
 		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(B,NK,NJ,nk,nj),
 		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(C,NJ,NL,nj,nl),
-		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) 
 {
   int i, j;
 
@@ -54,7 +54,7 @@ void init_array(int ni, int nj, int nk, int nl,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int ni, int nl,
-		 DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) 
 {
   int i, j;
 
@@ -80,7 +80,7 @@ void kernel_2mm(int ni, int nj, int nk, int nl,
 		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(A,NI,NK,ni,nk),
 		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(B,NK,NJ,nk,nj),
 		DATA_TYPE ANN2(-16384, 16383) POLYBENCH_2D(C,NJ,NL,nj,nl),
-		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-16384, 16383) POLYBENCH_2D(D,NI,NL,ni,nl)) 
 {
   int i, j, k;
 

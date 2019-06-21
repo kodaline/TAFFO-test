@@ -26,7 +26,7 @@ static
 void init_array (int m, int n,
 		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,M,n,m),
 		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(r,N,n),
-		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(p,M,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(p,M,m)) 
 {
   int i, j;
 
@@ -45,7 +45,7 @@ void init_array (int m, int n,
 static
 void print_array(int m, int n,
 		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(s,M,m),
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(q,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(q,N,n)) 
 
 {
   int i;
@@ -75,7 +75,7 @@ void kernel_bicg(int m, int n,
 		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(s,M,m),
 		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(q,N,n),
 		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(p,M,m),
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(r,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(r,N,n)) 
 {
   int i, j;
 

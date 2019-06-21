@@ -30,7 +30,7 @@ typedef char base;
 static
 void init_array (int n,
                  base POLYBENCH_1D(seq,N,n),
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) 
 {
   int i, j;
 
@@ -49,7 +49,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) 
 
 {
   int i, j;
@@ -78,7 +78,7 @@ void print_array(int n,
 */
 static
 void kernel_nussinov(int n, base POLYBENCH_1D(seq,N,n),
-			   DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) __attribute__((always_inline))
+			   DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(table,N,N,n,n)) 
 {
   int i, j, k;
 

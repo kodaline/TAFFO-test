@@ -28,7 +28,7 @@ void init_array(int n, int m,
 		DATA_TYPE ANN2(-256, 255) *beta,
 		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(C,N,N,n,n),
 		DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(A,N,M,n,m),
-		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,N,M,n,m)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,N,M,n,m)) 
 {
   int i, j;
 
@@ -50,7 +50,7 @@ void init_array(int n, int m,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(C,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(C,N,N,n,n)) 
 {
   int i, j;
 
@@ -74,7 +74,7 @@ void kernel_syr2k(int n, int m,
 		  DATA_TYPE ANN2(-256, 255) beta,
 		  DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(C,N,N,n,n),
 		  DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(A,N,M,n,m),
-		  DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,N,M,n,m)) __attribute__((always_inline))
+		  DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(B,N,M,n,m)) 
 {
   int i, j, k;
 

@@ -26,7 +26,7 @@ static
 void init_array(int n,
 		DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(L,N,N,n,n),
 		DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n),
-		DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(b,N,n)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(b,N,n)) 
 {
   int i, j;
 
@@ -44,7 +44,7 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n)) 
 
 {
   int i;
@@ -66,7 +66,7 @@ static
 void kernel_trisolv(int n,
 		    DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(L,N,N,n,n),
 		    DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(x,N,n),
-		    DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(b,N,n)) __attribute__((always_inline))
+		    DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(b,N,n)) 
 {
   int i, j;
 

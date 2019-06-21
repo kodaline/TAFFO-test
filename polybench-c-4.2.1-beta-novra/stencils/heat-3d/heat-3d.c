@@ -25,7 +25,7 @@
 static
 void init_array (int n,
 		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n),
-		 DATA_TYPE ANN2(-32, 31) POLYBENCH_3D(B,N,N,N,n,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-32, 31) POLYBENCH_3D(B,N,N,N,n,n,n)) 
 {
   int i, j, k;
 
@@ -40,7 +40,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n)) 
 
 {
   int i, j, k;
@@ -64,7 +64,7 @@ static
 void kernel_heat_3d(int tsteps,
 		      int n,
 		      DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,N,N,N,n,n,n),
-		      DATA_TYPE ANN2(-32, 31) POLYBENCH_3D(B,N,N,N,n,n,n)) __attribute__((always_inline))
+		      DATA_TYPE ANN2(-32, 31) POLYBENCH_3D(B,N,N,N,n,n,n)) 
 {
   int t, i, j, k;
 

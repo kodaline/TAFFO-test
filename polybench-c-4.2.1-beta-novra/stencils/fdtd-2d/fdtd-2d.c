@@ -29,7 +29,7 @@ void init_array (int tmax,
 		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(ex,NX,NY,nx,ny),
 		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(ey,NX,NY,nx,ny),
 		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(_fict_,TMAX,tmax)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(_fict_,TMAX,tmax)) 
 {
   int i, j;
 
@@ -52,7 +52,7 @@ void print_array(int nx,
 		 int ny,
 		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(ex,NX,NY,nx,ny),
 		 DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(ey,NX,NY,nx,ny),
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny)) 
 {
   int i, j;
 
@@ -93,7 +93,7 @@ void kernel_fdtd_2d(int tmax,
 		    DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(ex,NX,NY,nx,ny),
 		    DATA_TYPE ANN2(-512, 511) POLYBENCH_2D(ey,NX,NY,nx,ny),
 		    DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(hz,NX,NY,nx,ny),
-		    DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(_fict_,TMAX,tmax)) __attribute__((always_inline))
+		    DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(_fict_,TMAX,tmax)) 
 {
   int t, i, j;
 

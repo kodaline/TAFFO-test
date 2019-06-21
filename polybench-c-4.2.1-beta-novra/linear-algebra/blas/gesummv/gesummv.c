@@ -28,7 +28,7 @@ void init_array(int n,
 		DATA_TYPE ANN2(-256, 255) *beta,
 		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n),
 		DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(B,N,N,n,n),
-		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x,N,n)) 
 {
   int i, j;
 
@@ -49,7 +49,7 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y,N,n)) 
 
 {
   int i;
@@ -75,7 +75,7 @@ void kernel_gesummv(int n,
 		    DATA_TYPE ANN2(-256, 255) POLYBENCH_2D(B,N,N,n,n),
 		    DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(tmp,N,n),
 		    DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x,N,n),
-		    DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		    DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y,N,n)) 
 {
   int i, j;
 

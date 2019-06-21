@@ -25,7 +25,7 @@
 static
 void init_array (int m, int n,
 		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,M,N,m,n),
-		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(x,N,n)) 
 {
   int i, j;
   DATA_TYPE ANN1(-4096, 4095) fn;
@@ -43,7 +43,7 @@ void init_array (int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_1D(y,N,n)) 
 
 {
   int i;
@@ -66,7 +66,7 @@ void kernel_atax(int m, int n,
 		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,M,N,m,n),
 		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(x,N,n),
 		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_1D(y,N,n),
-		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(tmp,M,m)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-4096, 4095) POLYBENCH_1D(tmp,M,m)) 
 {
   int i, j;
 

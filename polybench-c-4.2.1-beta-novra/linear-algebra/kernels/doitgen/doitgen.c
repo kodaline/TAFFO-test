@@ -25,7 +25,7 @@
 static
 void init_array(int nr, int nq, int np,
 		DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,NR,NQ,NP,nr,nq,np),
-		DATA_TYPE ANN2(-32, 31) POLYBENCH_2D(C4,NP,NP,np,np)) __attribute__((always_inline))
+		DATA_TYPE ANN2(-32, 31) POLYBENCH_2D(C4,NP,NP,np,np)) 
 {
   int i, j, k;
 
@@ -43,7 +43,7 @@ void init_array(int nr, int nq, int np,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int nr, int nq, int np,
-		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,NR,NQ,NP,nr,nq,np)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,NR,NQ,NP,nr,nq,np)) 
 {
   int i, j, k;
 
@@ -65,7 +65,7 @@ void print_array(int nr, int nq, int np,
 void kernel_doitgen(int nr, int nq, int np,
 		    DATA_TYPE ANN1(-32, 31) POLYBENCH_3D(A,NR,NQ,NP,nr,nq,np),
 		    DATA_TYPE ANN2(-32, 31) POLYBENCH_2D(C4,NP,NP,np,np),
-		    DATA_TYPE ANN1(-32, 31) POLYBENCH_1D(sum,NP,np)) __attribute__((always_inline))
+		    DATA_TYPE ANN1(-32, 31) POLYBENCH_1D(sum,NP,np)) 
 {
   int r, q, p, s;
 

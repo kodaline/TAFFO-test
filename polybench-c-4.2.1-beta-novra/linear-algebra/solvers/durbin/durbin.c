@@ -24,7 +24,7 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(r,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(r,N,n)) 
 {
   int i, j;
 
@@ -39,7 +39,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(y,N,n)) 
 
 {
   int i;
@@ -60,7 +60,7 @@ void print_array(int n,
 static
 void kernel_durbin(int n,
 		   DATA_TYPE ANN1(-2, 1) POLYBENCH_1D(r,N,n),
-		   DATA_TYPE ANN2(-2, 1) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		   DATA_TYPE ANN2(-2, 1) POLYBENCH_1D(y,N,n)) 
 {
  DATA_TYPE ANN1(-2, 1) z[N];
  DATA_TYPE ANN2(-2, 1) alpha;

@@ -25,7 +25,7 @@
 static
 void init_array (int w, int h, DATA_TYPE ANN2(-4, 3)* alpha,
 		 DATA_TYPE ANN1(-4, 3) POLYBENCH_2D(imgIn,W,H,w,h),
-		 DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut,W,H,w,h)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut,W,H,w,h)) 
 {
   int i, j;
 
@@ -42,7 +42,7 @@ void init_array (int w, int h, DATA_TYPE ANN2(-4, 3)* alpha,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int w, int h,
-		 DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut,W,H,w,h)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut,W,H,w,h)) 
 
 {
   int i, j;
@@ -68,7 +68,7 @@ void kernel_deriche(int w, int h, DATA_TYPE ANN2(-4, 3) alpha,
        DATA_TYPE ANN1(-4, 3) POLYBENCH_2D(imgIn, W, H, w, h),
        DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(imgOut, W, H, w, h),
        DATA_TYPE ANN1(-4, 3) POLYBENCH_2D(y1, W, H, w, h),
-       DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(y2, W, H, w, h))  __attribute__((always_inline)) {
+       DATA_TYPE ANN2(-4, 3) POLYBENCH_2D(y2, W, H, w, h))   {
     int i,j;
     DATA_TYPE ANN1(-4, 3) xm1, tm1, ym1, ym2;
     DATA_TYPE ANN2(-4, 3) xp1, xp2;

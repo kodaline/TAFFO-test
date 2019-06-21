@@ -26,7 +26,7 @@ static
 void init_array(int m, int n,
 		DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(A,M,N,m,n),
 		DATA_TYPE ANN2(-2097152, 2097151) POLYBENCH_2D(R,N,N,n,n),
-		DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) 
 {
   int i, j;
 
@@ -47,7 +47,7 @@ static
 void print_array(int m, int n,
 		 DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(A,M,N,m,n),
 		 DATA_TYPE ANN2(-2097152, 2097151) POLYBENCH_2D(R,N,N,n,n),
-		 DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) 
 {
   int i, j;
 
@@ -79,7 +79,7 @@ static
 void kernel_gramschmidt(int m, int n,
 			DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(A,M,N,m,n),
 			DATA_TYPE ANN2(-2097152, 2097151) POLYBENCH_2D(R,N,N,n,n),
-			DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) __attribute__((always_inline))
+			DATA_TYPE ANN1(-2097152, 2097151) POLYBENCH_2D(Q,M,N,m,n)) 
 {
   int i, j, k;
 

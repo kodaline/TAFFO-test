@@ -28,7 +28,7 @@ void init_array(int n,
 		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n),
 		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(y_1,N,n),
 		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y_2,N,n),
-		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n)) 
 {
   int i, j;
 
@@ -49,7 +49,7 @@ void init_array(int n,
 static
 void print_array(int n,
 		 DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(x1,N,n),
-		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n)) 
 
 {
   int i;
@@ -80,7 +80,7 @@ void kernel_mvt(int n,
 		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(x2,N,n),
 		DATA_TYPE ANN2(-256, 255) POLYBENCH_1D(y_1,N,n),
 		DATA_TYPE ANN1(-256, 255) POLYBENCH_1D(y_2,N,n),
-		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-256, 255) POLYBENCH_2D(A,N,N,n,n)) 
 {
   int i, j;
 

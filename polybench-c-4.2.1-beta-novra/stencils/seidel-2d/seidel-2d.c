@@ -24,7 +24,7 @@
 /* Array initialization. */
 static
 void init_array (int n,
-		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) 
 {
   int i, j;
 
@@ -38,7 +38,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) 
 
 {
   int i, j;
@@ -60,7 +60,7 @@ void print_array(int n,
 static
 void kernel_seidel_2d(int tsteps,
 		      int n,
-		      DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		      DATA_TYPE ANN1(-4096, 4095) POLYBENCH_2D(A,N,N,n,n)) 
 {
   int t, i, j;
 

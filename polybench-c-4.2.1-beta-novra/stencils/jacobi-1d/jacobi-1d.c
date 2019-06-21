@@ -25,7 +25,7 @@
 static
 void init_array (int n,
 		 DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n),
-		 DATA_TYPE ANN2(-4, 3) POLYBENCH_1D(B,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-4, 3) POLYBENCH_1D(B,N,n)) 
 {
   int i;
 
@@ -41,7 +41,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n)) 
 
 {
   int i;
@@ -64,7 +64,7 @@ static
 void kernel_jacobi_1d(int tsteps,
 			    int n,
 			    DATA_TYPE ANN1(-4, 3) POLYBENCH_1D(A,N,n),
-			    DATA_TYPE ANN2(-4, 3) POLYBENCH_1D(B,N,n)) __attribute__((always_inline))
+			    DATA_TYPE ANN2(-4, 3) POLYBENCH_1D(B,N,n)) 
 {
   int t, i;
 

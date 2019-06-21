@@ -27,7 +27,7 @@ void init_array (int n,
 		 DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(A,N,N,n,n),
 		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(b,N,n),
 		 DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n),
-		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) 
 {
   int i, j;
   DATA_TYPE ANN1(-512, 511) fn = (DATA_TYPE)n;
@@ -72,7 +72,7 @@ void init_array (int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n)) 
 
 {
   int i;
@@ -95,7 +95,7 @@ void kernel_ludcmp(int n,
 		   DATA_TYPE ANN1(-512, 511) POLYBENCH_2D(A,N,N,n,n),
 		   DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(b,N,n),
 		   DATA_TYPE ANN1(-512, 511) POLYBENCH_1D(x,N,n),
-		   DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) __attribute__((always_inline))
+		   DATA_TYPE ANN2(-512, 511) POLYBENCH_1D(y,N,n)) 
 {
   int i, j, k;
 

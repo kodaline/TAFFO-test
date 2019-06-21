@@ -24,7 +24,7 @@
 /* Array initialization. */
 static
 void init_array(int n,
-		DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) 
 {
   int i, j;
 
@@ -60,7 +60,7 @@ void init_array(int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int n,
-		 DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		 DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) 
 
 {
   int i, j;
@@ -81,7 +81,7 @@ void print_array(int n,
    including the call and return. */
 static
 void kernel_cholesky(int n,
-		     DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) __attribute__((always_inline))
+		     DATA_TYPE ANN1(-2, 2) POLYBENCH_2D(A,N,N,n,n)) 
 {
   int i, j, k;
 
