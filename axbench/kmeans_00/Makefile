@@ -18,7 +18,7 @@ INCLUDE 		+= -I${HEADERS} -I../common/src
 MIOSIX_EABI     := /opt/arm-miosix-eabi/arm-miosix-eabi
 MIOSIX_CFLAGS   := -target arm-none-linux-eabi --sysroot=$(MIOSIX_EABI) -I$(MIOSIX_EABI)/include/ -I$(MIOSIX_EABI)/include/c++/4.7.3/ -I$(MIOSIX_EABI)/include/c++/4.7.3/arm-miosix-eabi/ -D_MIOSIX -D_MIOSIX_GCC_PATCH_VERSION=1 -mcpu=cortex-m3 -mthumb -ffunction-sections -Wall
 
-MODULE		:= kmeans.out
+MODULE		:= kmeans_00.out
 
 CPP_FILES := $(wildcard src/*.c)
 LL_FILES  := $(addprefix obj/,$(notdir $(CPP_FILES:.c=.ll)))

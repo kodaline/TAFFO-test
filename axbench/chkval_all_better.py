@@ -3,6 +3,7 @@
 import sys
 import re
 import os
+import statistics
 
 
 def ParseInput(filename):
@@ -16,26 +17,27 @@ def ParseInput(filename):
         if r[i] == '-':
           r[i] = None
         else:
-          r[i] = float(r[i])
+          r[i] = [float(r[i])]
       out.append(r)
       l = f.readline()
   return out
-  
 
-def SumEverything(table1, table2):
-  for i in range(len(table1)):
-    for j in range(1, len(table1[i])):
-      if table1[i][j]:
-        table1[i][j] += table2[i][j]
-  
+def AppendEverything(big_table, table):
+  for i in range(len(big_table)):
+    for j in range(1, len(big_table[i])):
+      if big_table[i][j]:
+        big_table[i][j].extend(table[i][j])
 
-def DivideEverything(table, n):
-  for i in range(len(table)):
-    for j in range(1, len(table[i])):
-      if table[i][j]:
-       table[i][j] /= n
-       
-       
+def ComputeAllMedians(t):
+  out = []
+  for r in t:
+    outr = [r[0]]
+    for i in range(1, len(r)):
+      if r[i]:
+        outr.append(statistics.median(r[i]))
+    out.append(outr)
+  return out
+
 def PrettyPrint(table):
   widths=[40,  12,  12,   11,  11, 11,  14]
   format=['s','.6f','.6f','d','d','.5f','.5e']
@@ -68,6 +70,6 @@ for i in range(ntries-1):
   print('trial %d' % (i+2), file=sys.stderr)
   os.system("./chkval_all.sh --noerror > raw-times/%d.txt" % (i+2))
   t2 = ParseInput("raw-times/%d.txt" % (i+2))
-  SumEverything(t, t2)
-DivideEverything(t, ntries)
-PrettyPrint(t)
+  AppendEverything(t, t2)
+tmed = ComputeAllMedians(t)
+PrettyPrint(tmed)

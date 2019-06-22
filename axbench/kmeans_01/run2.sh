@@ -22,7 +22,7 @@ match_time()
 
 rm -rf data/output
 mkdir -p data/output
-benchmark=kmeans
+benchmark=kmeans_01
 
 for f in ./../common/img/*.rgb
 do

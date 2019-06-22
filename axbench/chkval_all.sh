@@ -29,10 +29,21 @@ for arg; do
 done
 
 check 'blackscholes'
+check 'blackscholes_00'
+check 'blackscholes_01'
+
 check 'fft'
+check 'fft_00'
+check 'fft_01'
+check 'fft_02'
+
 check 'inversek2j'
 check 'jmeint'
+
 check 'kmeans'
+check 'kmeans_00'
+check 'kmeans_01'
+
 check 'sobel'
 
 

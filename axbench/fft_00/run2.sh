@@ -29,9 +29,9 @@ match_error()
 
 rm -rf data/output
 mkdir -p data/output
-benchmark=fft
+benchmark=fft_00
 
-input=( 2048 8192 65536 4194304)
+input=( 2048 )
 
 for f in "${input[@]}"
 do

@@ -6,7 +6,7 @@ export LANG=en_US.UTF-8
 rm -rf data/output data/distance
 mkdir -p data/output
 mkdir -p data/distance
-benchmark=kmeans
+benchmark=kmeans_01
 for f in ./../common/img/*.rgb
 do
 	filename=$(basename "$f")

@@ -2,7 +2,7 @@
 
 rm -rf data/output
 mkdir -p data/output
-benchmark=fft
+benchmark=fft_02
 
 input=( 65536 )
 
