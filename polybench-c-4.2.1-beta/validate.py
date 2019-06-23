@@ -9,6 +9,7 @@ import argparse
 import re
 import pandas as pd
 from functools import *
+import statistics as stat
 
 
 def PolybenchRootDir() -> Path:
@@ -71,8 +72,8 @@ def ComputeDifference(fix_data, flt_data):
 def ComputeSpeedups(float_times, fixp_times):
   float_list = [Decimal(di) for di in float_times]
   fixp_list = [Decimal(di) for di in fixp_times]
-  float_avg = reduce((lambda a, b: a + b), float_list) / Decimal(len(float_list))
-  fixp_avg = reduce((lambda a, b: a + b), fixp_list) / Decimal(len(fixp_list))
+  float_avg = stat.median(float_list)
+  fixp_avg = stat.median(fixp_list)
   speedup = float_avg / fixp_avg
   return {'fix_t': fixp_avg, 'flt_t': float_avg, 'speedup': speedup}
           

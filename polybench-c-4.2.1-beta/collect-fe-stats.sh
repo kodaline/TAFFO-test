@@ -8,12 +8,18 @@ else
   OUT_DIR=$1
 fi
 
+if [[ -z $2 ]]; then
+  NEXEC=20
+else
+  NEXEC=$2
+fi
+
 mkdir -p $OUT_DIR
 
 for conf in vra; do
   echo conf = $conf
   ./compile.sh metrics & wait
-  ./run.sh --times=20 & wait
+  ./run.sh --times=$NEXEC & wait
   ./validate.py > $OUT_DIR/${conf}.txt & wait
   mv results-out $OUT_DIR/${conf}
 done
