@@ -1,8 +1,6 @@
 LLVM_DIR		?= $(shell llvm-config --obj-root)
-CLANG		?= $(LLVM_DIR)/bin/clang
-CLANGXX		?= $(CLANG)++
-CC			:= $(CLANGXX)
-LD			:= $(CLANGXX)
+CLANGXX		?= $(LLVM_DIR)/bin/clang++
+OPT		?= $(LLVM_DIR)/bin/opt
 
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
@@ -27,9 +25,9 @@ LL_FILES        := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.ll)))
 OBJ_FLOAT       := obj/main.o
 OBJ_FIX         := obj/main.fixp.o
 
-.PHONY: all clean
+.PHONY: all clean stats
 
-all: DIR $(MODULE)
+all: $(MODULE) stats
 
 .PRECIOUS: obj/%.ll obj/%.o obj/%.s obj/%.init.ll obj/%.vra.ll obj/%.fixp.ll
 
@@ -39,45 +37,55 @@ DIR:
 	mkdir -p obj
 	mkdir -p stats
 
-$(MODULE): $(OBJ_FLOAT) $(OBJ_FIX) stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt obj/main.err.ll
-	$(LD) $(OBJ_FLOAT) $(LFLAGS) -o bin/$@
-	$(LD) $(OBJ_FIX) $(LFLAGS) -o bin/$@.fixp
+$(MODULE): DIR $(OBJ_FLOAT) $(OBJ_FIX) 
+	$(CLANGXX) $(OBJ_FLOAT) $(LFLAGS) -o bin/$@
+	$(CLANGXX) $(OBJ_FIX) $(LFLAGS) -o bin/$@.fixp
+
+stats: $(MODULE) obj/main.err.ll stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt stats/main.fixp.mlfeat.txt stats/main.mlfeat.txt
 
 
 obj/%.ll : src/%.cpp
-	$(CC) -S -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
+	$(CLANGXX) -S -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
 
 obj/main.ll : $(LL_FILES)
 	$(LLVM_DIR)/bin/llvm-link -S $^ -o $@
 
 $(OBJ_FLOAT) : obj/main.ll
-	$(CC) -S $(MIOSIX_FLAGS) $^ -o obj/main.s $(OX)
-	$(CC) -c $(MIOSIX_FLAGS) obj/main.s -o $@
+	$(CLANGXX) -S $(MIOSIX_FLAGS) $^ -o obj/main.s $(OX)
+	$(CLANGXX) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit -mem2reg $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(OPT) -load=$(INITLIB) -S -taffoinit -mem2reg $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
 obj/main.vra.ll: obj/main.init.ll
-	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
+	$(OPT) -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
 
 obj/main.tuner.ll : obj/main.vra.ll
-	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+	$(OPT) -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion) -stats $< -o $@ 2> stats/flttofix.log
+	$(OPT) -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion) -stats $< -o $@ 2> stats/flttofix.log
 
 obj/main.err.ll : obj/main.fixp.ll
-	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -mem2reg -errorprop -startonly -dunroll 3 $(if $(ISDEBUG), -debug-only=errorprop$(comma)loop-unroll) $< -o $@ 2> stats/errorprop.log
+ifndef DISABLE_ERROR
+	$(OPT) -load=$(ERRORLIB) -S -mem2reg -errorprop -startonly -dunroll 3 $(if $(ISDEBUG), -debug-only=errorprop$(comma)loop-unroll) $< -o $@ 2> stats/errorprop.log
+else
+	echo > $@
+	echo > stats/errorprop.log
+endif
 
 $(OBJ_FIX) : obj/main.fixp.ll
-	$(CC) -S $(MIOSIX_FLAGS) $^ -o obj/main.fixp.s $(OX)
-	$(CC) -c $(MIOSIX_FLAGS) obj/main.fixp.s -o $@
+	$(CLANGXX) -S $(MIOSIX_FLAGS) $^ -o obj/main.fixp.s $(OX)
+	$(CLANGXX) -c $(MIOSIX_FLAGS) obj/main.fixp.s -o $@
 
 stats/%.mix.txt: obj/%.ll
 	$(INSTMIX) $< > $@
 
+stats/%.mlfeat.txt: obj/%.ll
+	$(TAFFO_MLFEAT) $< > $@
+
 stats/%.llvm.txt: obj/%.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -stats $< -o /dev/null 2> $@
+	$(OPT) -load=$(PASSLIB) -S -flttofix -dce -stats $< -o /dev/null 2> $@
 
 miosix_cflags:
 	$(eval MIOSIX_FLAGS += $(MIOSIX_CFLAGS))

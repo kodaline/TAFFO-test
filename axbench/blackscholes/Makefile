@@ -1,6 +1,6 @@
 LLVM_DIR		?= $(shell llvm-config --obj-root)
-CC			:= $(LLVM_DIR)/bin/clang++
-LD			:= $(LLVM_DIR)/bin/clang++
+CLANGXX		?= $(LLVM_DIR)/bin/clang++
+OPT		?= $(LLVM_DIR)/bin/opt
 
 ifeq ($(shell $(LLVM_DIR)/bin/llvm-config --build-mode),Debug)
 ISDEBUG = 1
@@ -26,13 +26,13 @@ CPP_FILES       := blackscholes.c
 OBJ_FILES       := $(addprefix obj/,$(notdir $(CPP_FILES:.c=.o))) 
 OBJ_FILES_FIX   := $(addprefix obj/,$(notdir $(CPP_FILES:.c=.fixp.o)))
 LL_FILES_ERR    := $(addprefix obj/,$(notdir $(CPP_FILES:.c=.err.ll)))
-FLT_IMIX_STAT   := $(addprefix stats/,$(notdir $(CPP_FILES:.c=.mix.txt)))
-FIX_IMIX_STAT   := $(addprefix stats/,$(notdir $(CPP_FILES:.c=.fixp.mix.txt)))
+IMIX_STAT       := $(addprefix stats/,$(notdir $(CPP_FILES:.c=.mix.txt))) $(addprefix stats/,$(notdir $(CPP_FILES:.c=.fixp.mix.txt)))
+MLFEAT_STAT     := $(addprefix stats/,$(notdir $(CPP_FILES:.c=.mlfeat.txt))) $(addprefix stats/,$(notdir $(CPP_FILES:.c=.fixp.mlfeat.txt)))
 LLVM_STAT       := $(addprefix stats/,$(notdir $(CPP_FILES:.c=.llvm.txt)))
 
-.PHONY: all clean
+.PHONY: all clean stats
 
-all: DIR $(MODULE)
+all: $(MODULE) stats
 
 .PRECIOUS: obj/%.ll obj/%.o obj/%.s obj/%.init.ll obj/%.vra.ll obj/%.tuner.ll obj/%.fixp.ll
 
@@ -44,40 +44,49 @@ DIR:
 	mkdir -p stats
 
 
-$(MODULE): $(OBJ_FILES) $(OBJ_FILES_FIX) $(LL_FILES_ERR) $(FLT_IMIX_STAT) $(FIX_IMIX_STAT) $(LLVM_STAT)
-	$(LD) $(OBJ_FILES) $(LIB) $(LFLAGS) -o bin/$@
-	$(LD) $(OBJ_FILES_FIX) $(LIB) $(LFLAGS) -o bin/$@.fixp
+$(MODULE): DIR $(OBJ_FILES) $(OBJ_FILES_FIX)
+	$(CLANGXX) $(OBJ_FILES) $(LIB) $(LFLAGS) -o bin/$@
+	$(CLANGXX) $(OBJ_FILES_FIX) $(LIB) $(LFLAGS) -o bin/$@.fixp
 
+stats: $(MODULE) $(LL_FILES_ERR) $(IMIX_STAT) $(LLVM_STAT) $(MLFEAT_STAT)
 
 obj/%.ll: src/%.c
-	$(CC) -S -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
+	$(CLANGXX) -S -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
 
 obj/%.init.ll: obj/%.ll
-	$(LLVM_DIR)/bin/opt -load=$(INITLIB) -S -taffoinit -mem2reg $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(OPT) -load=$(INITLIB) -S -taffoinit -mem2reg $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
 obj/%.vra.ll: obj/%.init.ll
-	$(LLVM_DIR)/bin/opt -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
+	$(OPT) -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
 
 obj/%.tuner.ll : obj/%.vra.ll
-	$(LLVM_DIR)/bin/opt -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+	$(OPT) -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/%.fixp.ll: obj/%.tuner.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion) -stats $< -o $@ 2> stats/flttofix.log
+	$(OPT) -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion) -stats $< -o $@ 2> stats/flttofix.log
 
 obj/%.err.ll: obj/%.fixp.ll
-	$(LLVM_DIR)/bin/opt -load=$(ERRORLIB) -S -errorprop -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
+ifndef DISABLE_ERROR
+	$(OPT) -load=$(ERRORLIB) -S -errorprop -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
+else
+	echo > $@
+	echo > stats/errorprop.log
+endif
 
 obj/%.s: obj/%.ll
-	$(CC) -S $(MIOSIX_FLAGS) $< -o $@ $(OX)
+	$(CLANGXX) -S $(MIOSIX_FLAGS) $< -o $@ $(OX)
 
 obj/%.o: obj/%.s
-	$(CC) -c $(MIOSIX_FLAGS) $< -o $@
+	$(CLANGXX) -c $(MIOSIX_FLAGS) $< -o $@
 
 stats/%.mix.txt: obj/%.ll
 	$(INSTMIX) $< > $@
 
+stats/%.mlfeat.txt: obj/%.ll
+	$(TAFFO_MLFEAT) $< > $@
+
 stats/%.llvm.txt: obj/%.ll
-	$(LLVM_DIR)/bin/opt -load=$(PASSLIB) -S -flttofix -dce -stats $< -o /dev/null 2> $@
+	$(OPT) -load=$(PASSLIB) -S -flttofix -dce -stats $< -o /dev/null 2> $@
 
 miosix_cflags:
 	$(eval MIOSIX_FLAGS += $(MIOSIX_CFLAGS))

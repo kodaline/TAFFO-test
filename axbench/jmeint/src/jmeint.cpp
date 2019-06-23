@@ -13,8 +13,6 @@
 
 #include <time.h>       /* time */
 
-#include <boost/algorithm/string/regex.hpp>
-
 #include "benchmark.hpp"
 
 #define ANNOTATION_RANGE "scalar(disabled range(0.01,1))"

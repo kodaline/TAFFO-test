@@ -5,7 +5,7 @@
 collect()
 {
   pushd $1 > /dev/null
-  ./compile+collect.sh "$RESULTS_DIR/stats"
+  ./compile+collect.sh "$RESULTS_DIR/axbench"
   popd > /dev/null
 }
 
@@ -25,21 +25,26 @@ main()
 
   rm -r ./raw-times
   mkdir -p "$RESULTS_DIR"
-  mkdir -p "$RESULTS_DIR/stats"
+  mkdir -p "$RESULTS_DIR/axbench"
   
   RESULTS_DIR=$(cd ${RESULTS_DIR} 2> /dev/null && pwd -P)
 
   collect 'blackscholes'
+  collect 'blackscholes_00'
+  collect 'blackscholes_01'
   collect 'fft'
+  collect 'fft_00'
+  collect 'fft_01'
+  collect 'fft_02'
   collect 'inversek2j'
   collect 'jmeint'
   collect 'kmeans'
+  collect 'kmeans_00'
+  collect 'kmeans_01'
   collect 'sobel'
 
-  ./chkval_all.sh > "$RESULTS_DIR/error.txt"
-  ./chkval_all_better.py 5 > "$RESULTS_DIR/times.txt"
+  ./chkval_all_better.py 1 > "$RESULTS_DIR/axbench.txt"
   hostname > "$RESULTS_DIR/MACHINE.txt"
-  mv ./raw-times "$RESULTS_DIR/"
 }
 
 
