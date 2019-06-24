@@ -3,7 +3,7 @@ import os
 import statistics
 
 benchmarks = ["blackscholes", "blackscholes_00", "blackscholes_01", "fft", "fft_00", "fft_01", "fft_02", "inversek2j", "jmeint", "kmeans", "kmeans_00", "kmeans_01", "sobel"]
-base_names = ["blackscholes", "blackscholes", "blackscholes", "fft", "fft", "fft", "fft", "inversek2j", "jmeint", "kmeans", "kmeans", "kmeans", "sobel"]
+base_names = ["blackscholes", "blackscholes", "blackscholes", "fft", "fft_00", "fft_01", "fft_02", "inversek2j", "jmeint", "kmeans", "kmeans_00", "kmeans_01", "sobel"]
 
 def chk_make(bench, bn):
     timefile = "maketime.txt"
@@ -46,8 +46,8 @@ table = chk_repeat(benchmarks, base_names, ntries)
 medians = compute_medians(table)
 
 first_width = len("Median")
-widths = [len(b)+1 for b in benchmarks]
-print("Trial " + "".join([" " + b for b in benchmarks]))
+widths = [max(len(b)+1, 10) for b in benchmarks]
+print("Trial " + "".join([(" %" + str(widths[i]-1) + "s") % benchmarks[i] for i in range(len(benchmarks))]))
 
 for i in range(len(table)):
     print(("%" + str(first_width) + "d") % (i+1), end="")

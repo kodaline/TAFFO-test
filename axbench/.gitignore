@@ -12,6 +12,8 @@ results
 *_results
 *_results.zip
 
+*/maketime.txt
+
 kmeans/correct_output
 kmeans/src_before
 fft/orig_src
