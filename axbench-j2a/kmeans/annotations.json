@@ -1,0 +1,208 @@
+[
+	{
+		"struct": "rgbpixel",
+		"content": [
+			{}, {}, {}, "void", {}
+		]
+	},
+	{
+		"struct": "rgbimage",
+		"content": [
+			"void", "void", "rgbpixel", "void"
+		]
+	},
+	{
+		"struct": "centroid",
+		"content": [
+			{
+				"typeSign": "signed",
+				"bitsSize":32,
+				"fractionalPos":10
+			}, 
+			{
+
+				"typeSign": "signed",
+				"bitsSize":32,
+				"fractionalPos":10
+			},
+			{
+
+				"typeSign": "signed",
+				"bitsSize":32,
+				"fractionalPos":10
+			},
+			{
+				"rangeMin":1,
+				"rangeMax":2000000
+			}
+		]
+	},
+	{
+		"struct": "cluster",
+		"content": ["void", "centroid"]
+	},
+	{
+		"function": "assignCluster", 
+		"localVar": "c1",
+		"struct": "centroid"
+	},
+	{
+		"function": "assignCluster", 
+		"localVar": "p",
+		"struct": "rgbpixel"
+	},
+	{
+		"function": "assignCluster", 
+		"localVar": "d"
+	},
+	{
+		"function": "pickCluster", 
+		"localVar": "d"
+	},
+	{
+		"function": "pickCluster", 
+		"localVar": "c1",
+		"struct": "centroid"
+	},
+	{
+		"function": "pickCluster", 
+		"localVar": "p",
+		"struct": "rgbpixel"
+	},
+	{
+		"function": "euclideanDistance", 
+		"localVar": "c1",
+		"struct": "centroid"
+	},
+	{
+		"function": "euclideanDistance", 
+		"localVar": "p",
+		"struct": "rgbpixel"
+	},
+	{
+		"function": "euclideanDistance", 
+		"localVar": "r"
+	},
+	{
+		"function": "euclideanDistance", 
+		"localVar": "r_tmp"
+	},
+	{
+		"function": "main", 
+		"localVar": "srcImage",
+		"struct": "rgbimage"
+	},
+	{
+		"function": "main", 
+		"localVar": "clusters",
+		"struct": "cluster",
+		"target": "clusters"
+	},
+	{
+		"function": "readCell", 
+		"localVar": "c",
+		"rangeMin": 1,
+		"rangeMax": 255,
+		"disabled": 1
+	},
+	{
+		"function": "loadRgbImage", 
+		"localVar": "image",
+		"struct": "rgbimage"
+	},
+	{
+		"function": "loadRgbImage", 
+		"localVar": "scale"
+	},
+	{
+		"function": "loadRgbImage", 
+		"localVar": "pixels",
+		"struct": "rgbpixel"
+	},
+	{
+		"function": "loadRgbImage", 
+		"localVar": "r",
+		"rangeMin": 1,
+		"rangeMax": 255
+	},
+	{
+		"function": "loadRgbImage", 
+		"localVar": "g",
+		"rangeMin": 1,
+		"rangeMax": 255
+	},
+	{
+		"function": "loadRgbImage", 
+		"localVar": "b",
+		"rangeMin": 1,
+		"rangeMax": 255
+	},
+	{
+		"function": "saveRgbImage", 
+		"localVar": "image",
+		"struct": "rgbimage"
+	},
+	{
+		"function": "saveRgbImage", 
+		"localVar": "scale"
+	},
+	{
+		"function": "makeGrayscale", 
+		"localVar": "image",
+		"struct": "rgbimage"
+	},
+	{
+		"function": "makeGrayscale", 
+		"localVar": "luminance"
+	},
+	{
+		"function": "makeGrayscale", 
+		"localVar": "rC"
+	},
+	{
+		"function": "makeGrayscale", 
+		"localVar": "bC"
+	},
+	{
+		"function": "makeGrayscale", 
+		"localVar": "gC"
+	},
+	{
+		"function": "initClusters", 
+		"localVar": "clusters",
+		"struct": "cluster"
+	},
+	{
+		"function": "initClusters", 
+		"localVar": "scale"
+	},
+	{
+		"function": "initClusters", 
+		"localVar": "x"
+	},
+	{
+		"function": "freeClusters", 
+		"localVar": "clusters",
+		"struct": "cluster"
+	},
+	{
+		"function": "segmentImage", 
+		"localVar": "clusters",
+		"struct": "cluster"
+	},
+	{
+		"function": "segmentImage", 
+		"localVar": "image",
+		"struct": "rgbimage"
+	}
+
+
+
+
+	
+
+
+
+
+
+]

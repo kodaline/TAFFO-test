@@ -1,0 +1,5 @@
+ADD_EXECUTABLE(inversek2j libvc.cpp)
+TARGET_COMPILE_FEATURES(inversek2j PUBLIC cxx_std_17)
+TARGET_LINK_LIBRARIES(inversek2j PRIVATE VersioningCompiler)
+TARGET_INCLUDE_DIRECTORIES(inversek2j PRIVATE ../libVersioningCompiler/include)
+TARGET_COMPILE_OPTIONS(inversek2j PRIVATE -fno-exceptions -fno-rtti -fno-omit-frame-pointer)

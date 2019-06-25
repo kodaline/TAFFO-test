@@ -1,0 +1,193 @@
+[
+	{
+		"function": "bs_thread", 
+		"localVar": "price_orig",
+		"target": "price_orig"
+	},
+	{
+		"function": "bs_thread", 
+		"localVar": "N2"
+	},
+	{
+		"function": "bs_thread", 
+		"localVar": "timet",
+		"rangeMax": 1,
+		"rangeMin": 0,
+		"error": 0.0
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "InputX"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "sptprice"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "strike"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "rate"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "volatility"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "time"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "timet"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "N1"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "N2"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "OptionPrice"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xRiskFreeRate"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xVolatility"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xTime"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xSqrtTime"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "logValues"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xLogTerm"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xD1"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xD2"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xPowerTerm"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "xDen"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "d1"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "d2"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "FutureValueX"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "NofXd1"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "NofXd2"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "NegNofXd1"
+	},
+	{
+		"function": "BlkSchlsEqEuroNoDiv", 
+		"localVar": "NegNofXd2"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "OutputX"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xInput"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xNPrimeofX"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "expValues"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xK2"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xK2_2"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xk2_4"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xLocal"
+	},
+	{
+		"function": "CNDF", 
+		"localVar": "xLocal_2"
+	},
+	{
+		"globalVar": "sptprice",
+		"rangeMax": 0.84,
+		"rangeMin": 0.35,
+		"error": "0.00000001"
+	},
+	{
+		"globalVar": "strike",
+		"rangeMax": 0.92,
+		"rangeMin": 0.34,
+		"error": "0.00000001"
+	},
+	{
+		"globalVar": "rate",
+		"rangeMax": 0.1,
+		"rangeMin": 0.0275,
+		"error": 0
+	},
+	{
+		"globalVar": "volatility",
+		"rangeMax": 0.65,
+		"rangeMin": 0.05,
+		"error": "0.00000001"
+	},
+	{
+		"globalVar": "otime",
+		"rangeMax": 1,
+		"rangeMin": 0.05,
+		"error": 0
+	}
+	
+]

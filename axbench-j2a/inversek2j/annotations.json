@@ -1,0 +1,60 @@
+[
+	{
+		"function": "main", 
+		"localVar": "t1t2xy",
+		"target": "t1t2xy",
+		"rangeMin":"-1.5707963267948966192313216916397",
+		"rangeMax":"1.5707963267948966192313216916397"
+	},
+	{
+		"function": "main", 
+		"localVar": "theta2",
+		"rangeMin":"-1.5707963267948966192313216916397",
+		"rangeMax":"1.5707963267948966192313216916397"
+	},
+	{
+		"function": "main", 
+		"localVar": "theta1",
+		"rangeMin":"-1.5707963267948966192313216916397",
+		"rangeMax":"1.5707963267948966192313216916397"
+	},
+	{
+		"globalVar": "l1"
+	},
+	{
+		"globalVar": "l2"
+	},
+	{
+		"function": "forwardk2j", 
+		"localVar": "theta1"
+	},   
+	{
+		"function": "forwardk2j", 
+		"localVar": "theta2"
+	},
+	{
+		"function": "forwardk2j", 
+		"localVar": "x"
+	},
+	{
+		"function": "forwardk2j", 
+		"localVar": "y"
+	},
+	{
+		"function": "inversek2j", 
+		"localVar": "x"
+	},
+	{
+		"function": "inversek2j", 
+		"localVar": "y"
+	},
+	{
+		"function": "inversek2j", 
+		"localVar": "theta1"
+	},
+	{
+		"function": "inversek2j", 
+		"localVar": "theta2"
+	}
+
+]

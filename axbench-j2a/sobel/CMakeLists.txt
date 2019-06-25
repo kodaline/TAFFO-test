@@ -1,0 +1,5 @@
+ADD_EXECUTABLE(sobel libvc.cpp)
+TARGET_COMPILE_FEATURES(sobel PUBLIC cxx_std_17)
+TARGET_LINK_LIBRARIES(sobel PRIVATE VersioningCompiler)
+TARGET_COMPILE_OPTIONS(sobel PRIVATE -fno-exceptions -fno-rtti -fno-omit-frame-pointer)
+TARGET_INCLUDE_DIRECTORIES(sobel PRIVATE ../libVersioningCompiler/include)

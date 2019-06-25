@@ -1,0 +1,94 @@
+[
+	{
+		"struct": "complex",
+		"content": [
+			{
+				"rangeMin": -167776,
+				"rangeMax": 167776
+			},
+			{
+				"rangeMin": -167776,
+				"rangeMax": 167776
+			}
+		]
+	},
+	{
+		"struct": "complex2",
+		"content": [
+			{}, {}
+		]
+	},
+	{
+		"function": "fftSinCos",
+		"localVar": "x"
+	},
+	{
+		"function": "fftSinCos",
+		"localVar": "s"
+	},
+	{
+		"function": "fftSinCos",
+		"localVar": "c"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "indices",
+		"rangeMin": 1,
+		"rangeMax": 4194304,
+		"disabled": 1
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "K",
+		"rangeMin": 1,
+		"rangeMax": 4194304,
+		"disabled": 1
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "x",
+		"struct": "complex"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "f",
+		"struct": "complex"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "arg"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "fftSin",
+		"target": "dataOut"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "fftCos",
+		"target": "dataOut"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "t",
+		"struct": "complex2"
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "N",
+		"rangeMin": 1,
+		"rangeMax": 4194304,
+		"disabled": 1
+	},
+	{
+		"function": "radix2DitCooleyTykeyFft",
+		"localVar": "k",
+		"rangeMin": 1,
+		"rangeMax": 4194304,
+		"disabled": 1
+	}
+
+
+
+
+]

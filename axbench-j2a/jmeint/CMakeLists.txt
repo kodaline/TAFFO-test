@@ -1,0 +1,5 @@
+ADD_EXECUTABLE(jmeint libvc.cpp)
+TARGET_COMPILE_FEATURES(jmeint PUBLIC cxx_std_17)
+TARGET_LINK_LIBRARIES(jmeint PRIVATE VersioningCompiler boost_regex)
+TARGET_COMPILE_OPTIONS(jmeint PRIVATE -fno-exceptions -fno-rtti -fno-omit-frame-pointer)
+TARGET_INCLUDE_DIRECTORIES(jmeint PRIVATE ../libVersioningCompiler/include)

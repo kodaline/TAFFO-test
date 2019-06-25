@@ -1,0 +1,5 @@
+ADD_EXECUTABLE(fft libvc.cpp)
+TARGET_COMPILE_FEATURES(fft PUBLIC cxx_std_17)
+TARGET_LINK_LIBRARIES(fft PRIVATE VersioningCompiler)
+TARGET_COMPILE_OPTIONS(fft PRIVATE -fno-exceptions -fno-rtti -fno-omit-frame-pointer)
+TARGET_INCLUDE_DIRECTORIES(fft PRIVATE ../libVersioningCompiler/include)

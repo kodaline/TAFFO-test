@@ -1,0 +1,5 @@
+ADD_EXECUTABLE(kmeans libvc.cpp)
+TARGET_COMPILE_FEATURES(kmeans PUBLIC cxx_std_17)
+TARGET_LINK_LIBRARIES(kmeans PRIVATE VersioningCompiler)
+TARGET_COMPILE_OPTIONS(kmeans PRIVATE -fno-exceptions -fno-rtti -fno-omit-frame-pointer)
+TARGET_INCLUDE_DIRECTORIES(kmeans PRIVATE ../libVersioningCompiler/include)

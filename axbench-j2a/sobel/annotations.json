@@ -1,0 +1,132 @@
+[
+	{
+		"struct": "pixel",
+		"content": [{}, {}, {}]
+	},
+	{
+		"struct": "image",
+		"content": [
+			"void", "void", "pixel", "void"
+		]
+	},
+	{
+		"globalVar": "kx",
+		"rangeMin": -2,
+		"rangeMax": 2
+	},
+	{
+		"globalVar": "ky",
+		"rangeMin": -2,
+		"rangeMax": 2
+	},
+	{
+		"function": "convolve",
+		"localVar": "w"
+	},
+	{
+		"function": "convolve",
+		"localVar": "k"
+	},
+	{
+		"function": "convolve",
+		"localVar": "r"
+	},
+	{
+		"function": "sobel",
+		"localVar": "w"
+	},
+	{
+		"function": "sobel",
+		"localVar": "sx"
+	},
+	{
+		"function": "sobel",
+		"localVar": "sy"
+	},
+	{
+		"function": "sobel",
+		"localVar": "s"
+	},
+	{
+		"function": "loadRgbImage",
+		"localVar": "r",
+		"rangeMin": 0,
+		"rangeMax": 255
+	},
+	{
+		"function": "loadRgbImage",
+		"localVar": "g",
+		"rangeMin": 0,
+		"rangeMax": 255
+	},
+	{
+		"function": "loadRgbImage",
+		"localVar": "b",
+		"rangeMin": 0,
+		"rangeMax": 255
+	},
+	{
+		"function": "saveRgbImage",
+		"localVar": "scale",
+		"target": "out"
+	},
+	{
+		"function": "makeGrayscale",
+		"localVar": "luminance"
+	},
+	{
+		"function": "makeGrayscale",
+		"localVar": "rC"
+	},
+	{
+		"function": "makeGrayscale",
+		"localVar": "gC"
+	},
+	{
+		"function": "makeGrayScale",
+		"localVar": "bC"
+	},
+	{
+		"function": "main",
+		"localVar": "s",
+		"target": "s"
+	},
+	{
+		"function": "main",
+		"localVar": "w",
+		"target": "s"
+	},
+	{
+		"function": "main",
+		"struct": "image",
+		"localVar": "srcImage"
+	},
+	{
+		"function": "main",
+		"struct": "image",
+		"localVar": "dstImage"
+	},
+	{
+		"function": "main",
+		"struct": "image",
+		"localVar": "srcImagePtr"
+	},
+	{
+		"function": "main",
+		"struct": "image",
+		"localVar": "dstImagePtr"
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+]

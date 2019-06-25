@@ -1,0 +1,5 @@
+ADD_EXECUTABLE(blackscholes libvc.cpp)
+TARGET_COMPILE_FEATURES(blackscholes PUBLIC cxx_std_17)
+TARGET_LINK_LIBRARIES(blackscholes PRIVATE VersioningCompiler)
+TARGET_INCLUDE_DIRECTORIES(blackscholes PRIVATE ../libVersioningCompiler/include)
+TARGET_COMPILE_OPTIONS(blackscholes PRIVATE -fno-exceptions -fno-rtti -fno-omit-frame-pointer)

@@ -1,0 +1,228 @@
+[
+	{
+		"function": "main",
+		"localVar": "xyz",
+		"rangeMin": 0.01,
+		"rangeMax": 1
+	},
+	{
+		"function": "main",
+		"localVar": "a",
+		"rangeMin": 0.01,
+		"rangeMax": 1
+	},
+	{
+		"function": "main",
+		"localVar": "res",
+		"target": "res"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "Ax"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "Ay"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "Bx"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "By"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "Cx"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "Cy"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "e"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "d"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "f"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "a"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "b"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "c"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "d0"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "d1"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "d2"
+	},
+	{
+		"function": "coplanar_tri_tri",
+		"localVar": "A"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "V0"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "V1"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "V2"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "U1"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "U0"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "U1"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "U2"
+	},
+	{
+		"function": "tri_tri_intersect",
+		"localVar": "res"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "E1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "E2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "N1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "N2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "d1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "d2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "du0"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "du1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "du2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "dv0"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "dv1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "dv2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "D"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "isect1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "isect2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "du0du1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "du0du2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "dv0dv1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "dv0dv2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "vp0"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "vp1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "vp2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "up0"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "up1"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "up2"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "b"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "c"
+	},
+	{
+	 	"function": "tri_tri_intersect",
+		"localVar": "max"
+	}
+
+]

@@ -2,3 +2,7 @@
 	path = axbench-libvc-nostruct/libVersioningCompiler
 	url = git@github.com:skeru/libVersioningCompiler.git
 	branch = taffo
+[submodule "axbench-j2a/libVersioningCompiler"]
+	path = axbench-j2a/libVersioningCompiler
+	url = git@github.com:skeru/libVersioningCompiler.git
+	branch = taffo
