@@ -36,16 +36,20 @@ int main(int argc, const char* argv[])
 					"taffo",
 					"/usr/local",
 					vc::TAFFOCompiler::Language::CXX,
-					"/home/massimo/Documents/Programs/uni/wrapper/dist/",
+					"../../../dist/usr/local",
 					".",
 					"./test.log",
-					"/home/massimo/Documents/Programs/uni/AnnotationInserter/"
-					"cmake-build-debug/main");
+					"../../../dist/usr/local/bin/taffo-j2a");
 
 	vc::Version::Builder builder;
-	builder.genIRoptions({ vc::Option(
-			"AnnotationInserter", "annotationFile", "./annotations.json") , 
-			vc::Option("AnnotationInserter", "-I", "/usr/local/lib/clang/8.0.1/include/")});
+	builder.genIRoptions(
+			{ vc::Option(
+						"AnnotationInserter", "annotationFile", "./annotations.json"),
+				vc::Option(
+						"AnnotationInserter",
+						"-I",
+						"/usr/local/lib/clang/8.0.1/include/") });
+
 	builder.addSourceFile("src/blackscholes.cpp");
 	builder.addIncludeDir("src");
 	builder.addIncludeDir("../common/src");
