@@ -14,7 +14,7 @@
  #include "floatfann.h"
 #endif
 
-int main ( int argc, const char* argv[])
+extern "C" double kernel_func(std::string& inImageName, std::string& outImageName)
 {
 	int x, y;
 	float s = 0;
@@ -32,8 +32,8 @@ int main ( int argc, const char* argv[])
 	};
 
 
-	srcImagePtr->loadRgbImage( argv[1] ); // source image
-	dstImagePtr->loadRgbImage( argv[1] ); // destination image
+	srcImagePtr->loadRgbImage( inImageName ); // source image
+	dstImagePtr->loadRgbImage( inImageName ); // destination image
 
 	srcImagePtr->makeGrayscale( ); // convert the source file to grayscale
 
@@ -102,7 +102,8 @@ int main ( int argc, const char* argv[])
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
-	dstImagePtr->saveRgbImage(argv[2], sqrtf(256 * 256 + 256 * 256)) ;
-
-	return 0 ;
+	if (!outImageName.empty())
+	  dstImagePtr->saveRgbImage(outImageName, std::sqrt(256 * 256 + 256 * 256)) ;
+	
+	return ((double)kernel_time) / 1000000000.0;
 }

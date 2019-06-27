@@ -36,11 +36,10 @@ int main(int argc, const char* argv[])
 					"taffo",
 					"/usr/local",
 					vc::TAFFOCompiler::Language::CXX,
-					"/home/massimo/Documents/Programs/uni/wrapper/dist/",
+					"../../../dist/usr/local",
 					".",
 					"./test.log",
-					"/home/massimo/Documents/Programs/uni/AnnotationInserter/"
-					"cmake-build-debug/main");
+					"../../../dist/usr/local/bin/taffo-j2a");
 
 	vc::Version::Builder builder;
 	builder.genIRoptions(
