@@ -90,6 +90,7 @@ int main(int argc, const char* argv[])
 	std::string imgh = std::to_string(h);
 
 	vc::Version::Builder taffoBuilder(builder);
+	vc::Version::Builder defineBuilder(builder);
 	taffoBuilder._compiler = taffo;
 
 	taffoBuilder._genIROptionList.push_back(
@@ -97,10 +98,10 @@ int main(int argc, const char* argv[])
 	taffoBuilder._genIROptionList.push_back(vc::Option("AnnotationInserter", "-I",
 						"/usr/local/lib/clang/8.0.1/include/"));
 	builder._compiler = systemcpp;
+	defineBuilder._compiler = systemcpp;
 
-	vc::Version::Builder defineBuilder(builder);
-	builder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
-	builder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
+	defineBuilder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
+	defineBuilder.addDefine("IMAGE_HEIGHT_CONST", imgh.c_str());
 
 	vc::Version::Builder taffoDefineBuilder(taffoBuilder);
 	taffoDefineBuilder.addDefine("IMAGE_WIDTH_CONST", imgw.c_str());
@@ -108,7 +109,7 @@ int main(int argc, const char* argv[])
 
 	do_version(builder, "baseline", inImageName, outImageName, false);
 	double compile_t = do_version(taffoBuilder, "taffo", inImageName, outImageName, true);
-	do_version(defineBuilder, "baseline+define", inImageName, "", true);
+	do_version(defineBuilder, "baseline+define", inImageName, "", false);
 	do_version(taffoDefineBuilder, "taffo+define", inImageName, "", true);
 
 	std::cout << "compilation time: " << compile_t << " s" << std::endl;

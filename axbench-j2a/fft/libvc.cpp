@@ -57,6 +57,7 @@ int main(int argc, const char* argv[])
 	builder.addFunctionFlag("LIBVC_DYN");
 	builder._functionName.push_back("kernel_func");
 	builder._optionList.push_back(vc::Option("o", "-O", "3"));
+	builder._genIROptionList.push_back(vc::Option("fpic", "-fPIC", ""));
 
 	builder._compiler = taffo;
 

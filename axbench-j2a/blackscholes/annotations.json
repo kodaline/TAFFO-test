@@ -10,6 +10,10 @@
 	},
 	{
 		"function": "bs_thread", 
+		"localVar": "N1"
+	},
+	{
+		"function": "bs_thread", 
 		"localVar": "timet",
 		"rangeMax": 1,
 		"rangeMin": 0,

@@ -273,7 +273,7 @@ int bs_thread(void *tid_ptr) {
     return 0;
 }
 
-int main (int argc, char **argv)
+extern "C" double kernel_func(std::string& inputFile, std::string& outputFile)
 {
     FILE *file;
     int i;
@@ -285,19 +285,15 @@ int main (int argc, char **argv)
 
 	fflush(NULL);
 
-
-    char *inputFile = argv[1];
-    char *outputFile = argv[2];
-
     //Read input data from file
-    file = fopen(inputFile, "r");
+    file = fopen(inputFile.c_str(), "r");
     if(file == NULL) {
-      printf("ERROR: Unable to open file `%s'.\n", inputFile);
+      printf("ERROR: Unable to open file `%s'.\n", inputFile.c_str());
       exit(1);
     }
     rv = fscanf(file, "%i", &numOptions);
     if(rv != 1) {
-      printf("ERROR: Unable to read from file `%s'.\n", inputFile);
+      printf("ERROR: Unable to read from file `%s'.\n", inputFile.c_str());
       fclose(file);
       exit(1);
     }
@@ -314,14 +310,14 @@ int main (int argc, char **argv)
         rv = fscanf(file, "%f %f ", &s[loopnum], &stk[loopnum]);
         rv += fscanf(file, "%f %f %f %f %c %f %f", &data[loopnum].r, &data[loopnum].divq, &data[loopnum].v, &data[loopnum].t, &data[loopnum].OptionType, &data[loopnum].divs, &data[loopnum].DGrefval);
         if(rv != 9) {
-          printf("ERROR: Unable to read from file `%s'.\n", inputFile);
+          printf("ERROR: Unable to read from file `%s'.\n", inputFile.c_str());
           fclose(file);
           exit(1);
         }
     }
     rv = fclose(file);
     if(rv != 0) {
-      printf("ERROR: Unable to close file `%s'.\n", inputFile);
+      printf("ERROR: Unable to close file `%s'.\n", inputFile.c_str());
       exit(1);
     }
 
@@ -359,34 +355,39 @@ int main (int argc, char **argv)
 
 
     //Write prices to output file
-    file = fopen(outputFile, "w");
-    if(file == NULL) {
-      printf("ERROR: Unable to open file `%s'.\n", outputFile);
-      exit(1);
-    }
-    //rv = fprintf(file, "%i\n", numOptions);
-    if(rv < 0) {
-      printf("ERROR: Unable to write to file `%s'.\n", outputFile);
-      fclose(file);
-      exit(1);
-    }
-    for(i=0; i<numOptions; i++) {
-      rv = fprintf(file, "%.18f\n", prices[i]);
-      if(rv < 0) {
-        printf("ERROR: Unable to write to file `%s'.\n", outputFile);
-        fclose(file);
-        exit(1);
-      }
-    }
-    rv = fclose(file);
-    if(rv != 0) {
-      printf("ERROR: Unable to close file `%s'.\n", outputFile);
-      exit(1);
-    }
+	if (!outputFile.empty())
+	{
+		file = fopen(outputFile.c_str(), "w");
+		if(file == NULL) {
+		  printf("ERROR: Unable to open file `%s'.\n", outputFile.c_str());
+		  exit(1);
+		}
+		//rv = fprintf(file, "%i\n", numOptions);
+		if(rv < 0) {
+		  printf("ERROR: Unable to write to file `%s'.\n", outputFile.c_str());
+		  fclose(file);
+		  exit(1);
+		}
+		for(i=0; i<numOptions; i++) {
+		  rv = fprintf(file, "%.18f\n", prices[i]);
+		  if(rv < 0) {
+			printf("ERROR: Unable to write to file `%s'.\n", outputFile.c_str());
+			fclose(file);
+			exit(1);
+		  }
+		}
+		rv = fclose(file);
+		if(rv != 0) {
+		  printf("ERROR: Unable to close file `%s'.\n", outputFile.c_str());
+		  exit(1);
+		}
+	}
 
     free(data);
     free(prices);
+	free(s);
+	free(stk);
 
-    return 0;
+    return ((double)time) / 1000000000.0;
 }
 
