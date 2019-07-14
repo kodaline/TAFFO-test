@@ -30,6 +30,8 @@ vra_flags=
 disable_vra=0
 dta_flags=
 conversion_flags=
+enable_errorprop=0
+errorprop_flags=
 dontlink=
 iscpp=$CLANG
 honest_mode=0
@@ -49,6 +51,10 @@ for opt in $raw_opts; do
         -Xconversion)
           parse_state=4;
           ;;
+        -Xerr)
+	  enable_errorprop=1
+	  parse_state=7;
+	  ;;
         -o*)
           if [[ ${#opt} -eq 2 ]]; then
             parse_state=1;
@@ -74,6 +80,7 @@ for opt in $raw_opts; do
             dta_flags="$dta_flags -debug";
             conversion_flags="$conversion_flags -debug";
             vra_flags="$vra_flags -debug";
+	    errorprop_flags="$errorprop_flags -debug";
           fi
           ;;
         -debug-taffo)
@@ -82,11 +89,15 @@ for opt in $raw_opts; do
             dta_flags="$dta_flags --debug-only=taffo-dta";
             conversion_flags="$conversion_flags --debug-only=taffo-conversion";
             vra_flags="$vra_flags --debug-only=taffo-vra";
+	    errorprop_flags="$errorprop_flags --debug-only=errorprop";
           fi
           ;;
         -disable-vra)
           disable_vra=1
           ;;
+	-enable-err)
+	  enable_errorprop=1
+	  ;;
         -honest-mode)
           # actually, whether this mode is more honest or not is still 
           # subject of active research
@@ -129,6 +140,10 @@ for opt in $raw_opts; do
       ;;
     6)
       float_output_file="$opt";
+      parse_state=0;
+      ;;
+    7)
+      errorprop_flags="$errorprop_flags $opt";
       parse_state=0;
       ;;
   esac;
@@ -213,4 +228,10 @@ if [[ ! ( -z ${float_output_file} ) ]]; then
   fi
 fi
 
-
+if [[ $enable_errorprop -eq 1 ]]; then
+  ${OPT} \
+    -load "$ERRORLIB" \
+    -errorprop -startonly \
+    ${errorprop_flags} \
+    -S -o "${output_file}.6.magiclangtmp.ll" "${output_file}.5.magiclangtmp.ll" || exit $?;
+fi
