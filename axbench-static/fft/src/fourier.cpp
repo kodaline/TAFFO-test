@@ -24,8 +24,8 @@ void calcFftIndices(int K, int* indices)
 
 void radix2DitCooleyTykeyFft(int K,
 			     int* indices __attribute((annotate("scalar(disabled range(1,4194304))"))),
-			     Complex* x __attribute((annotate(ANNOTATION_COMPLEX(,)))),
-			     Complex* f __attribute((annotate(ANNOTATION_COMPLEX(,)))))
+			     Complex* x __attribute((annotate("errtarget('x') " ANNOTATION_COMPLEX(,)))),
+			     Complex* f __attribute((annotate("errtarget('f') " ANNOTATION_COMPLEX(,)))))
 {
   /* This FFT implementation is buggy
    * x[0] should be < x[all i != 0] because the input is all positive, except it isn't
