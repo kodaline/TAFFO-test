@@ -15,7 +15,7 @@ double cos2(int angle);
 
 void idct2(const int *table, double *output) {
 
-    double input[64] __attribute((annotate("target('input') scalar(range(-1024, 1024))")));
+    double input[64] __attribute((annotate("target('input') scalar(range(-1024, 1024) error(1e-8))")));
 
     int u, v, x, y;
 
