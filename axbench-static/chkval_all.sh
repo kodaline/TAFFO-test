@@ -43,6 +43,8 @@ check 'jmeint'
 check 'kmeans'
 check 'kmeans_00'
 check 'kmeans_01'
+check 'kmeans_base_00'
+check 'kmeans_base_01'
 
 check 'sobel'
 

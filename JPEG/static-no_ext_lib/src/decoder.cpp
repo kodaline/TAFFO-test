@@ -590,9 +590,9 @@ Image decode(std::istream &stream) {
     double b __attribute((annotate("target('b') scalar(range(-1024, 1024))")));
     for (int i = 0, k = 0; i < nRows; ++i) {
         for (int j = 0; j < nCols; ++j, ++k) {
-            int y __attribute((annotate("scalar(range(-1024,1024) disabled)"))) = channels[kY][k];
-            int cb __attribute((annotate("scalar(range(-1024,1024) disabled)"))) = 0;
-            int cr __attribute((annotate("scalar(range(-1024,1024) disabled)"))) = 0;
+            int y __attribute((annotate("scalar(range(-1024,1024) error(1e-8))"))) = channels[kY][k];
+            int cb __attribute((annotate("scalar(range(-1024,1024) error(1e-8))"))) = 0;
+            int cr __attribute((annotate("scalar(range(-1024,1024) error(1e-8))"))) = 0;
             if (nComponents == 3) {
                 cb = channels[kCb][k];
                 cr = channels[kCr][k];

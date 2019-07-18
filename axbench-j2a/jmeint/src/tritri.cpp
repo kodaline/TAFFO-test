@@ -129,12 +129,12 @@
 
 #define POINT_IN_TRI(V0,U0,U1,U2)           \
 {                                           \
-  float ; \
-  float	; \
-  float	; \
-  float 0; \
-  float	1; \
-  float	2;                     \
+  float a; \
+  float	b; \
+  float	c; \
+  float d0; \
+  float	d1; \
+  float	d2;                     \
   /* is T1 completly inside T2? */          \
   /* check if V0 is inside tri(U0,U1,U2) */ \
   a=U1[i1]-U0[i1];                          \

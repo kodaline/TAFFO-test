@@ -30,3 +30,6 @@ Building with TAFFO
 Run the following command in the `src` directory
 `../../../test/magiclang2.sh decoder.cpp -ljpeg -o decoder-opt -O3`
 
+To also estimate the resulting error:
+`../../../test/magiclang2.sh -enable-err decoder.cpp -ljpeg -o decoder-opt -O3`
+

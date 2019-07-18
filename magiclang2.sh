@@ -30,6 +30,8 @@ vra_flags=
 disable_vra=0
 dta_flags=
 conversion_flags=
+enable_errorprop=0
+errorprop_flags=
 dontlink=
 iscpp=$CLANG
 honest_mode=0
@@ -50,6 +52,10 @@ for opt in $raw_opts; do
           ;;
         -Xconversion)
           parse_state=4;
+          ;;
+        -Xerr)
+          enable_errorprop=1
+          parse_state=8;
           ;;
         -o*)
           if [[ ${#opt} -eq 2 ]]; then
@@ -76,6 +82,7 @@ for opt in $raw_opts; do
             dta_flags="$dta_flags -debug";
             conversion_flags="$conversion_flags -debug";
             vra_flags="$vra_flags -debug";
+            errorprop_flags="$errorprop_flags -debug";
           fi
           ;;
         -debug-taffo)
@@ -84,10 +91,14 @@ for opt in $raw_opts; do
             dta_flags="$dta_flags --debug-only=taffo-dta";
             conversion_flags="$conversion_flags --debug-only=taffo-conversion";
             vra_flags="$vra_flags --debug-only=taffo-vra";
+            errorprop_flags="$errorprop_flags --debug-only=errorprop";
           fi
           ;;
         -disable-vra)
           disable_vra=1
+          ;;
+        -enable-err)
+          enable_errorprop=1
           ;;
         -honest-mode)
           # actually, whether this mode is more honest or not is still 
@@ -141,6 +152,10 @@ for opt in $raw_opts; do
       ;;
     7)
       pe_model_file="$opt";
+      parse_state=0;
+      ;;
+    8)
+      errorprop_flags="$errorprop_flags $opt";
       parse_state=0;
       ;;
   esac;
@@ -235,13 +250,16 @@ while [[ $feedback_stop -eq 0 ]]; do
   ###
   ###  TAFFO Feedback Estimator
   ###
+  if [[ ( $enable_errorprop -eq 1 ) || ( $feedback -ne 0 ) ]]; then
+    ${OPT} \
+      -load "$ERRORLIB" \
+      -errorprop -startonly \
+      ${errorprop_flags} \
+      -S -o "${output_file}.6.magiclangtmp.ll" "${output_file}.5.magiclangtmp.ll" 2> "${output_file}.errorprop.magiclangtmp.txt" || exit $?
+  fi
   if [[ $feedback -eq 0 ]]; then
     break
   fi
-  ${OPT} \
-    -load "$ERRORLIB" \
-    -errorprop \
-    -S -o "${output_file}.errorprop.magiclangtmp.ll" "${output_file}.5.magiclangtmp.ll" 2> "${output_file}.errorprop.magiclangtmp.txt" || exit $?
   ${build_float} -S -emit-llvm \
     -o "${output_file}.float.magiclangtmp.ll" || exit $?
   ${TAFFO_PE} \
@@ -277,4 +295,3 @@ if [[ ! ( -z ${float_output_file} ) ]]; then
     ${dontlink} \
     -o "$float_output_file" || exit $?
 fi
-

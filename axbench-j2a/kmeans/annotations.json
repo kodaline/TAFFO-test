@@ -53,7 +53,10 @@
 	},
 	{
 		"function": "assignCluster", 
-		"localVar": "d"
+		"localVar": "d",
+		"target": "distance",
+		"struct": "rgbpixel"
+
 	},
 	{
 		"function": "pickCluster", 
@@ -70,9 +73,20 @@
 		"struct": "rgbpixel"
 	},
 	{
+		"function": "pickCluster"
+	},
+	{
+		"function": "assignCluster"
+	},
+	{
 		"function": "euclideanDistance", 
 		"localVar": "c1",
 		"struct": "centroid"
+	},
+	{
+		"function": "euclideanDistance", 
+		"rangeMin": 0,
+		"rangeMax": 256
 	},
 	{
 		"function": "euclideanDistance", 
@@ -81,11 +95,16 @@
 	},
 	{
 		"function": "euclideanDistance", 
-		"localVar": "r"
+		"localVar": "r",
+		"rangeMin": 0,
+		"rangeMax": 256
+
 	},
 	{
 		"function": "euclideanDistance", 
-		"localVar": "r_tmp"
+		"localVar": "r_tmp",
+		"rangeMin": 0,
+		"rangeMax": 256
 	},
 	{
 		"function": "main", 
@@ -106,13 +125,14 @@
 		"disabled": 1
 	},
 	{
-		"function": "loadRgbImage", 
-		"localVar": "image",
-		"struct": "rgbimage"
+		"function": "loadRgbImage"
 	},
 	{
 		"function": "loadRgbImage", 
-		"localVar": "scale"
+		"localVar": "scale",
+		"rangeMin": 0,
+		"rangeMax": 256
+
 	},
 	{
 		"function": "loadRgbImage", 
@@ -123,7 +143,7 @@
 		"function": "loadRgbImage", 
 		"localVar": "r",
 		"rangeMin": 1,
-		"rangeMax": 255
+		"rangeMax": 256
 	},
 	{
 		"function": "loadRgbImage", 
@@ -144,7 +164,12 @@
 	},
 	{
 		"function": "saveRgbImage", 
-		"localVar": "scale"
+		"localVar": "scale",
+		"rangeMin": 0,
+		"rangeMax": 256
+	},
+	{
+		"function": "saveRgbImage"
 	},
 	{
 		"function": "makeGrayscale", 
@@ -174,7 +199,9 @@
 	},
 	{
 		"function": "initClusters", 
-		"localVar": "scale"
+		"localVar": "scale",
+		"rangeMin": 0,
+		"rangeMax": 1
 	},
 	{
 		"function": "initClusters", 
@@ -195,14 +222,6 @@
 		"localVar": "image",
 		"struct": "rgbimage"
 	}
-
-
-
-
-	
-
-
-
 
 
 ]

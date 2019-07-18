@@ -14,32 +14,28 @@
 #include <fstream>
 #include <sstream>
 #include "benchmark.hpp"
-
-int main (int argc, const char* argv[]) {
-
+extern "C" double kernel_func(std::string& inImageName, std::string& outImageName)
+{
+	srand(0xfeedface);
 	RgbImage srcImage;
-	Clusters clusters;
 
 	initRgbImage(&srcImage);
-
-	std::string inImageName  = argv[1];
-	std::string outImageName = argv[2];
-
 	loadRgbImage(inImageName.c_str(), &srcImage, 256);
 
-	initClusters(&clusters, 6, 1);
+  Clusters clusters;
+  initClusters(&clusters, 6, 1);
 
-	AxBenchTimer timer;
+  AxBenchTimer timer;
 	segmentImage(&srcImage, &clusters, 1);
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 
-	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
+	if (outImageName.size())
+		saveRgbImage(&srcImage, outImageName.c_str(), 255);
 
-	saveRgbImage(&srcImage, outImageName.c_str(), 255);
-
-
+  freeClusters(&clusters);
 	freeRgbImage(&srcImage);
-	freeClusters(&clusters);
-	return 0;
+
+	return ((double)kernel_time) / 1000000000.0;
 }
+
 

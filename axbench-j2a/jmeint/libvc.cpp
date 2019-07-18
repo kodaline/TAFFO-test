@@ -36,11 +36,10 @@ int main(int argc, const char* argv[])
 					"taffo",
 					"/usr/local",
 					vc::TAFFOCompiler::Language::CXX,
-					"/home/massimo/Documents/Programs/uni/wrapper/dist/",
+					"../../../dist/usr/local",
 					".",
 					"./test.log",
-					"/home/massimo/Documents/Programs/uni/AnnotationInserter/"
-					"cmake-build-debug/main");
+					"../../../dist/usr/local/bin/taffo-j2a");
 
 	vc::Version::Builder builder;
 	builder.genIRoptions(
@@ -57,6 +56,7 @@ int main(int argc, const char* argv[])
 	builder.addFunctionFlag("LIBVC_DYN");
 	builder._functionName.push_back("kernel_func");
 	builder._optionList.push_back(vc::Option("o", "-O", "3"));
+	builder._genIROptionList.push_back(vc::Option("", "-fPIC", ""));
 
 	builder._compiler = taffo;
 
