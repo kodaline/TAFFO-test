@@ -27,6 +27,8 @@ taffo_setenv_find()
 }
 
 
+SCRIPTPATH=$(dirname "$BASH_SOURCE")
+
 if [[ $# < 1 ]]; then
   echo 'Usage: source setenv.sh /prefix/where/taffo/was/installed'
   echo 'Install taffo by running make install. The default prefix is /usr/local.'
@@ -38,6 +40,8 @@ else
   export ERRORLIB=$(taffo_setenv_find $1 'lib' 'LLVMErrorPropagator')
   export INSTMIX=$(taffo_setenv_find $1 'bin' 'taffo-instmix')
   export TAFFO_MLFEAT=$(taffo_setenv_find $1 'bin' 'taffo-mlfeat')
+  export TAFFO_FE=${SCRIPTPATH}/../ErrorAnalysis/FeedbackEstimator/taffo-fe.py
+  export TAFFO_PE=${SCRIPTPATH}/../ErrorAnalysis/PerformanceEstimator/taffo-pe.py
   
   if [[ -z "$LLVM_DIR" ]]; then
     LLVM_DIR=$(llvm-config --prefix 2> /dev/null)
@@ -56,3 +60,4 @@ else
 fi
 
 unset -f taffo_setenv_find
+unset -v SCRIPTPATH

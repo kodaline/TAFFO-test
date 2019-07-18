@@ -33,6 +33,8 @@ conversion_flags=
 dontlink=
 iscpp=$CLANG
 honest_mode=0
+feedback=0
+pe_model_file=
 for opt in $raw_opts; do
   case $parse_state in
     0)
@@ -92,6 +94,12 @@ for opt in $raw_opts; do
           # subject of active research
           honest_mode=1
           ;;
+        -feedback)
+          feedback=1
+          ;;
+        -pe-model)
+          parse_state=7
+          ;;
         -*)
           opts="$opts $opt";
           ;;
@@ -131,12 +139,19 @@ for opt in $raw_opts; do
       float_output_file="$opt";
       parse_state=0;
       ;;
+    7)
+      pe_model_file="$opt";
+      parse_state=0;
+      ;;
   esac;
 done
 
 # enable bash logging
 set -x
 
+###
+###  Produce base .ll
+###
 if [[ ${#input_files[@]} -eq 1 ]]; then
   # one input file
   ${CLANG} \
@@ -163,11 +178,25 @@ else
     -S -o "${output_file}.1.magiclangtmp.ll" || exit $?
 fi
 
+# precompute clang invocation for compiling float version
+if [[ $honest_mode -ne 0 ]]; then
+  build_float="${iscpp} $opts ${optimization} ${input_files[*]}"
+else
+  build_float="${iscpp} $opts ${optimization} ${output_file}.1.magiclangtmp.ll"
+fi
+
+###
+###  TAFFO initialization
+###
 ${OPT} \
   -load "$INITLIB" \
   -taffoinit \
   ${init_flags} \
   -S -o "${output_file}.2.magiclangtmp.ll" "${output_file}.1.magiclangtmp.ll" || exit $?
+  
+###
+###  TAFFO Value Range Analysis
+###
 if [[ $disable_vra -eq 0 ]]; then
   ${OPT} \
     -load "$VRALIB" \
@@ -177,16 +206,62 @@ if [[ $disable_vra -eq 0 ]]; then
 else
   cp "${output_file}.2.magiclangtmp.ll" "${output_file}.3.magiclangtmp.ll";
 fi
-${OPT} \
-  -load "$TUNERLIB" \
-  -taffodta -globaldce \
-  ${dta_flags} \
-  -S -o "${output_file}.4.magiclangtmp.ll" "${output_file}.3.magiclangtmp.ll" || exit $?
-${OPT} \
-  -load "$PASSLIB" \
-  -flttofix -globaldce -dce \
-  ${conversion_flags} \
-  -S -o "${output_file}.5.magiclangtmp.ll" "${output_file}.4.magiclangtmp.ll" || exit $?
+
+feedback_stop=0
+if [[ $feedback -ne 0 ]]; then
+  # init the feedback estimator if needed
+  base_dta_flags="${dta_flags}"
+  dta_flags="${base_dta_flags} "$($TAFFO_FE --init --state "${output_file}.festate.magiclangtmp.bin")
+fi
+while [[ $feedback_stop -eq 0 ]]; do
+  ###
+  ###  TAFFO Data Type Allocation
+  ###
+  ${OPT} \
+    -load "$TUNERLIB" \
+    -taffodta -globaldce \
+    ${dta_flags} \
+    -S -o "${output_file}.4.magiclangtmp.ll" "${output_file}.3.magiclangtmp.ll" || exit $?
+    
+  ###
+  ###  TAFFO Conversion
+  ###
+  ${OPT} \
+    -load "$PASSLIB" \
+    -flttofix -globaldce -dce \
+    ${conversion_flags} \
+    -S -o "${output_file}.5.magiclangtmp.ll" "${output_file}.4.magiclangtmp.ll" || exit $?
+    
+  ###
+  ###  TAFFO Feedback Estimator
+  ###
+  if [[ $feedback -eq 0 ]]; then
+    break
+  fi
+  ${OPT} \
+    -load "$ERRORLIB" \
+    -errorprop \
+    -S -o "${output_file}.errorprop.magiclangtmp.ll" "${output_file}.5.magiclangtmp.ll" 2> "${output_file}.errorprop.magiclangtmp.txt" || exit $?
+  ${build_float} -S -emit-llvm \
+    -o "${output_file}.float.magiclangtmp.ll" || exit $?
+  ${TAFFO_PE} \
+    --fix "${output_file}.5.magiclangtmp.ll" \
+    --flt "${output_file}.float.magiclangtmp.ll" \
+    --model ${pe_model_file} > "${output_file}.perfest.magiclangtmp.txt" || exit $?
+  newflgs=$(${TAFFO_FE} \
+    --pe-out "${output_file}.perfest.magiclangtmp.txt" \
+    --ep-out "${output_file}.errorprop.magiclangtmp.txt" \
+    --state "${output_file}.festate.magiclangtmp.bin" || exit $?)
+  if [[ ( "$newflgs" == 'STOP' ) || ( -z "$newflgs" ) ]]; then
+    feedback_stop=1
+  else
+    dta_flags="${base_dta_flags} ${newflgs}"
+  fi
+done
+
+###
+###  Backend
+###
 ${CLANG} \
   $opts ${optimization} \
   -c \
@@ -198,19 +273,8 @@ ${iscpp} \
   "${output_file}.5.magiclangtmp.ll" \
   -o "$output_file" || exit $?
 if [[ ! ( -z ${float_output_file} ) ]]; then
-  if [[ $honest_mode -ne 0 ]]; then
-    ${iscpp} \
-      $opts ${optimization} \
-      ${dontlink} \
-      ${input_files[*]} \
-      -o "$float_output_file" || exit $?
-  else
-    ${iscpp} \
-      $opts ${optimization} \
-      ${dontlink} \
-      "${output_file}.1.magiclangtmp.ll" \
-      -o "$float_output_file" || exit $?
-  fi
+  ${build_float} \
+    ${dontlink} \
+    -o "$float_output_file" || exit $?
 fi
-
 
