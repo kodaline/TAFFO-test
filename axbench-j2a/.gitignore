@@ -16,3 +16,6 @@ kmeans/correct_output
 kmeans/src_before
 fft/orig_src
 blackscholes/orig_src
+
+jmeint/data/input/jmeint_1000K.data
+
