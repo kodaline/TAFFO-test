@@ -1,0 +1,4 @@
+*.magiclangtmp.ll
+*.magiclangtmp.s
+*.out
+*.log
