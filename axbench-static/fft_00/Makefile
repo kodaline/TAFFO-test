@@ -15,6 +15,8 @@ LFLAGS		:= # -lboost_regex
 HEADERS		:= src
 INCLUDE 		:= -I${HEADERS} -I../common/src
 
+SIMILARBITS	?= 2
+
 MIOSIX_EABI     := /opt/arm-miosix-eabi/arm-miosix-eabi
 MIOSIX_CFLAGS   := -target arm-none-linux-eabi --sysroot=$(MIOSIX_EABI) -I$(MIOSIX_EABI)/include/ -I$(MIOSIX_EABI)/include/c++/4.7.3/ -I$(MIOSIX_EABI)/include/c++/4.7.3/arm-miosix-eabi/ -D_MIOSIX -D_MIOSIX_GCC_PATCH_VERSION=1 -mcpu=cortex-m3 -mthumb -ffunction-sections -Wall
 
@@ -61,14 +63,14 @@ obj/main.vra.ll: obj/main.init.ll
 	$(OPT) -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
 
 obj/main.tuner.ll : obj/main.vra.ll
-	$(OPT) -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+	$(OPT) -load=$(TUNERLIB) -S -taffodta --similarbits=$(SIMILARBITS) -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll
 	$(OPT) -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion) -stats $< -o $@ 2> stats/flttofix.log
 
 obj/main.err.ll : obj/main.fixp.ll
 ifndef DISABLE_ERROR
-	$(OPT) -load=$(ERRORLIB) -S -mem2reg -errorprop -startonly -dunroll 3 $(if $(ISDEBUG), -debug-only=errorprop$(comma)loop-unroll) $< -o $@ 2> stats/errorprop.log
+	$(OPT) -load=$(ERRORLIB) -S -mem2reg -errorprop -abserror -startonly -dunroll 3 $(if $(ISDEBUG), -debug-only=errorprop$(comma)loop-unroll) $< -o $@ 2> stats/errorprop.log
 else
 	echo > $@
 	echo > stats/errorprop.log
