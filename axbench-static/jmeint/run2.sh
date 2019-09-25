@@ -32,6 +32,13 @@ rm -rf data/output
 mkdir -p data/output
 benchmark=jmeint
 
+for f in data/input/*.data.bz2; do
+  uncompressed="${f%.bz2}"
+  if [[ ! ( -e ${uncompressed} ) ]]; then
+    bunzip2 -k ${f}
+  fi
+done
+
 for f in data/input/*.data
 do
   filename=$(basename "$f")
