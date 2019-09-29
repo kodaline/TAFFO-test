@@ -6,6 +6,7 @@
 */tmp.err
 */tmp.log
 */*.tmp
+*~
 
 raw-times
 results
