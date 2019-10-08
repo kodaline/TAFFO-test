@@ -55,13 +55,13 @@ $(OBJ_FLOAT) : obj/main.ll
 	$(CLANGXX) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(OPT) -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(OPT) -load=$(INITLIB) -S -taffoinit -mem2reg $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
 obj/%.vra.ll: obj/%.init.ll
 	$(OPT) -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log
 
 obj/main.tuner.ll : obj/main.vra.ll
-	$(OPT) -load=$(TUNERLIB) -S -taffodta $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
+	$(OPT) -load=$(TUNERLIB) -S -taffodta -globaldce $(if $(ISDEBUG), -debug-only=taffo-dta$(comma)tunerfunction) -stats $< -o $@ 2> stats/tuner.log
 
 obj/main.fixp.ll : obj/main.tuner.ll
 	$(OPT) -load=$(PASSLIB) -S -flttofix -dce $(if $(ISDEBUG), -debug-only=taffo-conversion) -stats $< -o $@ 2> stats/flttofix.log
@@ -72,7 +72,7 @@ $(OBJ_FIX) : obj/main.fixp.ll
 
 obj/main.err.ll : obj/main.fixp.ll
 ifndef DISABLE_ERROR
-	$(OPT) -load=$(ERRORLIB) -S -errorprop -startonly -nounroll $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
+	$(OPT) -load=$(ERRORLIB) -S -errorprop -startonly -nounroll -exactconst $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
 else
 	echo > $@
 	echo > stats/errorprop.log
