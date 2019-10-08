@@ -2,3 +2,4 @@
 *.magiclangtmp.s
 *.out
 *.log
+axbench-static/jmeint_0?/log*

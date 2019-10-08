@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 
 	for(i = 0 ; i < (n * 6 * 3); i += 6 * 3)
 	{
-    
+/*
 		double dataIn[18];
 		double dataOut[2];
 		dataIn[0] 	= xyz[i + 0];
@@ -93,16 +93,17 @@ int main(int argc, char* argv[])
 		dataIn[15] 	= xyz[i + 15];
 		dataIn[16] 	= xyz[i + 16];
 		dataIn[17] 	= xyz[i + 17];
-
+*/
 		float __attribute((annotate("target('res') scalar()"))) res[2];
+		int output = -1;
 
 #pragma parrot(input, "jmeint", [18]dataIn)
 
 		x = tri_tri_intersect(
 				xyz + i + 0 * 3, xyz + i + 1 * 3, xyz + i + 2 * 3,
 				xyz + i + 3 * 3, xyz + i + 4 * 3, xyz + i + 5 * 3,
-				res);
-
+				res, &output);
+/*
 		if(x == 0)
 		{
 			dataOut[0] = 0.2;
@@ -113,16 +114,17 @@ int main(int argc, char* argv[])
 			dataOut[0] = 0.8;
 			dataOut[1] = 0.2;
 		}
-
+*/
 #pragma parrot(output, "jmeint", [2]<0.2; 0.8>dataOut)
-
+/*
 		if(dataOut[0] < dataOut[1])
 			x = 0;
 		else
 			x = 1;
-			
+*/
 		kernel_time += timer.nanosecondsSinceInit();
 
+    fprintf(stderr, "exit type = %d\n", output);
 		outputFileHandler << x << " " << res[0] << " " << res[1] << std::endl;
 		
 		timer.reset();

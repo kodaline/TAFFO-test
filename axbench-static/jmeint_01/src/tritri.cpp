@@ -46,8 +46,8 @@
              }
 
 #define ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1) \
-              isect0=VV0+(VV1-VV0)*D0/(D0-D1);    \
-              isect1=VV0+(VV2-VV0)*D0/(D0-D2);
+              isect0=VV0+(VV1-VV0)*D0/(D0-D1+0.00001);    \
+              isect1=VV0+(VV2-VV0)*D0/(D0-D2+0.00001);
 
 
 #define COMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1) \
@@ -204,7 +204,7 @@ int coplanar_tri_tri(float N[3],
 
 int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __attribute((annotate("scalar()"))) V1[3], float __attribute((annotate("scalar()"))) V2[3],
                       float __attribute((annotate("scalar()"))) U0[3], float __attribute((annotate("scalar()"))) U1[3], float __attribute((annotate("scalar()"))) U2[3],
-		      float __attribute((annotate("scalar()"))) *res)
+		      float __attribute((annotate("scalar()"))) *res, int *output)
 {
   #pragma clang attribute push( __attribute((annotate("scalar()"))) , apply_to = variable)
   float E1[3],E2[3];
@@ -246,7 +246,7 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
 
   if(du0du1>0.0f && du0du2>0.0f)
   { /* same sign on all of them + not equal 0 ? */
-    //*output = 0 ;
+    *output = 0 ;
     return 0;                    /* no intersection occurs */
   }
 
@@ -277,7 +277,7 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
 
   if(dv0dv1>0.0f && dv0dv2>0.0f)
   { /* same sign on all of them + not equal 0 ? */
-    //*output = 1 ;
+    *output = 1 ;
     return 0;                    /* no intersection occurs */
   }
 
@@ -318,10 +318,10 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
 
   if(isect1[1]<isect2[0] || isect2[1]<isect1[0])
   {
-    //*output = 2 ;
+    *output = 2 ;
     return 0;
   }
-  //*output = 3 ;
+  *output = 3 ;
   return 1;
 }
 

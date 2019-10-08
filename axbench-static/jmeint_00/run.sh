@@ -20,10 +20,10 @@ do
 	echo -e "\e[95m------ ${filename} ------\e[0m"
 	
 	echo -e "\e[96m*** Float Version ***\e[0m"
-	time ./bin/${benchmark}.out ${f} data/output/${filename}_${benchmark}_out.data
+	time ./bin/${benchmark}.out ${f} data/output/${filename}_${benchmark}_out.data 2> log_${filename}_float.txt
 	
 	echo -e "\e[96m*** Fix Version ***\e[0m"
-	time ./bin/${benchmark}.out.fixp ${f} data/output/${filename}_${benchmark}_out.data.fixp
+	time ./bin/${benchmark}.out.fixp ${f} data/output/${filename}_${benchmark}_out.data.fixp 2> log_${filename}_fixp.txt
 	
 	echo -e "\e[32m### QoS ###\e[0m"
 	python ./scripts/qos.py data/output/${filename}_${benchmark}_out.data data/output/${filename}_${benchmark}_out.data.fixp
