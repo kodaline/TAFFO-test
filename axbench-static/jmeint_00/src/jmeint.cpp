@@ -62,9 +62,8 @@ int main(int argc, char* argv[])
 		i++;
 	}
 
-	int totalCount = 0 ;
-
-	//double output = 0.0;
+	int totalCount = 0;
+	int outputAggreg[6] = {0};
 
   uint64_t kernel_time = 0;
   AxBenchTimer timer;
@@ -124,6 +123,7 @@ int main(int argc, char* argv[])
 */
 		kernel_time += timer.nanosecondsSinceInit();
 
+    outputAggreg[output] += 1;
     fprintf(stderr, "exit type = %d\n", output);
 		outputFileHandler << x << " " << res[0] << " " << res[1] << std::endl;
 		
@@ -131,6 +131,9 @@ int main(int argc, char* argv[])
 	}
 	
 	kernel_time += timer.nanosecondsSinceInit();
+	
+	for (int i=0; i<6; i++)
+	  fprintf(stderr, "exit type %d total = %d\n", i, outputAggreg[i]);
 	
   std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 

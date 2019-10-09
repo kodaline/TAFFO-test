@@ -305,9 +305,11 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
   up2=U2[index];
 
   /* compute interval for triangle 1 */
+  *output = 2;
   COMPUTE_INTERVALS(vp0,vp1,vp2,dv0,dv1,dv2,dv0dv1,dv0dv2,isect1[0],isect1[1]);
 
   /* compute interval for triangle 2 */
+  *output = 3;
   COMPUTE_INTERVALS(up0,up1,up2,du0,du1,du2,du0du1,du0du2,isect2[0],isect2[1]);
 
   SORT(isect1[0],isect1[1]);
@@ -318,10 +320,10 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
 
   if(isect1[1]<isect2[0] || isect2[1]<isect1[0])
   {
-    *output = 2 ;
+    *output = 4;
     return 0;
   }
-  *output = 3 ;
+  *output = 5;
   return 1;
 }
 
