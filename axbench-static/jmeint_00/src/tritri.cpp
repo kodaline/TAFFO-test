@@ -93,6 +93,7 @@
   Cy=V0[i1]-U0[i1];                                   \
   f=Ay*Bx-Ax*By;                                      \
   d=By*Cx-Bx*Cy;                                      \
+  PRINT_INSTR("f=%a d=%a\n", f, d); \
   if((f>0 && d>=0 && d<=f) || (f<0 && d<=0 && d>=f))  \
   {                                                   \
     e=Ax*Cy-Ay*Cx;                                    \
@@ -112,7 +113,7 @@
   float __attribute((annotate("scalar()"))) Ax, __attribute((annotate("scalar()"))) Ay; \
   float __attribute((annotate("scalar()"))) Bx, __attribute((annotate("scalar()"))) By; \
   float __attribute((annotate("scalar()"))) Cx, __attribute((annotate("scalar()"))) Cy; \
-  float __attribute((annotate("scalar()"))) e, __attribute((annotate("scalar()"))) d, __attribute((annotate("scalar()"))) f; \
+  float __attribute((annotate("target('e') scalar()"))) e, __attribute((annotate("target('d') scalar()"))) d, __attribute((annotate("target('f') scalar()"))) f; \
   Ax=V1[i0]-V0[i0];                            \
   Ay=V1[i1]-V0[i1];                            \
   /* test edge U0,U1 against V0,V1 */          \
@@ -143,10 +144,12 @@
   b=-(U0[i0]-U2[i0]);                       \
   c=-a*U2[i0]-b*U2[i1];                     \
   d2=a*V0[i0]+b*V0[i1]+c;                   \
-  PRINT_INSTR("d0*d1=%a d0*d2=%a\n", d0*d1, d0*d2); \
-  if(d0*d1>0.0)                             \
+  float __attribute((annotate("target('d0*d1') scalar()")))d0d1, __attribute((annotate("target('d0*d2') scalar()")))d0d2; \
+  d0d1 = d0*d1; d0d2 = d0*d2; \
+  PRINT_INSTR("d0*d1=%a d0*d2=%a\n", d0d1, d0d2); \
+  if(d0d1>0.0)                             \
   {                                         \
-    if(d0*d2>0.0) return 1;                 \
+    if(d0d2>0.0) return 1;                 \
   }                                         \
 }
 
@@ -218,10 +221,10 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
   float up0,up1,up2;
   float b,c,max;
   #pragma clang attribute pop
-  float __attribute((annotate("target('case_0_du0du1') scalar()"))) du0du1;
-  float __attribute((annotate("target('case_0_du0du2') scalar()"))) du0du2;
-  float __attribute((annotate("target('case_1_dv0dv1') scalar()"))) dv0dv1;
-  float __attribute((annotate("target('case_1_dv0dv2') scalar()"))) dv0dv2;
+  float __attribute((annotate("target('du0du1') scalar()"))) du0du1;
+  float __attribute((annotate("target('du0du2') scalar()"))) du0du2;
+  float __attribute((annotate("target('dv0dv1') scalar()"))) dv0dv1;
+  float __attribute((annotate("target('dv0dv2') scalar()"))) dv0dv2;
   short index;
   //int r;
 
@@ -323,7 +326,9 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
 
   res[0] = isect1[0];
   res[1] = isect1[1];
-  PRINT_INSTR("delta_isect_1=%a delta_isect_2=%a\n", isect1[1]-isect2[0], isect2[1]-isect1[0]);
+  float __attribute((annotate("target('delta_isect_1') scalar()"))) delta_isect_1 = isect1[1]-isect2[0];
+  float __attribute((annotate("target('delta_isect_2') scalar()"))) delta_isect_2 = isect2[1]-isect1[0];
+  PRINT_INSTR("delta_isect_1=%a delta_isect_2=%a\n", delta_isect_1, delta_isect_2);
 
   if(isect1[1]<isect2[0] || isect2[1]<isect1[0])
   {
