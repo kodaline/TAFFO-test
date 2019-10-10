@@ -96,6 +96,7 @@
   if((f>0 && d>=0 && d<=f) || (f<0 && d<=0 && d>=f))  \
   {                                                   \
     e=Ax*Cy-Ay*Cx;                                    \
+    PRINT_INSTR("e=%a\n", e); \
     if(f>0)                                           \
     {                                                 \
       if(e>=0 && e<=f) return 1;                      \
@@ -142,6 +143,7 @@
   b=-(U0[i0]-U2[i0]);                       \
   c=-a*U2[i0]-b*U2[i1];                     \
   d2=a*V0[i0]+b*V0[i1]+c;                   \
+  PRINT_INSTR("d0*d1=%a d0*d2=%a\n", d0*d1, d0*d2); \
   if(d0*d1>0.0)                             \
   {                                         \
     if(d0*d2>0.0) return 1;                 \
@@ -212,11 +214,14 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
   float du0,du1,du2,dv0,dv1,dv2;
   float D[3];
   float isect1[2], isect2[2];
-  float du0du1,du0du2,dv0dv1,dv0dv2;
   float vp0,vp1,vp2;
   float up0,up1,up2;
   float b,c,max;
   #pragma clang attribute pop
+  float __attribute((annotate("target('case_0_du0du1') scalar()"))) du0du1;
+  float __attribute((annotate("target('case_0_du0du2') scalar()"))) du0du2;
+  float __attribute((annotate("target('case_1_dv0dv1') scalar()"))) dv0dv1;
+  float __attribute((annotate("target('case_1_dv0dv2') scalar()"))) dv0dv2;
   short index;
   //int r;
 
@@ -243,7 +248,7 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
   du0du1=du0*du1;
   du0du2=du0*du2;
 
-
+  PRINT_INSTR("du0du1=%a du0du2=%a\n", du0du1, du0du2);
   if(du0du1>0.0f && du0du2>0.0f)
   { /* same sign on all of them + not equal 0 ? */
     *output = 0 ;
@@ -275,6 +280,7 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
   dv0dv1=dv0*dv1;
   dv0dv2=dv0*dv2;
 
+  PRINT_INSTR("dv0dv1=%a dv0dv2=%a\n", dv0dv1, dv0dv2);
   if(dv0dv1>0.0f && dv0dv2>0.0f)
   { /* same sign on all of them + not equal 0 ? */
     *output = 1 ;
@@ -317,6 +323,7 @@ int tri_tri_intersect(float __attribute((annotate("scalar()"))) V0[3], float __a
 
   res[0] = isect1[0];
   res[1] = isect1[1];
+  PRINT_INSTR("delta_isect_1=%a delta_isect_2=%a\n", isect1[1]-isect2[0], isect2[1]-isect1[0]);
 
   if(isect1[1]<isect2[0] || isect2[1]<isect1[0])
   {
