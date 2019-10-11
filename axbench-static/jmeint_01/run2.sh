@@ -8,7 +8,7 @@ fi
 
 match_time()
 {
-  regex='^kernel[^0-9]*([0-9.]+)'
+  regex='^kernel[^0-9]*([0-9+-e.]+)'
   if [[ ( $1 =~ $regex ) ]]; then
     echo ${BASH_REMATCH[1]}
   else
@@ -19,7 +19,7 @@ match_time()
 
 match_error()
 {
-  regex="^[^${2:0:1}]*$2[^0-9]*([0-9.]+)"
+  regex="^[^${2:0:1}]*$2[^0-9]*([0-9+-e.]+)"
   if [[ ( $1 =~ $regex ) ]]; then
     echo ${BASH_REMATCH[1]}
   else

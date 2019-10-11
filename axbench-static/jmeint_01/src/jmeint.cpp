@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
 		kernel_time += timer.nanosecondsSinceInit();
 		
 		PRINT_INSTR(stderr, "exit type = %d\n", output);
-		outputFileHandler << x << " " << res[0] << " " << res[1] << std::endl;
+		outputFileHandler << x << " 0 0 " << output << std::endl;
 		outputAggreg[output] += 1;
 		
 		timer.reset();
