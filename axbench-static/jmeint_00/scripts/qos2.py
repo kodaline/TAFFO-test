@@ -6,13 +6,15 @@ import statistics as stat
 
 def get_one_triangle(file):
     res = {}
-    for line in file:
+    line = file.readline()
+    while line != '':
         if line.startswith('exit type'):
             return res
         parts = line.split()
         for part in parts:
             lhs, rhs = part.split('=')
             res[lhs] = float.fromhex(rhs)
+        line = file.readline()
     return res
 
 
@@ -32,18 +34,21 @@ for fn_fix, fn_float in zip(files_fix, files_float):
         with open(fn_float, 'r') as f_float:
             float_tri = get_one_triangle(f_float)
             fix_tri = get_one_triangle(f_fix)
-            for key in float_tri:
-                try:
-                    err_list = abs_error[key]
-                except:
-                    err_list = []
-                    abs_error[key] = err_list
-                n_float = float_tri[key]
-                try:
-                    n_fix = fix_tri[key]
-                    err_list.append(abs(n_float - n_fix))
-                except:
-                    pass
+            while float_tri != {} and fix_tri != {}:
+                for key in float_tri:
+                    try:
+                        err_list = abs_error[key]
+                    except:
+                        err_list = []
+                        abs_error[key] = err_list
+                    n_float = float_tri[key]
+                    try:
+                        n_fix = fix_tri[key]
+                        err_list.append(abs(n_float - n_fix))
+                    except:
+                        pass
+                float_tri = get_one_triangle(f_float)
+                fix_tri = get_one_triangle(f_fix)
             
 for key, val in abs_error.items():
     print(key, ': mean =', stat.mean(val), ', median =', stat.median(val))
