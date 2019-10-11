@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#define INSTRUMENT
+//#define INSTRUMENT
 #ifdef INSTRUMENT
 #define PRINT_INSTR(...) fprintf(stderr, __VA_ARGS__)
 #else

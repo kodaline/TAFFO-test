@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 		kernel_time += timer.nanosecondsSinceInit();
 
     outputAggreg[output] += 1;
-    fprintf(stderr, "exit type = %d\n", output);
+    PRINT_INSTR(stderr, "exit type = %d\n", output);
 		outputFileHandler << x << " " << res[0] << " " << res[1] << std::endl;
 		
 		timer.reset();
@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 	kernel_time += timer.nanosecondsSinceInit();
 	
 	for (int i=0; i<6; i++)
-	  fprintf(stderr, "exit type %d total = %d\n", i, outputAggreg[i]);
+	  PRINT_INSTR(stderr, "exit type %d total = %d\n", i, outputAggreg[i]);
 	
   std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
