@@ -34,7 +34,7 @@ void inversek2j(float __attribute((annotate("scalar()"))) x,
 
 #pragma parrot(input, "inversek2j", [2]dataIn)
 */
-	float __attribute((annotate("scalar(range(1e-1, 60.5) final)"))) sqtmp = (x * x + y * y);
+	float __attribute((annotate("scalar(range(25, 60.5) final)"))) sqtmp = (x * x + y * y);
 
 	*theta2 = (float)acos(((x * x) + (y * y) - (l1 * l1) - (l2 * l2))/(2 * l1 * l2));
 	*theta1 = (float)asin((y * (l1 + l2 * cos(*theta2)) - x * l2 * sin(*theta2))/sqtmp);
