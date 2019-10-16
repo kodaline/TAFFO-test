@@ -69,7 +69,7 @@ obj/%.fixp.ll: obj/%.tuner.ll
 
 obj/%.err.ll: obj/%.fixp.ll
 ifndef DISABLE_ERROR
-	$(OPT) -load=$(ERRORLIB) -S -errorprop -abserror -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
+	$(OPT) -load=$(ERRORLIB) -S -errorprop -startonly $(if $(ISDEBUG), -debug-only=errorprop) $< -o $@ 2> stats/errorprop.log
 else
 	echo > $@
 	echo > stats/errorprop.log
