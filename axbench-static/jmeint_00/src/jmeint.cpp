@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 	inputFileHandler >> n;
 
 	// create the directory for storing data
-	float* __attribute((annotate("scalar(range(0.01,1))"))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
+	float* __attribute((annotate("scalar(range(0.01,1) error(1e-8))"))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
 	if(xyz == NULL)
 	{
 		std::cout << "cannot allocate memory for the triangle coordinates!" << std::endl;
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 		kernel_time += timer.nanosecondsSinceInit();
 
     outputAggreg[output] += 1;
-    PRINT_INSTR(stderr, "exit type = %d\n", output);
+    PRINT_INSTR("exit type = %d\n", output);
 		outputFileHandler << x << " 0 0 " << output << std::endl;
 		
 		timer.reset();
@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
 	kernel_time += timer.nanosecondsSinceInit();
 	
 	for (int i=0; i<6; i++)
-	  PRINT_INSTR(stderr, "exit type %d total = %d\n", i, outputAggreg[i]);
+	  PRINT_INSTR("exit type %d total = %d\n", i, outputAggreg[i]);
 	
   std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
