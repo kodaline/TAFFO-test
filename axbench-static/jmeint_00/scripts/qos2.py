@@ -51,6 +51,6 @@ for fn_fix, fn_float in zip(files_fix, files_float):
                 fix_tri = get_one_triangle(f_fix)
             
 for key, val in abs_error.items():
-    print(key, ': mean =', stat.mean(val), ', median =', stat.median(val))
+    print(key, ': mean =', stat.mean(val), ', median =', stat.median(val), ', max = ', max(val))
 
 

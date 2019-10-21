@@ -46,8 +46,30 @@
              }
 
 #define ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1) \
-              isect0=VV0+(VV1-VV0)*D0/(D0-D1+0.00001);    \
-              isect1=VV0+(VV2-VV0)*D0/(D0-D2+0.00001);
+{                                                                              \
+              float __attribute((annotate("scalar()"))) sub1 = D0-D1;          \
+              float __attribute((annotate("scalar()"))) sub2 = D0-D2;          \
+              if (sub1 >= 0.0f)                                                \
+              {                                                                \
+                float __attribute((annotate("scalar(range(1e-3, 23.522400) final)"))) adj1 = sub1; \
+                isect0=VV0+(VV1-VV0)*D0/(adj1+0.00001);                                  \
+              }                                                                \
+              else                                                             \
+              {                                                                \
+                float __attribute((annotate("scalar(range(-23.522400, -1e-3) final)"))) adj1 = sub1; \
+                isect0=VV0+(VV1-VV0)*D0/(adj1+0.00001);                                  \
+              }                                                                \
+              if (sub2 >= 0.0f)                                                \
+              {                                                                \
+                float __attribute((annotate("scalar(range(1e-3, 23.522400) final)"))) adj2 = sub2; \
+                isect1=VV0+(VV2-VV0)*D0/(adj2+0.00001);                                  \
+              }                                                                \
+              else                                                             \
+              {                                                                \
+                float __attribute((annotate("scalar(range(-23.522400, -1e-3) final)"))) adj2 = sub2; \
+                isect1=VV0+(VV2-VV0)*D0/(adj2+0.00001);                                  \
+              }                                                                \
+}
 
 
 #define COMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1) \
