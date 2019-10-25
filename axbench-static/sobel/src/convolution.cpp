@@ -26,12 +26,14 @@ static float __attribute((annotate("scalar(range(-2,2))"))) ky[][3] =
 float convolve(float w[][3] __attribute((annotate("scalar()"))),
                float k[][3] __attribute((annotate("scalar()"))))
 {
-	float __attribute((annotate("scalar()"))) r ;
+	float __attribute((annotate("scalar(range(-2,2) final)"))) r ;
+	float __attribute((annotate("scalar(range(-2,2) final)"))) rr ;
 	r = 0.0 ;
 	for( int j = 0 ; j < 3 ; j++ )
 		for ( int i = 0 ; i < 3 ; i++ )
 		{
-			r += w[i][j] * k[j][i] ;
+			rr = w[i][j] * k[j][i] ;
+			r +=  rr;
 		}
 	return r ;
 }
@@ -41,6 +43,7 @@ float sobel(float w[][3] __attribute((annotate("scalar()"))))
 	float __attribute((annotate("scalar()"))) sx ;
 	float __attribute((annotate("scalar()"))) sy ;
 	float __attribute((annotate("scalar()"))) s  ;
+	float __attribute((annotate("scalar(range(1e-3, 8) final)"))) ss ;
 /*
 	double dataIn[9];
 
@@ -64,7 +67,8 @@ float sobel(float w[][3] __attribute((annotate("scalar()"))))
 	sy = convolve(w, kx) ;
 	if(DEBUG) std::cout << "sy: " << sy << std::endl ;
 
-	s = sqrt(sx * sx + sy * sy) ;
+	ss = sx * sx + sy * sy ;
+	s = sqrt(ss) ;
 	if (s >= (256 / sqrt(256 * 256 + 256 * 256)))
 		s = 255 / sqrt(256 * 256 + 256 * 256);
 /*

@@ -24,7 +24,7 @@ rm -rf data/output
 mkdir -p data/output
 benchmark=sobel
 
-for f in ./../common/img/*.rgb
+for f in ./../common/img/*.rgb ./../common/img-big/1M/*.rgb ./../common/img-big/10M/*.rgb
 do
   filename=$(basename "$f")
   extension="${filename##*.}"

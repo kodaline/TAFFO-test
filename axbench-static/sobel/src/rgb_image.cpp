@@ -101,7 +101,7 @@ int Image::loadRgbImage(std::string filename)
 }
 
 int Image::saveRgbImage(std::string outFilename,
-			float __attribute((annotate("target('out') scalar()"))) scale) // range(362,362)
+			float __attribute((annotate("errtarget('out') scalar()"))) scale) // range(362,362)
 {
 	if(DEBUG)
 	{

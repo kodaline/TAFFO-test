@@ -54,7 +54,7 @@ $(OBJ_FLOAT) : obj/main.ll
 	$(CLANGXX) -c $(MIOSIX_FLAGS) obj/main.s -o $@
 
 obj/main.init.ll : obj/main.ll
-	$(OPT) -load=$(INITLIB) -S -taffoinit $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
+	$(OPT) -load=$(INITLIB) -S -taffoinit -mem2reg $(if $(ISDEBUG), -debug-only=taffo-init$(comma)annotation) -stats $< -o $@ 2> stats/init.log
 
 obj/main.vra.ll: obj/main.init.ll
 	$(OPT) -load=$(VRALIB) -S -taffoVRA $(if $(ISDEBUG), -debug-only=taffo-vra$(comma)ValueRangeAnalysis) -stats $< -o $@ 2> stats/vra.log

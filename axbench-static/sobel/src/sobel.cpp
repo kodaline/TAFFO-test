@@ -17,7 +17,7 @@
 int main ( int argc, const char* argv[])
 {
 	int x, y;
-	float __attribute((annotate("target('s') scalar()"))) s = 0; // range(0,0.7)
+	float __attribute((annotate("target('s') scalar()"))) s = 0;
 
 	// Source and destination image
 	Image __attribute((annotate(ANNOTATION_IMAGE_RANGE))) srcImage;
@@ -25,7 +25,7 @@ int main ( int argc, const char* argv[])
 	Image * __attribute((annotate(ANNOTATION_IMAGE_RANGE))) srcImagePtr = &srcImage;
 	Image * __attribute((annotate(ANNOTATION_IMAGE))) dstImagePtr = &dstImage;
 
-	float __attribute((annotate("target('s') scalar()"))) w[][3] = { // range(0,1)
+	float __attribute((annotate("target('s') scalar()"))) w[][3] = {
 		{0, 0, 0},
 		{0, 0, 0},
 		{0, 0, 0}
