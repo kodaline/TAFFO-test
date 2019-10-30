@@ -4,10 +4,18 @@ rm -rf data/output
 mkdir data/output
 benchmark=jmeint
 
+# decompress data files
 for f in data/input/*.data.bz2; do
   uncompressed="${f%.bz2}"
   if [[ ! ( -e ${uncompressed} ) ]]; then
     bunzip2 -k ${f}
+  fi
+done
+# cleanup stale data files
+for f in data/input/*.data; do
+  compressed="${f}.bz2"
+  if [[ ! ( -e ${compressed} ) ]]; then
+    rm ${f}
   fi
 done
 
