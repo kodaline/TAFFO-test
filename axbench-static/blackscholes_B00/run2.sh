@@ -7,7 +7,7 @@ fi
 
 match_time()
 {
-  regex='^kernel[^0-9]*([0-9.]+)'
+  regex='^kernel[^0-9]*([^ ]+)'
   if [[ ( $1 =~ $regex ) ]]; then
     echo ${BASH_REMATCH[1]}
   else
