@@ -16,8 +16,8 @@ function run_image {
 	
 	echo -e "\e[32m### QoS ###\e[0m"
 	
-	python ./../common/scripts/png2rgb.py png data/output/${filename}_${benchmark}.rgb data/output/${filename}_${benchmark}.png > out1.tmp
-	python ./../common/scripts/png2rgb.py png data/output/${filename}_${benchmark}.rgb.fixp data/output/${filename}_${benchmark}.fixp.png > out2.tmp
+	python ./../common/scripts/png2rgb.py png16 data/output/${filename}_${benchmark}.rgb data/output/${filename}_${benchmark}.png > out1.tmp
+	python ./../common/scripts/png2rgb.py png16 data/output/${filename}_${benchmark}.rgb.fixp data/output/${filename}_${benchmark}.fixp.png > out2.tmp
 	
 	compare -metric RMSE data/output/${filename}_${benchmark}.png data/output/${filename}_${benchmark}.fixp.png /dev/null > tmp.log 2> tmp.err
 	awk '{ printf("*** Relative error: %0.2f%%\n*** Absolute error: %f\n",substr($2, 2, length($2) - 2) * 100,substr($1, 1)) }' tmp.err
@@ -35,20 +35,14 @@ mkdir -p data/output
 mkdir -p data/sobel
 benchmark=sobel
 
-echo "***** AxBench pictures *****"
-for f in ./../common/img/*.rgb
-do
-	run_image $f
-done
-
 echo "***** ImageCompression 1M *****"
-for f in ./../common/img-big-8bit/1M/*.rgb
+for f in ./../common/img-big-16bit/1M/*.rgb
 do
 	run_image $f
 done
 
 echo "***** ImageCompression 10M *****"
-for f in ./../common/img-big-8bit/10M/*.rgb
+for f in ./../common/img-big-16bit/10M/*.rgb
 do
 	run_image $f
 done

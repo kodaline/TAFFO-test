@@ -69,8 +69,8 @@ float sobel(float w[][3] __attribute((annotate("scalar()"))))
 
 	ss = sx * sx + sy * sy ;
 	s = sqrt(ss) ;
-	if (s >= (256 / sqrt(256 * 256 + 256 * 256)))
-		s = 255 / sqrt(256 * 256 + 256 * 256);
+	if (s >= (65536 / sqrt(65536.0 * 65536.0 + 65536.0 * 65536.0)))
+		s = 255 / sqrt(65536.0 * 65536.0 + 65536.0 * 65536.0);
 /*
 #pragma parrot(output, "sobel", <0.0; 1.0>s)
 */

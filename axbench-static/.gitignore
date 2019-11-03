@@ -19,8 +19,11 @@ kmeans/correct_output
 kmeans/src_before
 fft/orig_src
 blackscholes/orig_src
+sobel*/data/sobel
 
 jmeint_??/data/input/jmeint*.data
 
-common/img-big/1M
-common/img-big/10M
+common/img-big-8bit/1M
+common/img-big-8bit/10M
+common/img-big-16bit/1M
+common/img-big-16bit/10M

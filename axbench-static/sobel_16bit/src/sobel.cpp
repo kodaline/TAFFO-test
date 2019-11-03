@@ -100,7 +100,7 @@ int main ( int argc, const char* argv[])
 	uint64_t kernel_time = timer.nanosecondsSinceInit();
 	std::cout << "kernel time = " << ((double)kernel_time) / 1000000000.0 << " s" << std::endl;
 
-	dstImagePtr->saveRgbImage(argv[2], sqrtf(256 * 256 + 256 * 256)) ;
+	dstImagePtr->saveRgbImage(argv[2], sqrt(65536.0 * 65536.0 + 65536.0 * 65536.0)) ;
 
 	return 0 ;
 }

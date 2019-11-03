@@ -15,9 +15,9 @@ def png2rgb(file):
     return img
 pass
 
-def rgb2png(img, file):
+def rgb2png(img, file, depth=8):
     f = open(file, 'wb')
-    pngWriter = png.Writer(img[0], img[1])
+    pngWriter = png.Writer(img[0], img[1], bitdepth=depth)
     pngWriter.write(f, img[2])
     f.close()
 pass
@@ -105,6 +105,11 @@ if __name__ == '__main__':
     if (opr == 'png'):
         img = rgbload(input)
         rgb2png(img, output)
+    pass
+
+    if (opr == 'png16'):
+        img = rgbload(input)
+        rgb2png(img, output, 16)
     pass
 
     if (opr == 'gray'):
