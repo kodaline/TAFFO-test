@@ -63,14 +63,14 @@ do
 	msabs_error=$(match_error "$error" 'Absolute error')
 	msrel_error=$(match_error "$error" 'Relative error')
     else
-	msabs_error='-'
-	msrel_error='-'
+	msabs_error=
+	msrel_error=
     fi
     rm -f data/sobel/${filename}_${benchmark}.data data/sobel/${filename}_${benchmark}.data.fixp
   else
     mrel_error='0'
   fi
   
-  printf "$FORMAT" "${benchmark}_${filename}" $mfix $mfloat '0' '0' "$mrel_error" '-' "$msrel_error" "$msabs_error"
+  printf "$FORMAT" "${benchmark}_${filename}" $mfix $mfloat '0' '0' "$mrel_error" '-' $msrel_error $msabs_error
 done
 
