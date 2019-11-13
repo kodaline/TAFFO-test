@@ -6,7 +6,13 @@ function run_image {
 	extension="${filename##*.}"
 	filename="${filename%.*}"
 
-	echo -e "\e[95m------ ${filename} ------\e[0m"
+	if [[ $(echo $f | grep 8bit) ]]; then
+    		bits='8bit'
+	else
+		bits='16bit'
+	fi
+
+	echo -e "\e[95m------ ${filename} $bits ------\e[0m"
 	
 	echo -e "\e[96m*** Float Version ***\e[0m"
 	time ./bin/${benchmark}.out ${f} data/output/${filename}_${benchmark}.rgb 2> data/sobel/${filename}_${benchmark}.data
@@ -35,13 +41,25 @@ mkdir -p data/output
 mkdir -p data/sobel
 benchmark=sobel
 
-echo "***** ImageCompression 1M *****"
+echo "***** ImageCompression 1M 8bit *****"
+for f in ./../common/img-big-8bit/1M/*.rgb
+do
+	run_image $f
+done
+
+echo "***** ImageCompression 10M 8bit *****"
+for f in ./../common/img-big-8bit/10M/*.rgb
+do
+	run_image $f
+done
+
+echo "***** ImageCompression 1M 16bit *****"
 for f in ./../common/img-big-16bit/1M/*.rgb
 do
 	run_image $f
 done
 
-echo "***** ImageCompression 10M *****"
+echo "***** ImageCompression 10M 16bit *****"
 for f in ./../common/img-big-16bit/10M/*.rgb
 do
 	run_image $f

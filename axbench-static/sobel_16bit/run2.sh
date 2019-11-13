@@ -34,11 +34,17 @@ mkdir -p data/output
 mkdir -p data/sobel
 benchmark=sobel
 
-for f in ./../common/img-big-16bit/1M/*.rgb ./../common/img-big-16bit/10M/*.rgb
+for f in ./../common/img-big-8bit/1M/*.rgb ./../common/img-big-8bit/10M/*.rgb ./../common/img-big-16bit/1M/*.rgb ./../common/img-big-16bit/10M/*.rgb
 do
   filename=$(basename "$f")
   extension="${filename##*.}"
   filename="${filename%.*}"
+
+  if [[ $(echo $f | grep 8bit) ]]; then
+    bits='8bit'
+  else
+    bits='16bit'
+  fi
 
   if [[ -z $NORUN ]]; then
     float=$(./bin/${benchmark}.out ${f} data/output/${filename}_${benchmark}.rgb 2> data/sobel/${filename}_${benchmark}.data)
@@ -71,6 +77,6 @@ do
     mrel_error='0'
   fi
   
-  printf "$FORMAT" "${benchmark}_${filename}" $mfix $mfloat '0' '0' "$mrel_error" '-' $msrel_error $msabs_error
+  printf "$FORMAT" "${benchmark}_${filename}_$bits" $mfix $mfloat '0' '0' "$mrel_error" '-' $msrel_error $msabs_error
 done
 
