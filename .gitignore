@@ -2,4 +2,11 @@
 *.magiclangtmp.s
 *.out
 *.log
-axbench-static/jmeint_0?/log*
+axbench-static/jmeint_*/log_*
+*.dSYM
+axbench-static/common/img-big-16bit/*.zip
+axbench-static/common/img-big-8bit/*.zip
+axbench-static/jmeint_*/data/input/*.data
+axbench-static/*/obj*
+axbench-static/*/bin*
+axbench-static/*/stats*
