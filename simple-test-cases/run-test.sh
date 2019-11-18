@@ -9,7 +9,7 @@ if [[ -z $(which $TIMEOUT) ]]; then
   TIMEOUT='gtimeout'
 fi
 if [[ ! ( -z $(which $TIMEOUT) ) ]]; then
-  TIMEOUT="$TIMEOUT 10"
+  TIMEOUT="$TIMEOUT 30"
 else
   printf 'warning: timeout command not found\n'
   TIMEOUT=''
@@ -36,7 +36,7 @@ recompile_one() {
     fi
   fi
   out=${1%.*}.out
-  printf '[....] %s' "$input"
+  printf '[BUILD] [....] %s' "$input"
   if [[ $FLOAT -eq 1 ]]; then
     args="$args -float-output ${1%.*}.float.out"
   fi
@@ -47,10 +47,26 @@ recompile_one() {
     if [[ $bpid_fc -eq 124 ]]; then
       code='TIME'
     fi
-    printf '\033[1G[%s] %s\n' "$code" "$input"
+    printf '\033[1G[BUILD] [%s] %s\n' "$code" "$input"
     return 0
   else
-    printf '\033[1G[ ok ] %s\n' "$input"
+    printf '\033[1G[BUILD] [ ok ] %s\n' "$input"
+    if [[ $FLOAT -ne 1 ]]; then
+      for testin in "$SCRIPTPATH"/input/${1%.*}.*; do
+        [ -f "$testin" ] || continue
+        printf '[TEST ] [....] %s' $(basename "$testin")
+        testout=$(mktemp -t $(basename "$testin"))
+        "$out" < "$testin" > "$testout"
+        correctout=${SCRIPTPATH}/output/$(basename "$testin")
+        diff ${correctout} ${testout}
+        if [[ $? -eq 0 ]]; then
+          printf '\033[1G[TEST ] [ ok ] %s\n' $(basename "$testin")
+        else
+          printf '\033[1G[TEST ] [FAIL] %s\n' $(basename "$testin")
+        fi
+        rm "$testout"
+      done
+    fi
   fi
   return 0
 }
@@ -63,11 +79,19 @@ if [[ "$1" == "clean" ]]; then
 fi
 
 FLOAT=0
-if [[ "$1" == "float" ]]; then
+if [[ "$1" == "--float" ]]; then
   FLOAT=1
+  shift
 fi
 
-for fn in "$SCRIPTPATH"/*.c "$SCRIPTPATH"/*.cpp "$SCRIPTPATH"/*.ll; do
+
+if [[ "$1" == '--only' ]]; then
+  files="$2"
+else
+  files="$SCRIPTPATH/*.c $SCRIPTPATH/*.cpp $SCRIPTPATH/*.ll"
+fi
+
+for fn in $files; do
   if [[ ( "$fn" != *.magiclangtmp.ll ) && ( "$fn" != *NOT-WORKING-YET* ) ]]; then
     recompile_one "$fn" || exit $?
   fi
