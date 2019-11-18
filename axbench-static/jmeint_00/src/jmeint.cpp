@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 	inputFileHandler >> n;
 
 	// create the directory for storing data
-	float* __attribute((annotate("scalar(range(0.01,1) error(1e-8))"))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
+	float* __attribute((annotate("scalar(range(0.01,1) error(1e-8)) backtracking(2)"))) xyz = (float*)malloc(n * 6 * 3 * sizeof(float)) ;
 	if(xyz == NULL)
 	{
 		std::cout << "cannot allocate memory for the triangle coordinates!" << std::endl;
