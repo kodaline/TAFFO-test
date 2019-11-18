@@ -8,7 +8,7 @@ fi
 
 match_time()
 {
-  regex='^kernel[^0-9]*([0-9+-e.]+)'
+  regex='^kernel[^0-9]*([^ ]+)'
   if [[ ( $1 =~ $regex ) ]]; then
     echo ${BASH_REMATCH[1]}
   else
@@ -33,7 +33,7 @@ mkdir -p data/output
 benchmark=jmeint
 
 # decompress data files
-pushd ./data/input
+pushd ./data/input > /dev/null
 for f in *.data.bz2; do
   uncompressed="${f%.bz2}"
   if [[ ! ( -e ${uncompressed} ) ]]; then
@@ -44,7 +44,7 @@ for f in *.data.bz2; do
     bunzip2 -ck -- ${realf} > ${uncompressed}
   fi
 done
-popd
+popd > /dev/null
 # cleanup stale data files
 for f in data/input/*.data; do
   compressed="${f}.bz2"
