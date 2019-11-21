@@ -7,7 +7,7 @@ if [[ $# -ne 1 ]]; then
   exit
 fi
 
-bench=sobel
+bench=sobel_00
 benchsrc=main
 
 if [[ -z $DONT_REBUILD ]]; then

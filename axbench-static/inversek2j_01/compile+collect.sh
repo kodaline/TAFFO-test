@@ -7,7 +7,7 @@ if [[ $# -ne 1 ]]; then
   exit
 fi
 
-bench=inversek2j
+bench=inversek2j_01
 benchsrc=main
 
 if [[ -z $DONT_REBUILD ]]; then

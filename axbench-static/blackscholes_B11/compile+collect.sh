@@ -7,7 +7,7 @@ if [[ $# -ne 1 ]]; then
   exit
 fi
 
-bench=blackscholes_00
+bench=blackscholes_02
 benchsrc=blackscholes
 
 if [[ -z $DONT_REBUILD ]]; then

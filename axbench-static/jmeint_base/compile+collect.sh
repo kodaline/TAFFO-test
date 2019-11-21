@@ -7,7 +7,7 @@ if [[ $# -ne 1 ]]; then
   exit
 fi
 
-bench=jmeint
+bench=jmeint_base
 benchsrc=main
 
 if [[ -z $DONT_REBUILD ]]; then

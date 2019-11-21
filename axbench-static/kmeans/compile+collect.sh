@@ -7,7 +7,7 @@ if [[ $# -ne 1 ]]; then
   exit
 fi
 
-bench=kmeans
+bench=kmeans_00
 benchsrc=main
 
 if [[ -z $DONT_REBUILD ]]; then
