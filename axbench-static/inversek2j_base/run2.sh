@@ -28,7 +28,7 @@ match_error()
 
 
 rm -rf data/output
-mkdir data/output
+mkdir -p data/output
 benchmark=inversek2j
 
 for f in ../inversek2j_00/data/input/*.data

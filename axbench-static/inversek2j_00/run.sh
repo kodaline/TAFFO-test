@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm -rf data/output
-mkdir data/output
+mkdir -p data/output
 benchmark=inversek2j
 
 for f in data/input/*.data
