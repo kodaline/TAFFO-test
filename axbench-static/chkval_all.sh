@@ -29,16 +29,28 @@ for arg; do
 done
 
 check 'blackscholes'
-check 'blackscholes_00'
-check 'blackscholes_01'
+check 'blackscholes_B00'
+check 'blackscholes_B10'
+check 'blackscholes_B11'
+check 'blackscholes_B12'
 
 check 'fft'
 check 'fft_00'
 check 'fft_01'
 check 'fft_02'
 
-check 'inversek2j'
-check 'jmeint'
+check 'inversek2j_00'
+check 'inversek2j_01'
+check 'inversek2j_02'
+check 'inversek2j_03'
+check 'inversek2j_04'
+check 'inversek2j_05'
+check 'inversek2j_06'
+check 'inversek2j_base'
+
+check 'jmeint_00'
+check 'jmeint_01'
+check 'jmeint_base'
 
 check 'kmeans'
 check 'kmeans_00'
@@ -47,6 +59,7 @@ check 'kmeans_base_00'
 check 'kmeans_base_01'
 
 check 'sobel'
+check 'sobel_16bit'
 
 
 
