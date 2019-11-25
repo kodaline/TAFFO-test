@@ -44,7 +44,7 @@ $(MODULE): DIR $(OBJ_FLOAT) $(OBJ_FIX)
 stats: $(MODULE) obj/main.err.ll stats/main.fixp.mix.txt stats/main.mix.txt stats/main.llvm.txt stats/main.fixp.mlfeat.txt stats/main.mlfeat.txt
 
 obj/%.ll : src/%.cpp
-	$(CLANGXX) -S -g -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
+	$(CLANGXX) -S -emit-llvm $(MIOSIX_FLAGS) $(CFLAGS) $(INCLUDE) -DINPUT=$(INPUT) -DOUTPUT=$(OUTPUT) $< -o $@
 
 obj/main.ll : $(LL_FILES)
 	$(LLVM_DIR)/bin/llvm-link -S $^ -o $@
