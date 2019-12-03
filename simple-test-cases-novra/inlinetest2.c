@@ -1,9 +1,10 @@
 ///TAFFO_TEST_ARGS -disable-vra
 #include <stdio.h>
+#include <math.h>
 
 
 float hello(__attribute__((annotate("range -200 200"))) float *abc) __attribute__((always_inline)) {
-  abc[5] += (float)5.0;
+  abc[5] += (float)M_PI;
 }
 
 
@@ -12,7 +13,7 @@ int main(int argc, char *argv[]) {
 	for (int i=0; i<10; i++)
 	  test[i] = 123.0;
 	hello(test);
-	printf("%f\n", test[5]);
+	printf("%a\n", test[5]);
 	return 0;
 }
 
