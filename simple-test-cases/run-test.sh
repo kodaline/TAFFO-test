@@ -58,11 +58,14 @@ recompile_one() {
         testout=$(mktemp -t $(basename "$testin"))
         "$out" < "$testin" > "$testout"
         correctout=${SCRIPTPATH}/output/$(basename "$testin")
-        diff ${correctout} ${testout}
+        logf="$SCRIPTPATH"/$(basename "$testin").log
+        diff ${correctout} ${testout} > "$logf"
         if [[ $? -eq 0 ]]; then
           printf '\033[1G[TEST ] [ ok ] %s\n' $(basename "$testin")
+          rm "$logf"
         else
           printf '\033[1G[TEST ] [FAIL] %s\n' $(basename "$testin")
+          cat "$logf"
         fi
         rm "$testout"
       done
@@ -86,7 +89,7 @@ fi
 
 
 if [[ "$1" == '--only' ]]; then
-  files="$2"
+  files="$SCRIPTPATH/$2"
 else
   files="$SCRIPTPATH/*.c $SCRIPTPATH/*.cpp $SCRIPTPATH/*.ll"
 fi
