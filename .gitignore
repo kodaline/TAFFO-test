@@ -3,9 +3,12 @@
 *.out
 *.log
 axbench-static/jmeint_*/log_*
+_backup
 *.dSYM
 axbench-static/common/img-big-16bit/*.zip
 axbench-static/common/img-big-8bit/*.zip
+axbench-static/jmeint_0?/data/input_cases
+axbench-static/jmeint_0?/data/input_orig
 axbench-static/jmeint_*/data/input/*.data
 axbench-static/*/obj*
 axbench-static/*/bin*

@@ -34,7 +34,6 @@ enable_errorprop=0
 errorprop_flags=
 dontlink=
 iscpp=$CLANG
-honest_mode=0
 feedback=0
 pe_model_file=
 for opt in $raw_opts; do
@@ -99,11 +98,6 @@ for opt in $raw_opts; do
           ;;
         -enable-err)
           enable_errorprop=1
-          ;;
-        -honest-mode)
-          # actually, whether this mode is more honest or not is still 
-          # subject of active research
-          honest_mode=1
           ;;
         -feedback)
           feedback=1
@@ -170,7 +164,7 @@ set -x
 if [[ ${#input_files[@]} -eq 1 ]]; then
   # one input file
   ${CLANG} \
-    $opts -O0 \
+    $opts -O0 -Xclang -disable-O0-optnone \
     -c -emit-llvm \
     ${input_files} \
     -S -o "${output_file}.1.magiclangtmp.ll" || exit $?
@@ -183,7 +177,7 @@ else
     thisfn="${output_file}.${thisfn}.0.magiclangtmp.ll"
     tmp+=( $thisfn )
     ${CLANG} \
-      $opts -O0 \
+      $opts -O0 -Xclang -disable-O0-optnone \
       -c -emit-llvm \
       ${input_file} \
       -S -o "${thisfn}" || exit $?
@@ -194,11 +188,7 @@ else
 fi
 
 # precompute clang invocation for compiling float version
-if [[ $honest_mode -ne 0 ]]; then
-  build_float="${iscpp} $opts ${optimization} ${input_files[*]}"
-else
-  build_float="${iscpp} $opts ${optimization} ${output_file}.1.magiclangtmp.ll"
-fi
+build_float="${iscpp} $opts ${optimization} ${output_file}.1.magiclangtmp.ll"
 
 ###
 ###  TAFFO initialization
