@@ -17,7 +17,7 @@ pass
 
 def rgb2png(img, file, depth=8):
     f = open(file, 'wb')
-    pngWriter = png.Writer(img[0], img[1], bitdepth=depth)
+    pngWriter = png.Writer(img[0], img[1], bitdepth=depth, greyscale=False)
     pngWriter.write(f, img[2])
     f.close()
 pass
