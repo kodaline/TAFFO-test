@@ -23,7 +23,7 @@ void calcFftIndices(int K, int* indices)
 }
 
 void radix2DitCooleyTykeyFft(int K,
-			     int* indices __attribute((annotate("scalar(disabled range(1,4194304))"))),
+			     int* indices __attribute((annotate(ANNOTATION_RANGE_N))),
 			     Complex* x __attribute((annotate("errtarget('x') " ANNOTATION_COMPLEX(,)))),
 			     Complex* f __attribute((annotate("errtarget('f') " ANNOTATION_COMPLEX(,)))))
 {
@@ -42,9 +42,9 @@ void radix2DitCooleyTykeyFft(int K,
 
 	Complex __attribute((annotate(ANNOTATION_COMPLEX_RANGE))) t;
 	int i ;
-	int __attribute((annotate("scalar(disabled range(1,4194304))"))) N ;
+	int N ;
 	int j ;
-	int __attribute((annotate("scalar(disabled range(1,4194304))"))) k ;
+	int __attribute((annotate(ANNOTATION_RANGE_N))) k ;
 
 /*
 	double dataIn[1];

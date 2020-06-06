@@ -6,8 +6,8 @@
 #include "benchmark.hpp"
 
 static int* indices;
-static Complex* __attribute((annotate("target('x')" ANNOTATION_COMPLEX_RANGE))) x;
-static Complex* __attribute((annotate("target('f')" ANNOTATION_COMPLEX(,)))) f;
+static Complex* __attribute((annotate("target('x') " ANNOTATION_COMPLEX_RANGE))) x;
+static Complex* __attribute((annotate("target('f') " ANNOTATION_COMPLEX(,)))) f;
 
 int main(int argc, char* argv[])
 {

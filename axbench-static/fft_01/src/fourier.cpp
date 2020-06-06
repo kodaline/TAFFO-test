@@ -42,7 +42,7 @@ void radix2DitCooleyTykeyFft(int K,
 
 	Complex __attribute((annotate(ANNOTATION_COMPLEX_RANGE))) t;
 	int i ;
-	int __attribute((annotate(ANNOTATION_RANGE_N))) N ;
+	int N ;
 	int j ;
 	int __attribute((annotate(ANNOTATION_RANGE_N))) k ;
 

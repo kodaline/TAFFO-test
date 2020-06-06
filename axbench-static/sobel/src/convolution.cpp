@@ -9,14 +9,14 @@
 #include <cmath>
 
 int total = 0;
-static float __attribute((annotate("scalar(range(-2,2))"))) kx[][3] =
+static float __attribute((annotate("scalar()"))) kx[][3] =
 		{
 			{ -1, -2, -1 },
 			{  0,  0,  0 },
 			{  1,  2,  1 }
 		} ;
 
-static float __attribute((annotate("scalar(range(-2,2))"))) ky[][3] =
+static float __attribute((annotate("scalar()"))) ky[][3] =
 		{
 			{ -1, 0, 1 },
 			{ -2, 0, 2 },

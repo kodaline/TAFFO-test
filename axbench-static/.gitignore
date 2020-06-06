@@ -17,6 +17,8 @@ results
 
 kmeans/correct_output
 kmeans/src_before
+kmeans/data
+kmeans_??/data
 fft/orig_src
 blackscholes/orig_src
 sobel*/data/sobel

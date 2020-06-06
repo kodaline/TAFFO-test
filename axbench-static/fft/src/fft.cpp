@@ -6,14 +6,14 @@
 #include "benchmark.hpp"
 
 static int* indices;
-static Complex* __attribute((annotate(ANNOTATION_COMPLEX_RANGE))) x;
-static Complex* __attribute((annotate("target('f')" ANNOTATION_COMPLEX(,)))) f;
+static Complex* __attribute((annotate("target('x') " ANNOTATION_COMPLEX_RANGE))) x;
+static Complex* __attribute((annotate("target('f') " ANNOTATION_COMPLEX(,)))) f;
 
 int main(int argc, char* argv[])
 {
 	int i ;
 
-	int __attribute((annotate("target('n') scalar(range(1,65536) disabled)"))) n = atoi(argv[1]);
+	int __attribute((annotate("target('n') scalar(range(1,65536) final disabled)"))) n = atoi(argv[1]);
 	std::string outputFilename 	= argv[2];
 
 	// prepare the output file for writting the theta values

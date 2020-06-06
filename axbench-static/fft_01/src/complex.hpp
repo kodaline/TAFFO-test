@@ -1,7 +1,7 @@
 #ifndef __COMPLEX_HPP__
 #define __COMPLEX_HPP__
 
-#define ANNOTATION_RANGE_N "scalar(range(1,8192) disabled)"
+#define ANNOTATION_RANGE_N "scalar(range(1,8192) final disabled)"
 #define ANNOTATION_COMPLEX(R1,R2) "struct[scalar(" R1 "),scalar(" R2 ")]"
 #define ANNOTATION_COMPLEX_RANGE ANNOTATION_COMPLEX("range(-500, 500) final", "range(-500, 500) final")
 
