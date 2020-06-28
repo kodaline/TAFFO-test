@@ -16,7 +16,7 @@ else
 fi
 
 recompile_one() {
-  args=
+  args="-lm"
   input=$1
   ext=${1##*.}
   if [[ ( $ext = 'll' ) || ( $(basename $input) = test* ) ]]; then
@@ -55,7 +55,7 @@ recompile_one() {
       for testin in "$SCRIPTPATH"/input/${1%.*}.*; do
         [ -f "$testin" ] || continue
         printf '[TEST ] [....] %s' $(basename "$testin")
-        testout=$(mktemp -t $(basename "$testin"))
+        testout=$(mktemp -t $(basename "$testin").XXXXXX)
         "$out" < "$testin" > "$testout"
         correctout=${SCRIPTPATH}/output/$(basename "$testin")
         logf="$SCRIPTPATH"/$(basename "$testin").log

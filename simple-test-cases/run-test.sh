@@ -16,7 +16,7 @@ else
 fi
 
 recompile_one() {
-  args=
+  args="-lm"
   input=$1
   ext=${1##*.}
   if [[ ( $ext = 'll' ) || ( $(basename $input) = test* ) ]]; then
