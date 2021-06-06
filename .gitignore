@@ -5,6 +5,7 @@
 axbench-static/jmeint_*/log_*
 _backup
 *.dSYM
+*.swp
 axbench-static/common/img-big-16bit/*.zip
 axbench-static/common/img-big-8bit/*.zip
 axbench-static/jmeint_0?/data/input_cases
